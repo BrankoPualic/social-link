@@ -1,13 +1,19 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using SocialMedia.Users.Data;
 using System.Reflection;
 
 namespace SocialMedia.Users;
 
 public static class UsersModule
 {
-	public static IServiceCollection AddUsersModuleServices(this IServiceCollection services, ILogger logger, List<Assembly> mediatRAssemblies)
+	public static IServiceCollection AddUsersModuleServices(this IServiceCollection services, IConfiguration config, ILogger logger, List<Assembly> mediatRAssemblies)
 	{
+		string? connectionString = config.GetConnectionString("Database");
+		services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
+
 		mediatRAssemblies.Add(typeof(UsersModule).Assembly);
 
 		logger.Information("{Module} module services registered", "Users");
