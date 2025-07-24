@@ -2,7 +2,9 @@ using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
 using Serilog;
+using SocialMedia.SharedKernel;
 using SocialMedia.Users;
+using SocialMedia.Web.Objects;
 using System.Reflection;
 
 var logger = Log.Logger = new LoggerConfiguration()
@@ -16,11 +18,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Configuration));
 
+builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
+
 builder.Services
 	.AddAuthenticationJwtBearer(_ => _.SigningKey = builder.Configuration["Jwt:SecretKey"])
 	.AddAuthorization()
 	.AddFastEndpoints()
 	.SwaggerDocument();
+
+builder.Services.AddScoped<IIdentityUser, IdentityUser>();
 
 // Add Module Services
 List<Assembly> mediatRAssemblies = [typeof(Program).Assembly];

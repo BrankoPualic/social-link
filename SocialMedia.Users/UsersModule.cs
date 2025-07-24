@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using SocialMedia.Users.Application.Interfaces;
+using SocialMedia.Users.Application.Services;
 using SocialMedia.Users.Data;
 using System.Reflection;
 
@@ -13,6 +15,8 @@ public static class UsersModule
 	{
 		string? connectionString = config.GetConnectionString("Database");
 		services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
+
+		services.AddScoped<IAuthManager, AuthManager>();
 
 		mediatRAssemblies.Add(typeof(UsersModule).Assembly);
 

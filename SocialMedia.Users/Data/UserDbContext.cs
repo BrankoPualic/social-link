@@ -1,16 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SocialMedia.SharedKernel;
 
 namespace SocialMedia.Users.Data;
 
 internal sealed class UserDbContext : DbContext
 {
-	public UserDbContext()
-	{
-	}
+	public IIdentityUser CurrentUser { get; private set; }
 
-	public UserDbContext(DbContextOptions options) : base(options)
-	{
-	}
+	public UserDbContext(IIdentityUser currentUser) => CurrentUser = currentUser;
+
+	public UserDbContext(DbContextOptions options, IIdentityUser currentUser) : base(options) => CurrentUser = currentUser;
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

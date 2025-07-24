@@ -3,20 +3,21 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SocialMedia.SharedKernel\SocialMedia.SharedKernel.csproj" />
     <ProjectReference Include="..\SocialMedia.Users.Contracts\SocialMedia.Users.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Application\Services\" />
     <Folder Include="Data\Migrations\" />
     <Folder Include="Data\Configurations\" />
     <Folder Include="Endpoints\" />
-    <Folder Include="Domain\" />
-    <Folder Include="UseCases\Commands\" />
-    <Folder Include="UseCases\Queries\" />
+    <Folder Include="Application\UseCases\Commands\" />
+    <Folder Include="Application\UseCases\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
