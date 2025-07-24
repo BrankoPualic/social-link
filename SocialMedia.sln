@@ -27,6 +27,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialMedia.Web", "SocialMe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialMedia.SharedKernel", "SocialMedia.SharedKernel\SocialMedia.SharedKernel.csproj", "{CEB12FAB-4A20-4EEC-9E01-007EBE1EFA05}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{B8941E5B-B1B7-453D-B7F7-E29E5DE541F9}"
+	ProjectSection(SolutionItems) = preProject
+		modules.md = modules.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +70,7 @@ Global
 		{ECF80F8B-C73E-417B-9D8B-6209354ACF63} = {9FD0716E-203B-45BD-99F7-FEC6BA52826D}
 		{B72B3C47-C7A8-4373-AB6D-FF197753DF7E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{CEB12FAB-4A20-4EEC-9E01-007EBE1EFA05} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B8941E5B-B1B7-453D-B7F7-E29E5DE541F9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64397CE0-FE19-4458-8417-6364F523CC1B}
