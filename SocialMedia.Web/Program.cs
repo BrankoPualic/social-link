@@ -1,6 +1,41 @@
+using FastEndpoints;
+using FastEndpoints.Security;
+using FastEndpoints.Swagger;
+using Serilog;
+using SocialMedia.Users;
+using System.Reflection;
+
+var logger = Log.Logger = new LoggerConfiguration()
+	.Enrich.FromLogContext()
+	.WriteTo.Console()
+	.CreateLogger();
+
+logger.Information("Starting web host");
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Configuration));
+
+builder.Services
+	.AddAuthenticationJwtBearer(_ => _.SigningKey = builder.Configuration["Jwt:SecretKey"])
+	.AddAuthorization()
+	.AddFastEndpoints()
+	.SwaggerDocument();
+
+// Add Module Services
+List<Assembly> mediatRAssemblies = [typeof(Program).Assembly];
+builder.Services.AddUsersModuleServices(logger, mediatRAssemblies);
+
+// Set up MediatR
+builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblies(mediatRAssemblies.ToArray()));
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseAuthentication()
+	.UseAuthorization()
+	.UseFastEndpoints()
+	.UseSwaggerGen(); // once application runs goto /swagger
 
 app.Run();
+
+// public partial class Program { } // needed for tests

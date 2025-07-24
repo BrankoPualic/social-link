@@ -10,4 +10,18 @@
     <ProjectReference Include="..\SocialMedia.Users.Contracts\SocialMedia.Users.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Endpoints\" />
+    <Folder Include="Data\" />
+    <Folder Include="Domain\" />
+    <Folder Include="UseCases\Commands\" />
+    <Folder Include="UseCases\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FastEndpoints" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+  </ItemGroup>
+
 </Project>
