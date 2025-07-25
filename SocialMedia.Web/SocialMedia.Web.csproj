@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SocialMedia.SharedKernel\SocialMedia.SharedKernel.csproj" />
     <ProjectReference Include="..\SocialMedia.Users\SocialMedia.Users.csproj" />
   </ItemGroup>
 

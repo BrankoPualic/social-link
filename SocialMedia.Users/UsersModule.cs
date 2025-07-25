@@ -5,6 +5,7 @@ using Serilog;
 using SocialMedia.Users.Application.Interfaces;
 using SocialMedia.Users.Application.Services;
 using SocialMedia.Users.Data;
+using SocialMedia.Users.Domain;
 using System.Reflection;
 
 namespace SocialMedia.Users;
@@ -17,6 +18,7 @@ public static class UsersModule
 		services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
 
 		services.AddScoped<IAuthManager, AuthManager>();
+		services.AddScoped<IUserRepository, UserRepository>();
 
 		mediatRAssemblies.Add(typeof(UsersModule).Assembly);
 
