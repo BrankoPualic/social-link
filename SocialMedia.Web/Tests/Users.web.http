@@ -1,0 +1,10 @@
+@SocialMedia.Web_HostAddress = https://localhost:7175
+
+POST {{SocialMedia.Web_HostAddress}}/users/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "b",
+    "password": "123"
+}

@@ -6,25 +6,25 @@ using SocialMedia.Users.Application.UseCases.Commands;
 
 namespace SocialMedia.Users.Endpoints;
 
-internal class Login(IMediator mediator) : Endpoint<LoginDto, TokenDto>
+internal class Signup(IMediator mediator) : Endpoint<SignupDto, TokenDto>
 {
 	public override void Configure()
 	{
-		Post("/users/login");
+		Post("/users/signup");
 		AllowAnonymous();
 	}
 
-	public override async Task HandleAsync(LoginDto req, CancellationToken ct)
+	public override async Task HandleAsync(SignupDto req, CancellationToken ct)
 	{
-		var result = await mediator.Send(new LoginCommand(req), ct);
+		var result = await mediator.Send(new SignupCommand(req), ct);
 
 		if (result.IsOk())
 		{
 			await Send.OkAsync(result, ct);
 		}
-		else if (result.IsNotFound())
+		else if (result.IsInvalid())
 		{
-			await Send.NotFoundAsync(ct);
+			await Send.ErrorsAsync(cancellation: ct);
 		}
 	}
 }
