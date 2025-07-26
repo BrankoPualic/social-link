@@ -5,7 +5,7 @@ using SocialMedia.Users.Application.Interfaces;
 using SocialMedia.Users.Domain;
 
 namespace SocialMedia.Users.Application.UseCases.Commands;
-internal record LoginCommand(LoginDto Data) : Command<TokenDto>;
+internal sealed record LoginCommand(LoginDto Data) : Command<TokenDto>;
 
 internal class LoginCommandHandler(IDatabaseContext db, IUserRepository userRepository, IAuthManager authManager) : CommandHandler<LoginCommand, TokenDto>(db)
 {
@@ -15,11 +15,11 @@ internal class LoginCommandHandler(IDatabaseContext db, IUserRepository userRepo
 
 		var model = await userRepository.GetByEmailAsync(data.Email);
 		if (model == null)
-			return Result.NotFound();
+			return Result.NotFound("User not found.");
 
 		bool passwordsMatch = authManager.VerifyPassword(data.Password, model.Password);
 		if (!passwordsMatch)
-			return Result.NotFound();
+			return Result.NotFound("User not found.");
 
 		// Log entry
 		userRepository.CreateLoginLog(model.Id);

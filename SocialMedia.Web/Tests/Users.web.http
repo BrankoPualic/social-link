@@ -1,6 +1,7 @@
-@SocialMedia.Web_HostAddress = https://localhost:7175
+@SocialMedia.Web_HostAddress = https://localhost:7175/users
+@SocialMedia.AccessToken = 123
 
-POST {{SocialMedia.Web_HostAddress}}/users/login
+POST {{SocialMedia.Web_HostAddress}}/login
 Accept: application/json
 Content-Type: application/json
 
@@ -8,3 +9,11 @@ Content-Type: application/json
     "email": "b",
     "password": "123"
 }
+
+###
+
+GET {{SocialMedia.Web_HostAddress}}/profile/00000000-0000-0000-0000-000000000001
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+###

@@ -7,7 +7,7 @@ using SocialMedia.Users.Domain;
 
 namespace SocialMedia.Users.Application.UseCases.Commands;
 
-internal record SignupCommand(SignupDto Data) : Command<TokenDto>;
+internal sealed record SignupCommand(SignupDto Data) : Command<TokenDto>;
 
 internal class SignupCommandHandler(IDatabaseContext db, IUserRepository userRepository, IAuthManager authManager) : CommandHandler<SignupCommand, TokenDto>(db)
 {
