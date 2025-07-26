@@ -10,7 +10,7 @@ internal sealed class NotificationDatabaseContext : AppDatabaseContext, INotific
 	public NotificationDatabaseContext(IIdentityUser currentUser) : base(currentUser)
 	{ }
 
-	public NotificationDatabaseContext(DbContextOptions options, IIdentityUser currentUser) : base(options, currentUser)
+	public NotificationDatabaseContext(DbContextOptions<NotificationDatabaseContext> options, IIdentityUser currentUser) : base(options, currentUser)
 	{ }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)

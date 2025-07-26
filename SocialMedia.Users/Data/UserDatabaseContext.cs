@@ -10,7 +10,7 @@ internal sealed class UserDatabaseContext : AppDatabaseContext, IUserDatabaseCon
 	public UserDatabaseContext(IIdentityUser currentUser) : base(currentUser)
 	{ }
 
-	public UserDatabaseContext(DbContextOptions options, IIdentityUser currentUser) : base(options, currentUser)
+	public UserDatabaseContext(DbContextOptions<UserDatabaseContext> options, IIdentityUser currentUser) : base(options, currentUser)
 	{ }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)

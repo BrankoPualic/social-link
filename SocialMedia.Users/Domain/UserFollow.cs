@@ -10,6 +10,8 @@ internal class UserFollow
 
 	public DateTime FollowDate { get; set; }
 
+	public bool IsPending { get; set; }
+
 	[ForeignKey(nameof(FollowerId))]
 	public virtual User Follower { get; set; }
 

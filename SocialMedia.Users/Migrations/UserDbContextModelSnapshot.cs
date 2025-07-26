@@ -107,6 +107,9 @@ namespace SocialMedia.Users.Migrations
                     b.Property<DateTime>("FollowDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsPending")
+                        .HasColumnType("bit");
+
                     b.HasKey("FollowerId", "FollowingId");
 
                     b.HasIndex("FollowingId");
