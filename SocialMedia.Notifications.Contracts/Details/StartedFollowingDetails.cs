@@ -2,13 +2,13 @@
 
 namespace SocialMedia.Notifications.Contracts.Details;
 
-public class FollowRequestDetails : NotificationDetails
+public class StartFollowingDetails : NotificationDetails
 {
 	public Guid FollowerId { get; set; }
 
 	public string FollowerName { get; set; }
 
-	public override eNotificationType NotificationTypeId => eNotificationType.FollowRequest;
+	public override eNotificationType NotificationTypeId => eNotificationType.StartedFollowing;
 
 	public override string Message
 	{
@@ -17,7 +17,7 @@ public class FollowRequestDetails : NotificationDetails
 		set
 		{
 			if (string.IsNullOrWhiteSpace(value))
-				_message = $"{FollowerName} has requested to follow you.";
+				_message = $"{FollowerName} has start following you.";
 			else
 				_message = value;
 		}

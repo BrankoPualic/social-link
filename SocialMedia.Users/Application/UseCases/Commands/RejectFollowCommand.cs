@@ -5,11 +5,11 @@ using SocialMedia.Users.Application.Dtos;
 
 namespace SocialMedia.Users.Application.UseCases.Commands;
 
-internal sealed record UnfollowCommand(FollowDto Data) : Command;
+internal sealed record RejectFollowCommand(FollowDto Data) : Command;
 
-internal class UnfollowCommandHandler(IUserDatabaseContext db) : CommandHandler<UnfollowCommand>(db)
+internal class RejectFollowCommandHandler(IUserDatabaseContext db) : CommandHandler<RejectFollowCommand>(db)
 {
-	public override async Task<Result> Handle(UnfollowCommand req, CancellationToken ct)
+	public override async Task<Result> Handle(RejectFollowCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
@@ -19,7 +19,7 @@ internal class UnfollowCommandHandler(IUserDatabaseContext db) : CommandHandler<
 			.FirstOrDefaultAsync(ct);
 
 		if (follow is null)
-			return Result.NotFound("Follow doesn't exist.");
+			return Result.NotFound("Follow request not found.");
 
 		db.Follows.Remove(follow);
 		await db.SaveChangesAsync(false, ct);

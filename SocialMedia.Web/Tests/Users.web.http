@@ -65,3 +65,25 @@ Authorization: Bearer {{SocialMedia.AccessToken}}
     "FollowerId": "",
     "FollowingId": ""
 }
+
+###
+
+POST {{SocialMedia.Web_HostAddress}}/acceptFollow
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}
+
+###
+
+POST {{SocialMedia.Web_HostAddress}}/rejectFollow
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}

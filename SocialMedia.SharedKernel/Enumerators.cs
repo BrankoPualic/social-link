@@ -23,5 +23,20 @@ public enum eNotificationType
 	FollowRequest = 10,
 
 	[Description("Follow Accepted")]
-	FollowAccepted = 20
+	FollowAccepted = 20,
+
+	[Description("Started Following")]
+	StartedFollowing = 30,
+}
+
+public enum eNotificationActionMethodType
+{
+	[Description("")]
+	NotSet = 0,
+
+	[Description("GET")]
+	Get = 100,
+
+	[Description("POST")]
+	Post = 200
 }

@@ -8,16 +8,16 @@ using SocialMedia.Users.Application.UseCases.Commands;
 namespace SocialMedia.Users.Endpoints;
 
 [Authorize]
-internal class Follow(IMediator mediator) : Endpoint<FollowDto>
+internal class AcceptFollow(IMediator mediator) : Endpoint<FollowDto>
 {
 	public override void Configure()
 	{
-		Post("/users/follow");
+		Post("/users/acceptFollow");
 	}
 
 	public override async Task HandleAsync(FollowDto req, CancellationToken ct)
 	{
-		var result = await mediator.Send(new FollowCommand(req), ct);
+		var result = await mediator.Send(new AcceptFollowCommand(req), ct);
 
 		if (result.IsNoContent())
 		{
@@ -26,10 +26,6 @@ internal class Follow(IMediator mediator) : Endpoint<FollowDto>
 		else if (result.IsNotFound())
 		{
 			await Send.NotFoundAsync(ct);
-		}
-		else if (result.IsInvalid())
-		{
-			await Send.ErrorsAsync(cancellation: ct);
 		}
 	}
 }

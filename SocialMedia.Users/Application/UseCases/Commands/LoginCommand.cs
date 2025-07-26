@@ -14,7 +14,7 @@ internal class LoginCommandHandler(IUserDatabaseContext db, IUserRepository user
 		var data = req.Data;
 
 		var model = await userRepository.GetByEmailAsync(data.Email);
-		if (model == null)
+		if (model is null)
 			return Result.NotFound("User not found.");
 
 		bool passwordsMatch = authManager.VerifyPassword(data.Password, model.Password);

@@ -13,7 +13,7 @@ internal class UpdateCommandHandler(IUserDatabaseContext db) : CommandHandler<Up
 		var data = req.Data;
 
 		var model = await db.Users.FindAsync([data.Id], cancellationToken: ct);
-		if (model == null)
+		if (model is null)
 			return Result.NotFound("User not found.");
 
 		data.ToModel(model);
