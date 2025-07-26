@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SocialMedia.Notifications\SocialMedia.Notifications.csproj" />
+    <ProjectReference Include="..\SocialMedia.Posts\SocialMedia.Posts.csproj" />
     <ProjectReference Include="..\SocialMedia.SharedKernel\SocialMedia.SharedKernel.csproj" />
     <ProjectReference Include="..\SocialMedia.Users\SocialMedia.Users.csproj" />
   </ItemGroup>

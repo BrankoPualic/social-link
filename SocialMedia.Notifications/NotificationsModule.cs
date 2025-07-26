@@ -13,7 +13,7 @@ public static class NotificationsModule
 {
 	public static IServiceCollection AddNotificationsModuleServices(this IServiceCollection services, IConfiguration config, ILogger logger, List<Assembly> mediatRAssemblies)
 	{
-		string? connectionString = config.GetConnectionString("Database");
+		string connectionString = config.GetConnectionString("Database");
 		services.AddDbContext<NotificationDatabaseContext>(options => options.UseSqlServer(connectionString, _ => _.CommandTimeout(600).EnableRetryOnFailure())
 			.LogTo(_ => Debug.WriteLine(_), LogLevel.Warning));
 

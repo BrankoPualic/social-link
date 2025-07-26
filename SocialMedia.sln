@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialMedia.Notifications",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialMedia.Notifications.Contracts", "SocialMedia.Notifications.Contracts\SocialMedia.Notifications.Contracts.csproj", "{87FC4BFE-9B1E-4901-BA88-EC0A58444015}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Posts", "Posts", "{CCA945CD-E4E8-4FE3-91D6-AFA88A4E413E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialMedia.Posts", "SocialMedia.Posts\SocialMedia.Posts.csproj", "{759717FF-EDD8-4ED5-8BC9-6AE18B35BC93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,10 @@ Global
 		{87FC4BFE-9B1E-4901-BA88-EC0A58444015}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87FC4BFE-9B1E-4901-BA88-EC0A58444015}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87FC4BFE-9B1E-4901-BA88-EC0A58444015}.Release|Any CPU.Build.0 = Release|Any CPU
+		{759717FF-EDD8-4ED5-8BC9-6AE18B35BC93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{759717FF-EDD8-4ED5-8BC9-6AE18B35BC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{759717FF-EDD8-4ED5-8BC9-6AE18B35BC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{759717FF-EDD8-4ED5-8BC9-6AE18B35BC93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +93,8 @@ Global
 		{CF11C822-B203-400F-89D9-6521299328B1} = {163B314F-4A57-46AE-9E8A-ADFF7EB6021A}
 		{4C0E4BFF-8662-499E-89CC-A1AE8BEDA9FC} = {CF11C822-B203-400F-89D9-6521299328B1}
 		{87FC4BFE-9B1E-4901-BA88-EC0A58444015} = {CF11C822-B203-400F-89D9-6521299328B1}
+		{CCA945CD-E4E8-4FE3-91D6-AFA88A4E413E} = {163B314F-4A57-46AE-9E8A-ADFF7EB6021A}
+		{759717FF-EDD8-4ED5-8BC9-6AE18B35BC93} = {CCA945CD-E4E8-4FE3-91D6-AFA88A4E413E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64397CE0-FE19-4458-8417-6364F523CC1B}
