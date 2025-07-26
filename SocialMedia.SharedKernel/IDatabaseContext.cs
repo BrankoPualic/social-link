@@ -7,7 +7,11 @@ public interface IDatabaseContextBase
 {
 	IIdentityUser CurrentUser { get; }
 
-	int SaveChanges();
+	bool HasChanges();
 
-	Task<int> SaveChangesAsync(CancellationToken ct = default);
+	void ClearChanges();
+
+	int SaveChanges(bool audit = true);
+
+	Task<int> SaveChangesAsync(bool audit = true, CancellationToken ct = default);
 }

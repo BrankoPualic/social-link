@@ -31,7 +31,7 @@ internal class SignupCommandHandler(IDatabaseContext db, IUserRepository userRep
 		// Log entry
 		userRepository.CreateLoginLog(model.Id);
 
-		await db.SaveChangesAsync(ct);
+		await db.SaveChangesAsync(true, ct);
 
 		return Result.Success(new TokenDto { Token = authManager.GenerateJwtToken(model) });
 	}

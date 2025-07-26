@@ -18,7 +18,7 @@ internal class UpdateCommandHandler(IDatabaseContext db) : CommandHandler<Update
 
 		data.ToModel(model);
 
-		await db.SaveChangesAsync(ct);
+		await db.SaveChangesAsync(true, ct);
 
 		return Result.NoContent();
 	}

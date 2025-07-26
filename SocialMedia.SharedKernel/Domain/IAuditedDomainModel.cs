@@ -2,11 +2,11 @@
 
 public interface IAuditedDomainModel
 {
-	Guid CreatedBy { get; }
+	Guid CreatedBy { get; set; }
 
-	DateTime CreatedOn { get; }
+	DateTime CreatedOn { get; set; }
 
-	Guid LastChangedBy { get; }
+	Guid LastChangedBy { get; set; }
 
-	DateTime LastChangedOn { get; }
+	DateTime LastChangedOn { get; set; }
 }

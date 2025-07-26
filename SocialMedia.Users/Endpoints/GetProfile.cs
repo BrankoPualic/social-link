@@ -1,23 +1,23 @@
 ﻿using Ardalis.Result;
 using FastEndpoints;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using SocialMedia.Users.Application.Dtos;
 using SocialMedia.Users.Application.UseCases.Queries;
 
 namespace SocialMedia.Users.Endpoints;
 
-[Authorize]
-internal class GetProfile(IMediator mediator) : Endpoint<Guid, UserDto>
+//[Authorize]
+internal class GetProfile(IMediator mediator) : Endpoint<GetProfileRequest, UserDto>
 {
 	public override void Configure()
 	{
-		Get("/users/profile/{userId}");
+		Get("/users/profile/{UserId}");
+		AllowAnonymous();
 	}
 
-	public override async Task HandleAsync(Guid req, CancellationToken ct)
+	public override async Task HandleAsync(GetProfileRequest req, CancellationToken ct)
 	{
-		var result = await mediator.Send(new GetProfileQuery(req), ct);
+		var result = await mediator.Send(new GetProfileQuery(req.UserId), ct);
 
 		if (result.IsOk())
 		{

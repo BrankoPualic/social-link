@@ -1,16 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocialMedia.SharedKernel;
+using SocialMedia.SharedKernel.Data;
 using SocialMedia.Users.Domain;
 
 namespace SocialMedia.Users.Data;
 
-internal sealed class UserDatabaseContext : DbContext, IDatabaseContext
+internal sealed class UserDatabaseContext : AppDatabaseContext, IDatabaseContext
 {
-	public IIdentityUser CurrentUser { get; private set; }
+	public UserDatabaseContext(IIdentityUser currentUser) : base(currentUser)
+	{ }
 
-	public UserDatabaseContext(IIdentityUser currentUser) => CurrentUser = currentUser;
-
-	public UserDatabaseContext(DbContextOptions options, IIdentityUser currentUser) : base(options) => CurrentUser = currentUser;
+	public UserDatabaseContext(DbContextOptions options, IIdentityUser currentUser) : base(options, currentUser)
+	{ }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -23,10 +24,6 @@ internal sealed class UserDatabaseContext : DbContext, IDatabaseContext
 			entity.SetTableName(entity.DisplayName());
 		}
 	}
-
-	public new void SaveChanges() => base.SaveChanges();
-
-	public new async Task<int> SaveChangesAsync(CancellationToken ct = default) => await base.SaveChangesAsync(ct);
 
 	#region DbSets
 
