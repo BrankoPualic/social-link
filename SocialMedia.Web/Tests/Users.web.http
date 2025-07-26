@@ -26,3 +26,11 @@ Authorization: Bearer {{SocialMedia.AccessToken}}
 {}
 
 ###
+
+POST {{SocialMedia.Web_HostAddress}}/update
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{}
+
+###

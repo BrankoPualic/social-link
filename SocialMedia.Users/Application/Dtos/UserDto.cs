@@ -28,4 +28,13 @@ internal class UserDto
 		GenderId = _.GenderId,
 		IsPrivate = _.IsPrivate,
 	};
+
+	public void ToModel(User model)
+	{
+		model.Username = Username;
+		model.FirstName = FirstName;
+		model.LastName = LastName;
+		model.GenderId = GenderId;
+		model.IsPrivate = IsPrivate;
+	}
 }
