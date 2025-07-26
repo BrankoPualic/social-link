@@ -17,7 +17,7 @@ public static class UsersModule
 		string? connectionString = config.GetConnectionString("Database");
 		services.AddDbContext<UserDatabaseContext>(options => options.UseSqlServer(connectionString));
 
-		services.AddScoped<IDatabaseContext, UserDatabaseContext>();
+		services.AddScoped<IUserDatabaseContext, UserDatabaseContext>();
 
 		services.AddScoped<IAuthManager, AuthManager>();
 		services.AddScoped<IUserRepository, UserRepository>();

@@ -9,7 +9,7 @@ namespace SocialMedia.Users.Application.UseCases.Commands;
 
 internal sealed record SignupCommand(SignupDto Data) : Command<TokenDto>;
 
-internal class SignupCommandHandler(IDatabaseContext db, IUserRepository userRepository, IAuthManager authManager) : CommandHandler<SignupCommand, TokenDto>(db)
+internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IAuthManager authManager) : CommandHandler<SignupCommand, TokenDto>(db)
 {
 	public override async Task<Result<TokenDto>> Handle(SignupCommand req, CancellationToken ct)
 	{

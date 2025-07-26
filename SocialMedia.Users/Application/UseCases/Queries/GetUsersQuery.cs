@@ -9,7 +9,7 @@ namespace SocialMedia.Users.Application.UseCases.Queries;
 
 internal sealed record GetUsersQuery(UserSearch Search) : Query<PagedResponse<UserDto>>;
 
-internal class GetUsersQueryHandler(IDatabaseContext db) : QueryHandler<GetUsersQuery, PagedResponse<UserDto>>(db)
+internal class GetUsersQueryHandler(IUserDatabaseContext db) : QueryHandler<GetUsersQuery, PagedResponse<UserDto>>(db)
 {
 	public override async Task<Result<PagedResponse<UserDto>>> Handle(GetUsersQuery req, CancellationToken ct)
 	{

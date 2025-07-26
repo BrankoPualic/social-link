@@ -96,6 +96,24 @@ namespace SocialMedia.Users.Migrations
                     b.ToTable("User", "user");
                 });
 
+            modelBuilder.Entity("SocialMedia.Users.Domain.UserFollow", b =>
+                {
+                    b.Property<Guid>("FollowerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FollowingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("FollowDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("FollowerId", "FollowingId");
+
+                    b.HasIndex("FollowingId");
+
+                    b.ToTable("UserFollow", "user");
+                });
+
             modelBuilder.Entity("SocialMedia.Users.Domain.UserLogin", b =>
                 {
                     b.Property<Guid>("Id")
@@ -128,6 +146,25 @@ namespace SocialMedia.Users.Migrations
                     b.ToTable("UserRole", "user");
                 });
 
+            modelBuilder.Entity("SocialMedia.Users.Domain.UserFollow", b =>
+                {
+                    b.HasOne("SocialMedia.Users.Domain.User", "Follower")
+                        .WithMany("Following")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SocialMedia.Users.Domain.User", "Following")
+                        .WithMany("Followers")
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Following");
+                });
+
             modelBuilder.Entity("SocialMedia.Users.Domain.UserLogin", b =>
                 {
                     b.HasOne("SocialMedia.Users.Domain.User", "User")
@@ -152,6 +189,10 @@ namespace SocialMedia.Users.Migrations
 
             modelBuilder.Entity("SocialMedia.Users.Domain.User", b =>
                 {
+                    b.Navigation("Followers");
+
+                    b.Navigation("Following");
+
                     b.Navigation("Logins");
 
                     b.Navigation("Roles");

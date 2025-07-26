@@ -3,7 +3,7 @@ using SocialMedia.Users.Domain;
 
 namespace SocialMedia.Users.Data;
 
-internal class UserRepository(IDatabaseContext db) : IUserRepository
+internal class UserRepository(IUserDatabaseContext db) : IUserRepository
 {
 	public Task<User> GetByEmailAsync(string email) =>
 		db.Users

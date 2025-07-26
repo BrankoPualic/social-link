@@ -4,11 +4,13 @@ using SocialMedia.Users.Domain;
 
 namespace SocialMedia.Users;
 
-internal interface IDatabaseContext : IAppDatabaseContext
+internal interface IUserDatabaseContext : IAppDatabaseContext
 {
 	DbSet<User> Users { get; }
 
 	DbSet<UserRole> UserRoles { get; }
 
 	DbSet<UserLogin> Logins { get; }
+
+	DbSet<UserFollow> Follows { get; }
 }

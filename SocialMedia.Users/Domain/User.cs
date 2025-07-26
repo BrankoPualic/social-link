@@ -29,4 +29,8 @@ internal class User : AuditedDomainModel<Guid>
 	public virtual ICollection<UserRole> Roles { get; set; } = [];
 
 	public virtual ICollection<UserLogin> Logins { get; set; } = [];
+
+	public virtual ICollection<UserFollow> Following { get; set; } = [];
+
+	public virtual ICollection<UserFollow> Followers { get; set; } = [];
 }

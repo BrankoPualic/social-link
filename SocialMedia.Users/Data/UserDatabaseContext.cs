@@ -5,7 +5,7 @@ using SocialMedia.Users.Domain;
 
 namespace SocialMedia.Users.Data;
 
-internal sealed class UserDatabaseContext : AppDatabaseContext, IDatabaseContext
+internal sealed class UserDatabaseContext : AppDatabaseContext, IUserDatabaseContext
 {
 	public UserDatabaseContext(IIdentityUser currentUser) : base(currentUser)
 	{ }
@@ -32,6 +32,8 @@ internal sealed class UserDatabaseContext : AppDatabaseContext, IDatabaseContext
 	public DbSet<UserRole> UserRoles { get; set; }
 
 	public DbSet<UserLogin> Logins { get; set; }
+
+	public DbSet<UserFollow> Follows { get; set; }
 
 	#endregion DbSets
 }

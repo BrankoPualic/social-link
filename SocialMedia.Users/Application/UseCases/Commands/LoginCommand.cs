@@ -7,7 +7,7 @@ using SocialMedia.Users.Domain;
 namespace SocialMedia.Users.Application.UseCases.Commands;
 internal sealed record LoginCommand(LoginDto Data) : Command<TokenDto>;
 
-internal class LoginCommandHandler(IDatabaseContext db, IUserRepository userRepository, IAuthManager authManager) : CommandHandler<LoginCommand, TokenDto>(db)
+internal class LoginCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IAuthManager authManager) : CommandHandler<LoginCommand, TokenDto>(db)
 {
 	public override async Task<Result<TokenDto>> Handle(LoginCommand req, CancellationToken ct)
 	{

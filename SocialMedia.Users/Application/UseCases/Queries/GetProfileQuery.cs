@@ -6,7 +6,7 @@ using SocialMedia.Users.Application.Dtos;
 namespace SocialMedia.Users.Application.UseCases.Queries;
 internal sealed record GetProfileQuery(Guid UserId) : Query<UserDto>;
 
-internal class GetProfileQueryHandler(IDatabaseContext db) : QueryHandler<GetProfileQuery, UserDto>(db)
+internal class GetProfileQueryHandler(IUserDatabaseContext db) : QueryHandler<GetProfileQuery, UserDto>(db)
 {
 	public override async Task<Result<UserDto>> Handle(GetProfileQuery req, CancellationToken ct)
 	{
