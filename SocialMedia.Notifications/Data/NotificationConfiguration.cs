@@ -17,5 +17,8 @@ internal class NotificationConfiguration : BaseDomainModelConfiguration<Notifica
 		builder.Property(_ => _.UserId)
 			.IsRequired();
 		builder.HasIndex(_ => _.UserId);
+
+		builder.HasIndex(_ => _.IsRead);
+		builder.HasIndex(_ => _.IsSent);
 	}
 }

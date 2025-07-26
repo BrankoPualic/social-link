@@ -57,6 +57,10 @@ namespace SocialMedia.Notifications.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsRead");
+
+                    b.HasIndex("IsSent");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Notification", "notification");
