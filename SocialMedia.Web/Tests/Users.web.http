@@ -34,3 +34,34 @@ Authorization: Bearer {{SocialMedia.AccessToken}}
 {}
 
 ###
+
+POST {{SocialMedia.Web_HostAddress}}/follow
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}
+
+###
+
+POST {{SocialMedia.Web_HostAddress}}/unfollow
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}
+
+###
+
+POST {{SocialMedia.Web_HostAddress}}/checkFollowStatus
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}
