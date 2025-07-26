@@ -21,8 +21,8 @@ internal class SignupValidator : Validator<SignupDto>
 			.NotEmpty()
 			.NotNull()
 			.WithMessage(ResourcesValidation.Required(nameof(User.LastName)))
-			.MaximumLength(30)
-			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.LastName), 30));
+			.MaximumLength(50)
+			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.LastName), 50));
 
 		RuleFor(_ => _.Username)
 			.NotEmpty()

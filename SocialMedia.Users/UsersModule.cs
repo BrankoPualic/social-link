@@ -15,9 +15,9 @@ public static class UsersModule
 	public static IServiceCollection AddUsersModuleServices(this IServiceCollection services, IConfiguration config, ILogger logger, List<Assembly> mediatRAssemblies)
 	{
 		string? connectionString = config.GetConnectionString("Database");
-		services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
+		services.AddDbContext<UserDatabaseContext>(options => options.UseSqlServer(connectionString));
 
-		services.AddScoped<IDatabaseContext, UserDbContext>();
+		services.AddScoped<IDatabaseContext, UserDatabaseContext>();
 
 		services.AddScoped<IAuthManager, AuthManager>();
 		services.AddScoped<IUserRepository, UserRepository>();

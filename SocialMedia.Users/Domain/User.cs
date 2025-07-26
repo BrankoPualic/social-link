@@ -1,5 +1,4 @@
 ﻿using SocialMedia.SharedKernel.Domain;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SocialMedia.Users.Domain;
 
@@ -9,8 +8,7 @@ internal class User : AuditedDomainModel<Guid>
 
 	public string LastName { get; set; }
 
-	[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-	public string FullName { get; private set; }
+	public string FullName { get; set; }
 
 	public string Username { get; set; }
 
@@ -20,12 +18,15 @@ internal class User : AuditedDomainModel<Guid>
 
 	public eGender GenderId { get; set; }
 
+	public DateTime? DateOfBirth { get; set; }
+
 	public bool IsPrivate { get; set; }
 
 	public bool IsActive { get; set; }
 
 	public bool IsLocked { get; set; }
 
-	[InverseProperty(nameof(UserRole.User))]
 	public virtual ICollection<UserRole> Roles { get; set; } = [];
+
+	public virtual ICollection<UserLogin> Logins { get; set; } = [];
 }
