@@ -2,6 +2,7 @@ using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
 using Serilog;
+using SocialMedia.Notifications;
 using SocialMedia.SharedKernel;
 using SocialMedia.Users;
 using SocialMedia.Web.Objects;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IIdentityUser, IdentityUser>();
 // Add Module Services
 List<Assembly> mediatRAssemblies = [typeof(Program).Assembly];
 builder.Services.AddUsersModuleServices(builder.Configuration, logger, mediatRAssemblies);
+builder.Services.AddNotificationsModuleServices(builder.Configuration, logger, mediatRAssemblies);
 
 // Set up MediatR
 builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblies(mediatRAssemblies.ToArray()));

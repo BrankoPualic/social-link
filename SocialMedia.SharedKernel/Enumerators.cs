@@ -13,3 +13,15 @@ public enum eSystemRole
 	[Description("Member")]
 	Member = 2,
 }
+
+public enum eNotificationType
+{
+	[Description("")]
+	NotSet = 0,
+
+	[Description("Follow Request")]
+	FollowRequest = 10,
+
+	[Description("Follow Accepted")]
+	FollowAccepted = 20
+}

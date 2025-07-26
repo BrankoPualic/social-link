@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using SocialMedia.Users.Application.Interfaces;
 using SocialMedia.Users.Application.Services;
 using SocialMedia.Users.Data;
 using SocialMedia.Users.Domain;
+using System.Diagnostics;
 using System.Reflection;
+using ILogger = Serilog.ILogger;
 
 namespace SocialMedia.Users;
 
@@ -15,7 +17,8 @@ public static class UsersModule
 	public static IServiceCollection AddUsersModuleServices(this IServiceCollection services, IConfiguration config, ILogger logger, List<Assembly> mediatRAssemblies)
 	{
 		string? connectionString = config.GetConnectionString("Database");
-		services.AddDbContext<UserDatabaseContext>(options => options.UseSqlServer(connectionString));
+		services.AddDbContext<UserDatabaseContext>(options => options.UseSqlServer(connectionString, _ => _.CommandTimeout(600).EnableRetryOnFailure())
+			.LogTo(_ => Debug.WriteLine(_), LogLevel.Warning));
 
 		services.AddScoped<IUserDatabaseContext, UserDatabaseContext>();
 
