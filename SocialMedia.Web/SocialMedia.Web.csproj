@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastEndpoints" Version="7.0.0" />
-    <PackageReference Include="FastEndpoints.Security" Version="7.0.0" />
-    <PackageReference Include="FastEndpoints.Swagger" Version="7.0.0" />
+    <PackageReference Include="FastEndpoints" Version="7.0.1" />
+    <PackageReference Include="FastEndpoints.Security" Version="7.0.1" />
+    <PackageReference Include="FastEndpoints.Swagger" Version="7.0.1" />
     <PackageReference Include="MediatR" Version="13.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
       <PrivateAssets>all</PrivateAssets>

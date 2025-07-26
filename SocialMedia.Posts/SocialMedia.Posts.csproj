@@ -22,4 +22,11 @@
     <ProjectReference Include="..\SocialMedia.SharedKernel\SocialMedia.SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Dtos\" />
+    <Folder Include="Application\UseCases\Commands\" />
+    <Folder Include="Application\UseCases\Queries\" />
+    <Folder Include="Endpoints\" />
+  </ItemGroup>
+
 </Project>
