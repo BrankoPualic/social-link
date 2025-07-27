@@ -3,7 +3,7 @@ using SocialMedia.SharedKernel.Domain;
 
 namespace SocialMedia.Notifications.Domain;
 
-internal class Notification : DomainModel<Guid>
+internal class Notification : MongoDomainModel<Guid>
 {
 	public Guid UserId { get; set; }
 

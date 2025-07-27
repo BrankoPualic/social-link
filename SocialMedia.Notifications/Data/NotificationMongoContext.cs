@@ -12,7 +12,28 @@ internal sealed class NotificationMongoContext : INotificationMongoContext
 	{
 		string databaseName = config.GetSection("MongoDatabases")["Notifications"];
 		_db = client.GetDatabase(databaseName);
+
+		EnsureIndexes();
 	}
 
 	public IMongoCollection<Notification> Notifications => _db.GetCollection<Notification>("Notifications");
+
+	// private
+
+	private void EnsureIndexes()
+	{
+		var createdOnIndex = Builders<Notification>.IndexKeys.Ascending(_ => _.CreatedOn);
+		var isReadIndex = Builders<Notification>.IndexKeys.Ascending(_ => _.IsRead);
+		var userQueryIndex = Builders<Notification>.IndexKeys
+			.Ascending(_ => _.UserId)
+			.Ascending(_ => _.IsRead);
+
+		var indexes = new List<CreateIndexModel<Notification>>(){
+			new(createdOnIndex),
+			new(isReadIndex),
+			new(userQueryIndex),
+		};
+
+		Notifications.Indexes.CreateMany(indexes);
+	}
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using SocialMedia.Notifications.Application.ScheduledTasks;
 using SocialMedia.Notifications.Data;
 using System.Reflection;
 using ILogger = Serilog.ILogger;
@@ -27,6 +28,9 @@ public static class NotificationsModule
 		services.AddSingleton<IMongoHealthChecker, MongoHealthChecker>();
 
 		services.AddScoped<INotificationMongoContext, NotificationMongoContext>();
+
+		services.AddHostedService<OldNotificationsCleanupScheduleTask>();
+		services.AddHostedService<ReadNotificationsCleanupScheduleTask>();
 
 		mediatRAssemblies.Add(typeof(NotificationsModule).Assembly);
 
