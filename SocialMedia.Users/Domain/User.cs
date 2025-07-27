@@ -33,4 +33,6 @@ internal class User : AuditedDomainModel<Guid>
 	public virtual ICollection<UserFollow> Following { get; set; } = [];
 
 	public virtual ICollection<UserFollow> Followers { get; set; } = [];
+
+	public virtual ICollection<NotificationPreference> NotificationPreferences { get; set; } = [];
 }

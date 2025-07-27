@@ -35,5 +35,7 @@ internal sealed class UserDatabaseContext : EFDatabaseContext, IUserDatabaseCont
 
 	public DbSet<UserFollow> Follows { get; set; }
 
+	public DbSet<NotificationPreference> NotificationPreferences { get; set; }
+
 	#endregion DbSets
 }

@@ -13,4 +13,6 @@ internal interface IUserDatabaseContext : IEFDatabaseContext
 	DbSet<UserLogin> Logins { get; }
 
 	DbSet<UserFollow> Follows { get; }
+
+	DbSet<NotificationPreference> NotificationPreferences { get; }
 }

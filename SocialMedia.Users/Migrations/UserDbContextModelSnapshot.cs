@@ -23,6 +23,28 @@ namespace SocialMedia.Users.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("SocialMedia.Users.Domain.NotificationPreference", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsMuted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NotificationTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("NotificationPreference", "user");
+                });
+
             modelBuilder.Entity("SocialMedia.Users.Domain.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -149,6 +171,17 @@ namespace SocialMedia.Users.Migrations
                     b.ToTable("UserRole", "user");
                 });
 
+            modelBuilder.Entity("SocialMedia.Users.Domain.NotificationPreference", b =>
+                {
+                    b.HasOne("SocialMedia.Users.Domain.User", "User")
+                        .WithMany("NotificationPreferences")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SocialMedia.Users.Domain.UserFollow", b =>
                 {
                     b.HasOne("SocialMedia.Users.Domain.User", "Follower")
@@ -197,6 +230,8 @@ namespace SocialMedia.Users.Migrations
                     b.Navigation("Following");
 
                     b.Navigation("Logins");
+
+                    b.Navigation("NotificationPreferences");
 
                     b.Navigation("Roles");
                 });
