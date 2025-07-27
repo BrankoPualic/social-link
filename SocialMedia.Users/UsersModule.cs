@@ -24,6 +24,7 @@ public static class UsersModule
 
 		services.AddScoped<IAuthManager, AuthManager>();
 		services.AddScoped<IUserRepository, UserRepository>();
+		services.AddScoped<INotificationService, NotificationService>();
 
 		mediatRAssemblies.Add(typeof(UsersModule).Assembly);
 

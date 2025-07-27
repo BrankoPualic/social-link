@@ -1,22 +1,22 @@
 ﻿using Ardalis.Result;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SocialMedia.Notifications.Contracts;
-using SocialMedia.Notifications.Contracts.Details;
 using SocialMedia.SharedKernel.UseCases;
 using SocialMedia.Users.Application.Dtos;
+using SocialMedia.Users.Application.Interfaces;
 
 namespace SocialMedia.Users.Application.UseCases.Commands;
 
 internal sealed record AcceptFollowCommand(FollowDto Data) : Command;
 
-internal class AcceptFollowCommandHandler(IUserDatabaseContext db, IMediator mediator) : EFCommandHandler<AcceptFollowCommand>(db)
+internal class AcceptFollowCommandHandler(IUserDatabaseContext db, INotificationService notificationService) : EFCommandHandler<AcceptFollowCommand>(db)
 {
 	public override async Task<Result> Handle(AcceptFollowCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
 		var follow = await db.Follows
+			.Include(_ => _.Follower)
+				.ThenInclude(_ => _.NotificationPreferences)
 			.Include(_ => _.Following)
 			.Where(_ => _.FollowerId == data.FollowerId)
 			.Where(_ => _.FollowingId == data.FollowingId)
@@ -28,12 +28,7 @@ internal class AcceptFollowCommandHandler(IUserDatabaseContext db, IMediator med
 		follow.IsPending = false;
 		await db.SaveChangesAsync(false, ct);
 
-		await mediator.Send(new CreateNotificationCommand(new FollowAcceptedDetails
-		{
-			UserId = follow.FollowerId,
-			FollowingId = follow.FollowingId,
-			FollowingName = follow.Following.Username,
-		}), ct);
+		await notificationService.SendFollowAcceptedAsync(follow, ct);
 
 		return Result.NoContent();
 	}

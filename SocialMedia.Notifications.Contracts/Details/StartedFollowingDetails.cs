@@ -8,7 +8,7 @@ public class StartFollowingDetails : NotificationDetails
 
 	public string FollowerName { get; set; }
 
-	public override eNotificationType NotificationTypeId => eNotificationType.StartedFollowing;
+	public override eNotificationType NotificationTypeId => eNotificationType.StartFollowing;
 
 	public override string Message
 	{

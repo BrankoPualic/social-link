@@ -1,4 +1,6 @@
-﻿using SocialMedia.SharedKernel.Domain;
+﻿using Ardalis.GuardClauses;
+using SocialMedia.SharedKernel;
+using SocialMedia.SharedKernel.Domain;
 
 namespace SocialMedia.Users.Domain;
 
@@ -35,4 +37,13 @@ internal class User : AuditedDomainModel<Guid>
 	public virtual ICollection<UserFollow> Followers { get; set; } = [];
 
 	public virtual ICollection<NotificationPreference> NotificationPreferences { get; set; } = [];
+
+	public bool IsPublic => !IsPrivate;
+
+	public bool IsMuted(eNotificationType notificationType)
+	{
+		Guard.Against.NullOrEmpty(NotificationPreferences, nameof(NotificationPreference));
+
+		return NotificationPreferences.Any(_ => _.NotificationTypeId == notificationType && _.IsMuted);
+	}
 }
