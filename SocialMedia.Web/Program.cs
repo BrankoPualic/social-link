@@ -1,3 +1,4 @@
+using Azure.Identity;
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
@@ -21,6 +22,11 @@ logger.Information("Starting web host");
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Configuration));
+
+builder.Configuration.AddAzureKeyVault(
+	new Uri($"https://socialmedia-secrets.vault.azure.net/"),
+	new DefaultAzureCredential()
+);
 
 builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
 

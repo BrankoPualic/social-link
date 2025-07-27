@@ -12,7 +12,7 @@ public static class NotificationsModule
 	public static IServiceCollection AddNotificationsModuleServices(this IServiceCollection services, IConfiguration config, ILogger logger, List<Assembly> mediatRAssemblies)
 	{
 		// MongoDb
-		string connectionString = config.GetConnectionString("MongoDatabase");
+		string connectionString = config["MongoDBConnectionString"];
 		services.AddSingleton<IMongoClient>(_ =>
 		{
 			var settings = MongoClientSettings.FromConnectionString(connectionString);
