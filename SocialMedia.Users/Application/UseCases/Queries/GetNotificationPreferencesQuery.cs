@@ -13,10 +13,11 @@ internal class GetNotificationPreferencesQueryHandler(IUserDatabaseContext db) :
 	{
 		var userId = req.UserId;
 
-		var result = await db.NotificationPreferences
+		var result = (await db.NotificationPreferences
 			.Where(_ => _.UserId == userId)
-			.Select(NotificationPreferenceDto.Projection)
-			.ToListAsync(ct);
+			.ToListAsync(ct))
+			.Select(NotificationPreferenceDto.InMemoryProjection)
+			.ToList();
 
 		return Result.Success(result);
 	}

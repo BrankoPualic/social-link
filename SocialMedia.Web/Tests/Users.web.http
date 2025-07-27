@@ -104,3 +104,9 @@ Authorization: Bearer {{SocialMedia.AccessToken}}
 {
     "Preferences": "[]"
 }
+
+###
+
+GET {{SocialMedia.Web_HostAddress}}/possibleNotificationPreferences
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}

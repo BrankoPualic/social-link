@@ -1,6 +1,5 @@
 ﻿using SocialMedia.SharedKernel;
 using SocialMedia.Users.Domain;
-using System.Linq.Expressions;
 
 namespace SocialMedia.Users.Application.Dtos;
 
@@ -12,13 +11,16 @@ internal class NotificationPreferenceDto
 
 	public eNotificationType NotificationTypeId { get; set; }
 
+	public string Name { get; set; }
+
 	public bool IsMuted { get; set; }
 
-	public static Expression<Func<NotificationPreference, NotificationPreferenceDto>> Projection => _ => new()
+	public static Func<NotificationPreference, NotificationPreferenceDto> InMemoryProjection => _ => new()
 	{
 		Id = _.Id,
 		UserId = _.UserId,
 		NotificationTypeId = _.NotificationTypeId,
+		Name = _.NotificationTypeId.GetDescription(),
 		IsMuted = _.IsMuted,
 	};
 
