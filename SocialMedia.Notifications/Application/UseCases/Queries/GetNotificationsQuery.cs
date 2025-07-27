@@ -15,9 +15,7 @@ internal class GetNotificationsQueryHandler(INotificationMongoContext db) : Mong
 		var search = req.Search;
 
 		var builder = Builders<Notification>.Filter;
-		var filter = builder.Eq(_ => _.UserId, search.UserId) & builder.Eq(_ => _.IsRead, false);
-		// NOTE: this could be if we add 3rd party service for mobile app notifications or something, or email notifications
-		// & builder.Eq(_ => _.IsSent, true)
+		var filter = builder.Eq(_ => _.UserId, search.UserId);
 
 		var result = await db.Notifications.MongoSearchAsync(
 			search,
