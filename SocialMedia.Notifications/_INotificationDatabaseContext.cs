@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MongoDB.Driver;
 using SocialMedia.Notifications.Domain;
-using SocialMedia.SharedKernel;
 
 namespace SocialMedia.Notifications;
 
-internal interface INotificationDatabaseContext : IAppDatabaseContext
+internal interface INotificationMongoContext
 {
-	DbSet<Notification> Notifications { get; }
+	IMongoCollection<Notification> Notifications { get; }
 }

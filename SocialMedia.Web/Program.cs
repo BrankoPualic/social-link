@@ -41,6 +41,15 @@ builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblies(mediatRAssembl
 
 var app = builder.Build();
 
+// Check third party services connection
+using (var scope = app.Services.CreateScope())
+{
+	var config = scope.ServiceProvider.GetService<IConfiguration>();
+	var mongoChecker = scope.ServiceProvider.GetRequiredService<IMongoHealthChecker>();
+
+	_ = mongoChecker.CheckAsync(config, logger);
+}
+
 app.UseAuthentication()
 	.UseAuthorization()
 	.UseFastEndpoints()
