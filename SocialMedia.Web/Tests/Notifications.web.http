@@ -6,4 +6,6 @@ Accept: application/json
 Content-Type: application/json
 Authorize: Bearer {{SocialMedia.AccessToken}}
 
-{}
+{
+    "UserId": "00000000-0000-0000-0000-000000000001"
+}

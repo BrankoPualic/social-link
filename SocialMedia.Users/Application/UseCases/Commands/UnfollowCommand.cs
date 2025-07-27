@@ -7,7 +7,7 @@ namespace SocialMedia.Users.Application.UseCases.Commands;
 
 internal sealed record UnfollowCommand(FollowDto Data) : Command;
 
-internal class UnfollowCommandHandler(IUserDatabaseContext db) : CommandHandler<UnfollowCommand>(db)
+internal class UnfollowCommandHandler(IUserDatabaseContext db) : EFCommandHandler<UnfollowCommand>(db)
 {
 	public override async Task<Result> Handle(UnfollowCommand req, CancellationToken ct)
 	{

@@ -5,7 +5,7 @@ using SocialMedia.SharedKernel.Data;
 
 namespace SocialMedia.Posts.Data;
 
-internal sealed class PostDatabaseContext : AppDatabaseContext, IPostDatabaseContext
+internal sealed class PostDatabaseContext : EFDatabaseContext, IPostDatabaseContext
 {
 	public PostDatabaseContext(IIdentityUser currentUser) : base(currentUser)
 	{ }

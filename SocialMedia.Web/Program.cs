@@ -1,6 +1,8 @@
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using Serilog;
 using SocialMedia.Notifications;
 using SocialMedia.Posts;
@@ -49,6 +51,8 @@ using (var scope = app.Services.CreateScope())
 
 	_ = mongoChecker.CheckAsync(config, logger);
 }
+
+BsonSerializer.RegisterSerializer(new GuidSerializer(MongoDB.Bson.GuidRepresentation.Standard));
 
 app.UseAuthentication()
 	.UseAuthorization()

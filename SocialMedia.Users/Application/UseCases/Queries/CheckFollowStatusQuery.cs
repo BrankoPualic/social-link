@@ -7,7 +7,7 @@ namespace SocialMedia.Users.Application.UseCases.Queries;
 
 internal sealed record CheckFollowStatusQuery(FollowDto Data) : Query<bool>;
 
-internal class CheckFollowStatusQueryHandler(IUserDatabaseContext db) : QueryHandler<CheckFollowStatusQuery, bool>(db)
+internal class CheckFollowStatusQueryHandler(IUserDatabaseContext db) : EFQueryHandler<CheckFollowStatusQuery, bool>(db)
 {
 	public override async Task<Result<bool>> Handle(CheckFollowStatusQuery req, CancellationToken ct)
 	{

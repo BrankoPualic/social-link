@@ -1,6 +1,9 @@
 ﻿namespace SocialMedia.SharedKernel.UseCases;
 
-public abstract class UseCase(IAppDatabaseContext db)
+public abstract class EFUseCase(IEFDatabaseContext db)
 {
 	public IIdentityUser CurrentUser => db.CurrentUser;
 }
+
+public abstract class MongoUseCase
+{ }

@@ -9,7 +9,7 @@ namespace SocialMedia.Users.Application.UseCases.Queries;
 
 internal sealed record GetUsersQuery(UserSearch Search) : Query<PagedResponse<UserDto>>;
 
-internal class GetUsersQueryHandler(IUserDatabaseContext db) : QueryHandler<GetUsersQuery, PagedResponse<UserDto>>(db)
+internal class GetUsersQueryHandler(IUserDatabaseContext db) : EFQueryHandler<GetUsersQuery, PagedResponse<UserDto>>(db)
 {
 	public override async Task<Result<PagedResponse<UserDto>>> Handle(GetUsersQuery req, CancellationToken ct)
 	{
@@ -25,7 +25,7 @@ internal class GetUsersQueryHandler(IUserDatabaseContext db) : QueryHandler<GetU
 		if (!string.IsNullOrWhiteSpace(search.Keyword))
 			filters.Add(_ => _.Username.Contains(search.Keyword));
 
-		var result = await db.Users.SearchAsync(
+		var result = await db.Users.EFSearchAsync(
 			search,
 			_ => _.Username,
 			true,

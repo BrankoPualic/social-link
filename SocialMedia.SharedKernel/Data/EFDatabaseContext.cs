@@ -3,13 +3,13 @@ using SocialMedia.SharedKernel.Domain;
 
 namespace SocialMedia.SharedKernel.Data;
 
-public class AppDatabaseContext : DbContext, IAppDatabaseContext
+public class EFDatabaseContext : DbContext, IEFDatabaseContext
 {
 	public IIdentityUser CurrentUser { get; private set; }
 
-	public AppDatabaseContext(IIdentityUser currentUser) => CurrentUser = currentUser;
+	public EFDatabaseContext(IIdentityUser currentUser) => CurrentUser = currentUser;
 
-	public AppDatabaseContext(DbContextOptions options, IIdentityUser currentUser) : base(options) => CurrentUser = currentUser;
+	public EFDatabaseContext(DbContextOptions options, IIdentityUser currentUser) : base(options) => CurrentUser = currentUser;
 
 	public bool HasChanges() => ChangeTracker.HasChanges();
 

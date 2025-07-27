@@ -16,7 +16,7 @@ public class MongoHealthChecker(IMongoClient client) : IMongoHealthChecker
 	{
 		try
 		{
-			var database = config.GetSection("MongoDatabase")["Name"];
+			var database = config.GetSection("MongoDatabases")["Notifications"];
 			await client.GetDatabase(database).RunCommandAsync<BsonDocument>(new BsonDocument("ping", 1));
 			logger.Information("Pinged your deployment. You Successfully connected to {Database} MongoDB!", database);
 		}

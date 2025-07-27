@@ -11,7 +11,7 @@ namespace SocialMedia.Users.Application.UseCases.Commands;
 
 internal sealed record FollowCommand(FollowDto Data) : Command;
 
-internal class FollowCommandHandler(IUserDatabaseContext db, IMediator mediator) : CommandHandler<FollowCommand>(db)
+internal class FollowCommandHandler(IUserDatabaseContext db, IMediator mediator) : EFCommandHandler<FollowCommand>(db)
 {
 	public override async Task<Result> Handle(FollowCommand req, CancellationToken ct)
 	{

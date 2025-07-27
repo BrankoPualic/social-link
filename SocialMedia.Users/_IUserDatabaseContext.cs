@@ -4,7 +4,7 @@ using SocialMedia.Users.Domain;
 
 namespace SocialMedia.Users;
 
-internal interface IUserDatabaseContext : IAppDatabaseContext
+internal interface IUserDatabaseContext : IEFDatabaseContext
 {
 	DbSet<User> Users { get; }
 

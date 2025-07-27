@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using MongoDB.Driver;
 using SocialMedia.SharedKernel.Domain;
 using System.Linq.Expressions;
 
@@ -25,7 +26,7 @@ public static class Extensions
 	// Data access extensions
 
 	// TODO: Investigate PagedResult<T> from Ardalis.Result library
-	public static async Task<PagedResponse<TResponse>> SearchAsync<TResponse, TProperty, TModel>(
+	public static async Task<PagedResponse<TResponse>> EFSearchAsync<TResponse, TProperty, TModel>(
 		this DbSet<TModel> dbSet,
 		PagedSearch search,
 		Expression<Func<TModel, TProperty>> defaultOrder,
@@ -54,7 +55,41 @@ public static class Extensions
 			TotalCount = total,
 			CurrentPage = search.Page,
 			PageSize = search.PageSize,
-			Items = await query.Select(projection).ToListAsync()
+			Items = await query.Select(projection).ToListAsync(ct)
+		};
+	}
+
+	public static async Task<PagedResponse<TResponse>> MongoSearchAsync<TModel, TResponse>(
+		this IMongoCollection<TModel> collection,
+		PagedSearch search,
+		Expression<Func<TModel, object>> defaultOrder,
+		bool desc,
+		Expression<Func<TModel, TResponse>> projection,
+		FilterDefinition<TModel> filter,
+		CancellationToken ct
+	)
+		where TModel : class
+	{
+		var total = await collection.CountDocumentsAsync(filter, cancellationToken: ct);
+
+		var sort = desc
+			? Builders<TModel>.Sort.Descending(defaultOrder)
+			: Builders<TModel>.Sort.Ascending(defaultOrder);
+
+		var items = await collection
+			.Find(filter)
+			.Sort(sort)
+			.Skip((search.Page - 1) * search.PageSize)
+			.Limit(search.PageSize)
+			.Project(projection)
+			.ToListAsync(ct);
+
+		return new PagedResponse<TResponse>
+		{
+			TotalCount = total,
+			CurrentPage = search.Page,
+			PageSize = search.PageSize,
+			Items = items
 		};
 	}
 }

@@ -4,7 +4,7 @@ using SocialMedia.SharedKernel;
 
 namespace SocialMedia.Posts;
 
-internal interface IPostDatabaseContext : IAppDatabaseContext
+internal interface IPostDatabaseContext : IEFDatabaseContext
 {
 	DbSet<Post> Posts { get; }
 

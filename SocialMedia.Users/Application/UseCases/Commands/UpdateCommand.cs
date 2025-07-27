@@ -6,7 +6,7 @@ namespace SocialMedia.Users.Application.UseCases.Commands;
 
 internal sealed record UpdateCommand(UserDto Data) : Command;
 
-internal class UpdateCommandHandler(IUserDatabaseContext db) : CommandHandler<UpdateCommand>(db)
+internal class UpdateCommandHandler(IUserDatabaseContext db) : EFCommandHandler<UpdateCommand>(db)
 {
 	public override async Task<Result> Handle(UpdateCommand req, CancellationToken ct)
 	{

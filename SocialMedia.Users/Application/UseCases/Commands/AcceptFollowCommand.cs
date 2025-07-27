@@ -10,7 +10,7 @@ namespace SocialMedia.Users.Application.UseCases.Commands;
 
 internal sealed record AcceptFollowCommand(FollowDto Data) : Command;
 
-internal class AcceptFollowCommandHandler(IUserDatabaseContext db, IMediator mediator) : CommandHandler<AcceptFollowCommand>(db)
+internal class AcceptFollowCommandHandler(IUserDatabaseContext db, IMediator mediator) : EFCommandHandler<AcceptFollowCommand>(db)
 {
 	public override async Task<Result> Handle(AcceptFollowCommand req, CancellationToken ct)
 	{

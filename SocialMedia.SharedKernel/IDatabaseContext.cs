@@ -1,9 +1,9 @@
 ﻿namespace SocialMedia.SharedKernel;
 
-public interface IAppDatabaseContext : IDatabaseContextBase
+public interface IDatabaseContextBase
 { }
 
-public interface IDatabaseContextBase
+public interface IEFDatabaseContext : IDatabaseContextBase
 {
 	IIdentityUser CurrentUser { get; }
 
@@ -15,3 +15,6 @@ public interface IDatabaseContextBase
 
 	Task<int> SaveChangesAsync(bool audit = true, CancellationToken ct = default);
 }
+
+public interface IMongoDatabaseContext : IDatabaseContextBase
+{ }

@@ -10,7 +10,7 @@ internal sealed class NotificationMongoContext : INotificationMongoContext
 
 	public NotificationMongoContext(IConfiguration config, IMongoClient client)
 	{
-		string databaseName = config.GetSection("MongoDatabase")["Name"];
+		string databaseName = config.GetSection("MongoDatabases")["Notifications"];
 		_db = client.GetDatabase(databaseName);
 	}
 

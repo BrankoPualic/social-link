@@ -7,7 +7,7 @@ namespace SocialMedia.Users.Application.UseCases.Commands;
 
 internal sealed record RejectFollowCommand(FollowDto Data) : Command;
 
-internal class RejectFollowCommandHandler(IUserDatabaseContext db) : CommandHandler<RejectFollowCommand>(db)
+internal class RejectFollowCommandHandler(IUserDatabaseContext db) : EFCommandHandler<RejectFollowCommand>(db)
 {
 	public override async Task<Result> Handle(RejectFollowCommand req, CancellationToken ct)
 	{
