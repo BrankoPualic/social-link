@@ -1,5 +1,6 @@
 @SocialMedia.Web_HostAddress = https://localhost:7175/users
 @SocialMedia.AccessToken = 123
+@SocialMedia.UserId = 00000000-0000-0000-0000-000000000001
 
 POST {{SocialMedia.Web_HostAddress}}/login
 Accept: application/json
@@ -12,7 +13,7 @@ Content-Type: application/json
 
 ###
 
-GET {{SocialMedia.Web_HostAddress}}/profile/00000000-0000-0000-0000-000000000001
+GET {{SocialMedia.Web_HostAddress}}/profile/{{SocialMedia.UserId}}
 Accept: application/json
 Authorization: Bearer {{SocialMedia.AccessToken}}
 
@@ -86,4 +87,20 @@ Authorization: Bearer {{SocialMedia.AccessToken}}
 {
     "FollowerId": "",
     "FollowingId": ""
+}
+
+###
+
+GET {{SocialMedia.Web_HostAddress}}/notificationPreferences/{{SocialMedia.UserId}}
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+###
+
+POST {{SocialMedia.Web_HostAddress}}/saveNotificationPreferences
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "Preferences": "[]"
 }

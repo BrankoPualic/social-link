@@ -21,4 +21,13 @@ internal class NotificationPreferenceDto
 		NotificationTypeId = _.NotificationTypeId,
 		IsMuted = _.IsMuted,
 	};
+
+	public void ToModel(NotificationPreference model)
+	{
+		model.GenerateIdIfNew();
+
+		model.UserId = UserId;
+		model.NotificationTypeId = NotificationTypeId;
+		model.IsMuted = IsMuted;
+	}
 }
