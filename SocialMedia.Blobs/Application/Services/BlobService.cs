@@ -11,9 +11,9 @@ internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBl
 {
 	private static string GetContainerName() => "blobs";
 
-	public async Task<Result<string>> GetBlobSasUriAsync(Guid id)
+	public async Task<Result<string>> GetBlobSasUriAsync(Guid id, bool showAll = false)
 	{
-		var blob = await GetBlobAsync(id);
+		var blob = await GetBlobAsync(id, showAll);
 		if (blob is null)
 			return Result.NotFound("File not found.");
 
@@ -26,7 +26,7 @@ internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBl
 
 	public async Task<Result<FileInformationDto>> DownloadAsync(Guid id)
 	{
-		var blob = await GetBlobAsync(id);
+		var blob = await GetBlobAsync(id, true);
 		if (blob is null)
 			return Result.NotFound("File not found.");
 
@@ -58,9 +58,9 @@ internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBl
 		return (blob, cleanup);
 	}
 
-	public async Task<Result> DeleteAsync(Guid id)
+	public async Task<Result<Guid>> DeleteAsync(Guid id)
 	{
-		var blob = await GetBlobAsync(id);
+		var blob = await GetBlobAsync(id, true);
 		if (blob is null)
 			return Result.NotFound("File not found.");
 
@@ -74,15 +74,18 @@ internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBl
 
 		await azureBlobRepository.DeleteAsync(container, relativePath);
 
-		return Result.NoContent();
+		return Result.Success(id);
 	}
 
 	// private
 
-	private async Task<Blob> GetBlobAsync(Guid id)
+	private async Task<Blob> GetBlobAsync(Guid id, bool showAll = false)
 	{
 		var builder = Builders<Blob>.Filter;
 		var filter = builder.Eq(_ => _.Id, id);
+
+		if (!showAll)
+			filter &= builder.Eq(_ => _.IsActive, true);
 
 		var blob = (await db.Blobs.FindAsync(filter)).FirstOrDefault();
 

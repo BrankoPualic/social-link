@@ -7,11 +7,11 @@ namespace SocialMedia.Blobs.Application.Interfaces;
 
 internal interface IBlobService
 {
-	Task<Result> DeleteAsync(Guid id);
+	Task<Result<string>> GetBlobSasUriAsync(Guid id, bool showAll = false);
+
+	Task<(Blob blob, Func<Task> Cleanup)> UploadAsync(FileInformationDto file, Blob blob, eBlobType blobType);
 
 	Task<Result<FileInformationDto>> DownloadAsync(Guid id);
 
-	Task<Result<string>> GetBlobSasUriAsync(Guid id);
-
-	Task<(Blob blob, Func<Task> Cleanup)> UploadAsync(FileInformationDto file, Blob blob, eBlobType blobType);
+	Task<Result<Guid>> DeleteAsync(Guid id);
 }

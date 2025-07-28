@@ -1,6 +1,3 @@
 ﻿namespace SocialMedia.Blobs.Endpoints;
 
-internal class GetBlobsRequest
-{
-	public List<Guid> BlobIds { get; set; }
-}
+internal sealed record GetBlobsRequest(List<Guid> BlobIds);

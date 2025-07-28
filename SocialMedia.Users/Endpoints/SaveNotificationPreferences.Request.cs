@@ -2,7 +2,4 @@
 
 namespace SocialMedia.Users.Endpoints;
 
-internal class SaveNotificationPreferencesRequest
-{
-	public List<NotificationPreferenceDto> Preferences { get; set; } = [];
-}
+internal sealed record SaveNotificationPreferencesRequest(List<NotificationPreferenceDto> Preferences);
