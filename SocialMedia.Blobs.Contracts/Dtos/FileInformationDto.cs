@@ -1,4 +1,4 @@
-﻿namespace SocialMedia.Blobs.Contracts;
+﻿namespace SocialMedia.Blobs.Contracts.Dtos;
 
 public record FileInformationDto(
 	string FileName,

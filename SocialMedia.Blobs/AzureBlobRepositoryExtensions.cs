@@ -1,5 +1,5 @@
 ﻿using SocialMedia.Blobs.Application.Interfaces;
-using SocialMedia.Blobs.Contracts;
+using SocialMedia.Blobs.Contracts.Dtos;
 
 namespace SocialMedia.Blobs;
 

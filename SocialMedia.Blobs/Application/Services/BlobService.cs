@@ -1,9 +1,8 @@
 ﻿using Ardalis.Result;
 using MongoDB.Driver;
 using SocialMedia.Blobs.Application.Interfaces;
-using SocialMedia.Blobs.Contracts;
+using SocialMedia.Blobs.Contracts.Dtos;
 using SocialMedia.Blobs.Domain;
-using SocialMedia.Blobs.Integrations;
 using SocialMedia.SharedKernel;
 
 namespace SocialMedia.Blobs.Application.Services;
@@ -16,7 +15,7 @@ internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBl
 	{
 		var blob = await GetBlobAsync(id);
 		if (blob is null)
-			Result.NotFound("File not found.");
+			return Result.NotFound("File not found.");
 
 		var container = GetContainerName();
 

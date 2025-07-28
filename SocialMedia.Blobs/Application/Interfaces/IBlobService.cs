@@ -1,5 +1,5 @@
 ﻿using Ardalis.Result;
-using SocialMedia.Blobs.Contracts;
+using SocialMedia.Blobs.Contracts.Dtos;
 using SocialMedia.Blobs.Domain;
 using SocialMedia.SharedKernel;
 

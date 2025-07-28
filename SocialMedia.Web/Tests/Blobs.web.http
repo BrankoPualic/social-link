@@ -1,0 +1,18 @@
+@SocialMedia.Web_HostAddress = https://localhost:7175/blobs
+@SocialMedia.AccessToken = 123
+@SocialMedia.BlobId =
+
+POST {{SocialMedia.Web_HostAddress}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "BlobIds": "[]"
+}
+
+###
+
+GET {{SocialMedia.Web_HostAddress}}/{{SocialMedia.BlobId}}
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
