@@ -40,3 +40,15 @@ public enum eNotificationActionMethodType
 	[Description("POST")]
 	Post = 200
 }
+
+public enum eBlobType
+{
+	[Description("")]
+	NotSet = 0,
+
+	[Description("Profile Image")]
+	ProfileImage = 100,
+
+	[Description("Post Image")]
+	PostImage = 200,
+}

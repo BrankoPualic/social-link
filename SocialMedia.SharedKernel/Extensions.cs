@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HeyRed.Mime;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using MongoDB.Driver;
 using SocialMedia.SharedKernel.Domain;
@@ -13,6 +14,10 @@ public static class Extensions
 		if (model.IsNew)
 			model.Id = Guid.NewGuid();
 	}
+
+	public static string ToMimeType(this string value) => MimeTypesMap.GetMimeType(value);
+
+	public static string GetAzureFileRelativePath(this string file, string containerName) => file[(file.IndexOf(containerName) + containerName.Length + 1)..];
 
 	// Data migration extensions
 

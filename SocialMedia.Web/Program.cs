@@ -1,10 +1,10 @@
-using Azure.Identity;
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Serilog;
+using SocialMedia.Blobs;
 using SocialMedia.Notifications;
 using SocialMedia.Posts;
 using SocialMedia.SharedKernel;
@@ -25,7 +25,7 @@ builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Con
 
 builder.Configuration.AddAzureKeyVault(
 	new Uri($"https://socialmedia-secrets.vault.azure.net/"),
-	new DefaultAzureCredential()
+	Settings.TokenCredential
 );
 
 builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
@@ -43,6 +43,7 @@ List<Assembly> mediatRAssemblies = [typeof(Program).Assembly];
 builder.Services.AddUsersModuleServices(builder.Configuration, logger, mediatRAssemblies);
 builder.Services.AddNotificationsModuleServices(builder.Configuration, logger, mediatRAssemblies);
 builder.Services.AddPostsModuleServices(builder.Configuration, logger, mediatRAssemblies);
+builder.Services.AddBlobsModuleServices(builder.Configuration, logger, mediatRAssemblies);
 
 // Set up MediatR
 builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblies(mediatRAssemblies.ToArray()));

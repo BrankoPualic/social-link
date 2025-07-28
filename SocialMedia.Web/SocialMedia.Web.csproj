@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SocialMedia.Blobs\SocialMedia.Blobs.csproj" />
     <ProjectReference Include="..\SocialMedia.Notifications\SocialMedia.Notifications.csproj" />
     <ProjectReference Include="..\SocialMedia.Posts\SocialMedia.Posts.csproj" />
     <ProjectReference Include="..\SocialMedia.SharedKernel\SocialMedia.SharedKernel.csproj" />
