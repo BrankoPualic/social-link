@@ -21,4 +21,6 @@ internal class Comment : AuditedDomainModel<Guid>
 
 	[InverseProperty(nameof(Parent))]
 	public virtual ICollection<Comment> Replies { get; set; } = [];
+
+	public virtual ICollection<CommentLike> Likes { get; set; } = [];
 }

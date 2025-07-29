@@ -1,0 +1,9 @@
+@SocialMedia.Web_HostAddress = https://localhost:7175/posts
+@SocialMedia.AccessToken = 123
+@SocialMedia.PostId = 00000000-0000-0000-0000-000000000001
+
+GET {{SocialMedia.Web_HostAddress}}/{{SocialMedia.PostId}}
+Accept: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+###

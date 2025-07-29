@@ -19,13 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SocialMedia.Blobs.Contracts\SocialMedia.Blobs.Contracts.csproj" />
     <ProjectReference Include="..\SocialMedia.SharedKernel\SocialMedia.SharedKernel.csproj" />
+    <ProjectReference Include="..\SocialMedia.Users.Contracts\SocialMedia.Users.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Dtos\" />
     <Folder Include="Application\UseCases\Commands\" />
-    <Folder Include="Application\UseCases\Queries\" />
     <Folder Include="Endpoints\" />
   </ItemGroup>
 
