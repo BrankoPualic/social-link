@@ -10,6 +10,8 @@ internal class UserMedia
 
 	public bool IsActive { get; set; }
 
+	public DateTime UploadedOn { get; set; }
+
 	[ForeignKey(nameof(UserId))]
 	public virtual User User { get; set; }
 }

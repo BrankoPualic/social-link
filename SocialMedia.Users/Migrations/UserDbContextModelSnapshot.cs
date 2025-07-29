@@ -169,6 +169,9 @@ namespace SocialMedia.Users.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("UploadedOn")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("UserId", "BlobId");
 
                     b.HasIndex("BlobId");
