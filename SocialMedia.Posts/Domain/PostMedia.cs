@@ -2,13 +2,17 @@
 
 namespace SocialMedia.Posts.Domain;
 
-internal class PostLike
+internal class PostMedia
 {
-	public Guid UserId { get; set; }
-
 	public Guid PostId { get; set; }
 
-	public DateTime LikedOn { get; set; }
+	public Guid BlobId { get; set; }
+
+	public int Order { get; set; }
+
+	public bool IsActive { get; set; }
+
+	public DateTime UploadedOn { get; set; }
 
 	[ForeignKey(nameof(PostId))]
 	public virtual Post Post { get; set; }

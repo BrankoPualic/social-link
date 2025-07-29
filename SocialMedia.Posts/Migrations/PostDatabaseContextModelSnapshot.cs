@@ -151,6 +151,9 @@ namespace SocialMedia.Posts.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UploadedOn")
                         .HasColumnType("datetime2");
 
