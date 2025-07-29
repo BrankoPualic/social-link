@@ -158,6 +158,24 @@ namespace SocialMedia.Users.Migrations
                     b.ToTable("UserLogin", "user");
                 });
 
+            modelBuilder.Entity("SocialMedia.Users.Domain.UserMedia", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("UserId", "BlobId");
+
+                    b.HasIndex("BlobId");
+
+                    b.ToTable("UserMedia", "user");
+                });
+
             modelBuilder.Entity("SocialMedia.Users.Domain.UserRole", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -212,6 +230,17 @@ namespace SocialMedia.Users.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SocialMedia.Users.Domain.UserMedia", b =>
+                {
+                    b.HasOne("SocialMedia.Users.Domain.User", "User")
+                        .WithMany("Media")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SocialMedia.Users.Domain.UserRole", b =>
                 {
                     b.HasOne("SocialMedia.Users.Domain.User", "User")
@@ -230,6 +259,8 @@ namespace SocialMedia.Users.Migrations
                     b.Navigation("Following");
 
                     b.Navigation("Logins");
+
+                    b.Navigation("Media");
 
                     b.Navigation("NotificationPreferences");
 

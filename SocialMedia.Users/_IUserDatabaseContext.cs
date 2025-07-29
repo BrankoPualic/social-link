@@ -15,4 +15,6 @@ internal interface IUserDatabaseContext : IEFDatabaseContext
 	DbSet<UserFollow> Follows { get; }
 
 	DbSet<NotificationPreference> NotificationPreferences { get; }
+
+	DbSet<UserMedia> Media { get; }
 }

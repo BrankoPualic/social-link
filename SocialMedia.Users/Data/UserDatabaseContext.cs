@@ -37,5 +37,7 @@ internal sealed class UserDatabaseContext : EFDatabaseContext, IUserDatabaseCont
 
 	public DbSet<NotificationPreference> NotificationPreferences { get; set; }
 
+	public DbSet<UserMedia> Media { get; set; }
+
 	#endregion DbSets
 }
