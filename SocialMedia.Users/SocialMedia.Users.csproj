@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SocialMedia.Blobs.Contracts\SocialMedia.Blobs.Contracts.csproj" />
     <ProjectReference Include="..\SocialMedia.Notifications.Contracts\SocialMedia.Notifications.Contracts.csproj" />
     <ProjectReference Include="..\SocialMedia.SharedKernel\SocialMedia.SharedKernel.csproj" />
     <ProjectReference Include="..\SocialMedia.Users.Contracts\SocialMedia.Users.Contracts.csproj" />
