@@ -35,5 +35,7 @@ internal sealed class PostDatabaseContext : EFDatabaseContext, IPostDatabaseCont
 
 	public DbSet<CommentLike> CommentLikes { get; set; }
 
+	public DbSet<PostMedia> Media { get; set; }
+
 	#endregion DbSets
 }

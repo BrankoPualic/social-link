@@ -13,4 +13,6 @@ internal interface IPostDatabaseContext : IEFDatabaseContext
 	DbSet<Comment> Comments { get; }
 
 	DbSet<CommentLike> CommentLikes { get; }
+
+	DbSet<PostMedia> Media { get; }
 }

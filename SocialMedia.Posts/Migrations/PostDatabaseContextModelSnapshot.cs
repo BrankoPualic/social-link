@@ -140,6 +140,27 @@ namespace SocialMedia.Posts.Migrations
                     b.ToTable("PostLike", "post");
                 });
 
+            modelBuilder.Entity("SocialMedia.Posts.Domain.PostMedia", b =>
+                {
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UploadedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PostId", "BlobId");
+
+                    b.HasIndex("BlobId");
+
+                    b.ToTable("PostMedia", "post");
+                });
+
             modelBuilder.Entity("SocialMedia.Posts.Domain.Comment", b =>
                 {
                     b.HasOne("SocialMedia.Posts.Domain.Comment", "Parent")
@@ -180,6 +201,17 @@ namespace SocialMedia.Posts.Migrations
                     b.Navigation("Post");
                 });
 
+            modelBuilder.Entity("SocialMedia.Posts.Domain.PostMedia", b =>
+                {
+                    b.HasOne("SocialMedia.Posts.Domain.Post", "Post")
+                        .WithMany("Media")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("SocialMedia.Posts.Domain.Comment", b =>
                 {
                     b.Navigation("Replies");
@@ -188,6 +220,8 @@ namespace SocialMedia.Posts.Migrations
             modelBuilder.Entity("SocialMedia.Posts.Domain.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Media");
                 });
 #pragma warning restore 612, 618
         }

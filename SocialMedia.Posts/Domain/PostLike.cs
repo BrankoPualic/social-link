@@ -13,3 +13,17 @@ internal class PostLike
 	[ForeignKey(nameof(PostId))]
 	public virtual Post Post { get; set; }
 }
+
+internal class PostMedia
+{
+	public Guid PostId { get; set; }
+
+	public Guid BlobId { get; set; }
+
+	public bool IsActive { get; set; }
+
+	public DateTime UploadedOn { get; set; }
+
+	[ForeignKey(nameof(PostId))]
+	public virtual Post Post { get; set; }
+}
