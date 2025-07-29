@@ -39,7 +39,7 @@ internal class UploadProfileImage(IMediator mediator) : Endpoint<UploadProfileIm
 
 		var fileDtos = await Task.WhenAll(fileReads);
 
-		var result = await mediator.Send(new UploadProfileImageCommand(req.UserId, fileDtos.FirstOrDefault()), ct);
+		var result = await mediator.Send(new UploadProfileImageCommand(req.Model, fileDtos.FirstOrDefault()), ct);
 
 		if (result.IsNoContent())
 		{

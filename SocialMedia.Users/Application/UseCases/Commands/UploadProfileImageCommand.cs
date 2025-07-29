@@ -9,7 +9,7 @@ namespace SocialMedia.Users.Application.UseCases.Commands;
 
 internal sealed record UploadProfileImageCommand(Guid UserId, FileInformationDto File) : Command;
 
-internal class UploadProfileImageCommandHandler(IUserDatabaseContext db, IMediator mediator) : EFCommandHandler<UploadProfileImageCommand>(db)
+internal class UploadProfileImageCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IMediator mediator) : EFCommandHandler<UploadProfileImageCommand>(db)
 {
 	public override async Task<Result> Handle(UploadProfileImageCommand req, CancellationToken ct)
 	{
@@ -23,15 +23,7 @@ internal class UploadProfileImageCommandHandler(IUserDatabaseContext db, IMediat
 		if (!uploadResult.IsSuccess)
 			return Result.Invalid(new ValidationError(string.Join(',', uploadResult.Errors)));
 
-		var model = new UserMedia
-		{
-			UserId = userId,
-			BlobId = uploadResult.Value,
-			IsActive = true,
-			UploadedOn = DateTime.UtcNow
-		};
-
-		db.Media.Add(model);
+		userRepository.CreateMedia(userId, uploadResult.Value);
 
 		await db.SaveChangesAsync(false, ct);
 

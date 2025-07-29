@@ -1,3 +1,3 @@
 ﻿namespace SocialMedia.Users.Endpoints;
 
-internal sealed record UploadProfileImageRequest(Guid UserId);
+internal sealed record UploadProfileImageRequest(Guid Model);

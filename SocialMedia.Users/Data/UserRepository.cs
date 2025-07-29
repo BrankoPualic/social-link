@@ -18,4 +18,13 @@ internal class UserRepository(IUserDatabaseContext db) : IUserRepository
 			UserId = userId,
 			LoggedOn = DateTime.UtcNow,
 		});
+
+	public void CreateMedia(Guid userId, Guid blobId) =>
+		db.Media.Add(new()
+		{
+			UserId = userId,
+			BlobId = blobId,
+			IsActive = true,
+			UploadedOn = DateTime.UtcNow,
+		});
 }
