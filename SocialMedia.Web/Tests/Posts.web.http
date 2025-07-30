@@ -7,3 +7,14 @@ Accept: application/json
 Authorization: Bearer {{SocialMedia.AccessToken}}
 
 ###
+
+POST {{SocialMedia.Web_HostAddress}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "UserId": ""
+}
+
+###

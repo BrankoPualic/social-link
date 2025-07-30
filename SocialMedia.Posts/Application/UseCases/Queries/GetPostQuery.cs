@@ -21,8 +21,6 @@ internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) 
 		if (model is null)
 			return Result.NotFound("Post not found.");
 
-		model.LikesCount = await db.PostLikes.CountAsync(_ => _.PostId == postId, ct);
-		model.CommentsCount = await db.Comments.CountAsync(_ => _.PostId == postId, ct);
 		var blobIds = await db.Media
 			.Where(_ => _.PostId == postId)
 			.OrderBy(_ => _.Order)
@@ -43,6 +41,9 @@ internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) 
 		var userResult = await mediator.Send(new GetUserContractQuery(model.UserId), ct);
 		if (userResult.IsNotFound())
 			return Result.NotFound(userResult.Errors.ToArray());
+
+		model.LikesCount = await db.PostLikes.CountAsync(_ => _.PostId == postId, ct);
+		model.CommentsCount = await db.Comments.CountAsync(_ => _.PostId == postId, ct);
 
 		model.User = userResult.Value;
 
