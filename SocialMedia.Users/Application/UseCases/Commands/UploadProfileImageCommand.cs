@@ -19,13 +19,15 @@ internal class UploadProfileImageCommandHandler(IUserDatabaseContext db, IUserRe
 		if (userId == default || file is null)
 			return Result.Invalid(new ValidationError("Parameters are empty."));
 
-		var uploadResult = await mediator.Send(new UploadBlobCommand(file, SharedKernel.eBlobType.ProfileImage), ct);
+		var uploadResult = await mediator.Send(new UploadBlobCommand(new UploadFileDto(file, SharedKernel.eBlobType.ProfileImage)), ct);
 		if (!uploadResult.IsSuccess)
 			return Result.Invalid(new ValidationError(string.Join(',', uploadResult.Errors)));
 
-		userRepository.CreateMedia(userId, uploadResult.Value);
+		userRepository.CreateMedia(userId, uploadResult.Value.BlobId);
 
 		await db.SaveChangesAsync(false, ct);
+
+		await uploadResult.Value.Cleanup();
 
 		return Result.NoContent();
 	}
