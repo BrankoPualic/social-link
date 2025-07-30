@@ -97,4 +97,10 @@ public static class Extensions
 			Items = items
 		};
 	}
+
+	// Array
+
+	public static IEnumerable<T> NotNull<T>(this IEnumerable<T> source) => source?.Where(_ => _ != null);
+
+	public static IEnumerable<(T, int)> WithIndex<T>(this IEnumerable<T> source) => source?.Select((item, index) => (item, index));
 }

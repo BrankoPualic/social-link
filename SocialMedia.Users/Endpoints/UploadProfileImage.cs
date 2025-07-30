@@ -20,7 +20,7 @@ internal class UploadProfileImage(IMediator mediator) : Endpoint<UploadProfileIm
 	{
 		var files = HttpContext.Request.Form.Files;
 
-		if (files.Count == 0)
+		if (files.Count is 0)
 		{
 			await Send.ErrorsAsync(400, ct);
 		}

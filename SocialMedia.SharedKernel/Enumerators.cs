@@ -43,8 +43,8 @@ public enum eNotificationActionMethodType
 
 public enum eBlobType
 {
-	[Description("")]
-	NotSet = 0,
+	[Description("Unknown")]
+	Unknown = 0,
 
 	[Description("Profile Image")]
 	ProfileImage = 100,

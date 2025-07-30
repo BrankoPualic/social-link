@@ -32,19 +32,23 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 		model.Password = authManager.HashPassword(data.Password);
 		db.Users.Add(model);
 
+		Func<Task> cleanup = () => Task.CompletedTask;
 		if (file is not null)
 		{
-			var uploadResult = await mediator.Send(new UploadBlobCommand(file, SharedKernel.eBlobType.ProfileImage), ct);
+			var uploadResult = await mediator.Send(new UploadBlobCommand(new UploadFileDto(file, SharedKernel.eBlobType.ProfileImage)), ct);
 			if (!uploadResult.IsSuccess)
 				return Result.Invalid(new ValidationError(string.Join(',', uploadResult.Errors)));
 
-			userRepository.CreateMedia(model.Id, uploadResult.Value);
+			cleanup = uploadResult.Value.Cleanup;
+			userRepository.CreateMedia(model.Id, uploadResult.Value.BlobId);
 		}
 
 		// Log entry
 		userRepository.CreateLoginLog(model.Id);
 
 		await db.SaveChangesAsync(true, ct);
+
+		await cleanup();
 
 		return Result.Success(new TokenDto { Token = authManager.GenerateJwtToken(model) });
 	}

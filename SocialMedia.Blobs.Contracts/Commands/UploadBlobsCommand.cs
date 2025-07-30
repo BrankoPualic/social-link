@@ -3,4 +3,4 @@ using SocialMedia.SharedKernel.UseCases;
 
 namespace SocialMedia.Blobs.Contracts.Commands;
 
-public sealed record UploadBlobCommand(UploadFileDto Data) : Command<UploadResult>;
+public sealed record UploadBlobsCommand(List<UploadFileDto> Data) : Command<List<UploadResult>>;

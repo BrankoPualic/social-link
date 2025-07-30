@@ -1,21 +1,20 @@
 ﻿using Ardalis.Result;
 using SocialMedia.Blobs.Application.Interfaces;
 using SocialMedia.Blobs.Contracts.Commands;
+using SocialMedia.Blobs.Contracts.Dtos;
 using SocialMedia.SharedKernel.UseCases;
 
 namespace SocialMedia.Blobs.Integrations;
 
-internal class UploadBlobCommandHandler(IBlobService blobService) : MongoCommandHandler<UploadBlobCommand, Guid>
+internal class UploadBlobCommandHandler(IBlobService blobService) : MongoCommandHandler<UploadBlobCommand, UploadResult>
 {
-	public override async Task<Result<Guid>> Handle(UploadBlobCommand req, CancellationToken ct)
+	public override async Task<Result<UploadResult>> Handle(UploadBlobCommand req, CancellationToken ct)
 	{
-		var file = req.File;
-		var blobType = req.BlobType;
+		var file = req.Data.File;
+		var blobType = req.Data.BlobType;
 
 		var (blob, cleanup) = await blobService.UploadAsync(file, null, blobType);
 
-		await cleanup();
-
-		return Result.Success(blob.Id);
+		return Result.Success(new UploadResult(blob.Id, cleanup));
 	}
 }
