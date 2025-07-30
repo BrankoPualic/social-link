@@ -33,7 +33,7 @@ internal class GetUserContractQueryHandler(IUserDatabaseContext db, IMediator me
 
 		var blobResult = await mediator.Send(new GetBlobQuery(blobId), ct);
 		if (blobResult.IsNotFound())
-			return Result.NotFound("Profile image couldn't be loaded.");
+			return Result.NotFound(blobResult.Errors.ToArray());
 
 		model.ProfileImage = blobResult.Value.Url;
 
