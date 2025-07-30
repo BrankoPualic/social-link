@@ -35,12 +35,12 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 
 		var postIds = result.Items.Select(_ => _.Id).ToList();
 
-		var postMedia = await db.Media
+		var blobIds = await db.Media
 			.Where(_ => postIds.Contains(_.PostId))
 			.OrderBy(_ => _.Order)
+			.Select(_ => _.BlobId)
+			.Distinct()
 			.ToListAsync(ct);
-
-		var blobIds = postMedia.Select(_ => _.BlobId).Distinct().ToList();
 
 		var blobsResult = await mediator.Send(new GetBlobsQuery(blobIds), ct);
 		if (blobsResult.IsNotFound())
@@ -52,29 +52,30 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 		if (usersResult.IsNotFound())
 			return Result.NotFound(usersResult.Errors.ToArray());
 
-		var likesCount = await db.PostLikes
-			.Where(_ => postIds.Contains(_.PostId))
-			.GroupBy(_ => _.PostId)
-			.Select(_ => new { PostId = _.Key, Count = _.Count() })
-			.ToListAsync(ct);
+		var blobMap = blobsResult.Value.ToDictionary(_ => _.Id);
+		var userMap = usersResult.Value.ToDictionary(_ => _.Id);
 
-		var commentsCount = await db.Comments
+		var likesMap = await db.PostLikes
 			.Where(_ => postIds.Contains(_.PostId))
 			.GroupBy(_ => _.PostId)
-			.Select(_ => new { PostId = _.Key, Count = _.Count() })
-			.ToListAsync(ct);
+			.ToDictionaryAsync(_ => _.Key, _ => _.Count(), ct);
+
+		var commentsMap = await db.Comments
+			.Where(_ => postIds.Contains(_.PostId))
+			.GroupBy(_ => _.PostId)
+			.ToDictionaryAsync(_ => _.Key, _ => _.Count(), ct);
 
 		foreach (var post in result.Items)
 		{
-			var orderedBlobs = blobIds
-				.SelectMany(id => blobsResult.Value.Where(_ => _.Id == id).ToList())
+			post.Media = blobIds
+				.Where(blobMap.ContainsKey)
+				.Select(_ => blobMap[_])
 				.ToList();
-			post.Media = orderedBlobs;
 
-			post.User = usersResult.Value.FirstOrDefault(_ => _.Id == post.UserId);
+			post.User = userMap.GetValueOrDefault(post.UserId);
 
-			post.LikesCount = likesCount.FirstOrDefault(_ => _.PostId == post.Id)?.Count ?? 0;
-			post.CommentsCount = commentsCount.FirstOrDefault(_ => _.PostId == post.Id)?.Count ?? 0;
+			post.LikesCount = likesMap.GetValueOrDefault(post.Id);
+			post.CommentsCount = commentsMap.GetValueOrDefault(post.Id);
 		}
 
 		return Result.Success(result);
