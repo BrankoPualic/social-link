@@ -25,8 +25,4 @@
     <ProjectReference Include="..\SocialMedia.Users.Contracts\SocialMedia.Users.Contracts.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Application\UseCases\Commands\" />
-  </ItemGroup>
-
 </Project>
