@@ -29,3 +29,31 @@ Authorization: Bearer {{SocialMedia.AccessToken}}
 }
 
 ###
+
+POST {{SocialMedia.Web_HostAddress}}/comments/create
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "UserId": "",
+    "PostId": {{SocialMedia.PostId}},
+    "ParentId: "null",
+    "Message": ""
+}
+
+###
+
+POST {{SocialMedia.Web_HostAddress}}/comments/update
+Content-Type: application/json
+Authorization: Bearer {{SocialMedia.AccessToken}}
+
+{
+    "Id": "",
+    "UserId": "",
+    "PostId": {{SocialMedia.PostId}},
+    "ParentId: "null",
+    "Message": ""
+}
+
+###
