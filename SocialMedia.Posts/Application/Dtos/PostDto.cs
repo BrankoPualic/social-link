@@ -19,6 +19,8 @@ internal class PostDto
 
 	public long? CommentsCount { get; set; }
 
+	public DateTime CreatedOn { get; set; }
+
 	public UserContractDto User { get; set; }
 
 	public List<BlobDto> Media { get; set; } = [];
@@ -28,6 +30,7 @@ internal class PostDto
 		Id = _.Id,
 		UserId = _.UserId,
 		Description = _.Description,
-		AllowComments = _.AllowComments
+		AllowComments = _.AllowComments,
+		CreatedOn = _.CreatedOn,
 	};
 }

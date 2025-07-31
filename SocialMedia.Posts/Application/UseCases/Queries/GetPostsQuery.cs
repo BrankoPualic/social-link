@@ -33,7 +33,7 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 			ct
 		);
 
-		var postIds = result.Items.Select(_ => _.Id).ToList();
+		var postIds = result.Items.SelectIds(_ => _.Id);
 
 		var blobIds = await db.Media
 			.Where(_ => postIds.Contains(_.PostId))
@@ -46,14 +46,14 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 		if (blobsResult.IsNotFound())
 			return Result.NotFound(blobsResult.Errors.ToArray());
 
-		var userIds = result.Items.Select(_ => _.UserId).Distinct().ToList();
+		var userIds = result.Items.SelectIds(_ => _.UserId);
 
 		var usersResult = await mediator.Send(new GetUsersContractQuery(userIds), ct);
 		if (usersResult.IsNotFound())
 			return Result.NotFound(usersResult.Errors.ToArray());
 
-		var blobMap = blobsResult.Value.ToDictionary(_ => _.Id);
-		var userMap = usersResult.Value.ToDictionary(_ => _.Id);
+		var blobsMap = blobsResult.Value.ToDictionary(_ => _.Id);
+		var usersMap = usersResult.Value.ToDictionary(_ => _.Id);
 
 		var likesMap = await db.PostLikes
 			.Where(_ => postIds.Contains(_.PostId))
@@ -68,11 +68,11 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 		foreach (var post in result.Items)
 		{
 			post.Media = blobIds
-				.Where(blobMap.ContainsKey)
-				.Select(_ => blobMap[_])
+				.Where(blobsMap.ContainsKey)
+				.Select(_ => blobsMap[_])
 				.ToList();
 
-			post.User = userMap.GetValueOrDefault(post.UserId);
+			post.User = usersMap.GetValueOrDefault(post.UserId);
 
 			post.LikesCount = likesMap.GetValueOrDefault(post.Id);
 			post.CommentsCount = commentsMap.GetValueOrDefault(post.Id);
