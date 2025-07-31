@@ -5,7 +5,7 @@ namespace SocialMedia.Posts.Application.Dtos;
 
 internal class PostEditDto
 {
-	public Guid Id { get; set; }
+	public Guid? Id { get; set; }
 
 	public Guid UserId { get; set; }
 
