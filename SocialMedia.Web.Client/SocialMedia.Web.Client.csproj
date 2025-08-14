@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Workspace\public\" />
+    <Folder Include="Workspace\src\app\core\" />
+    <Folder Include="Workspace\src\app\features\auth\models\" />
+    <Folder Include="Workspace\src\app\features\auth\services\" />
+    <Folder Include="Workspace\src\app\features\auth\pages\" />
+    <Folder Include="Workspace\src\app\shared\base\" />
+    <Folder Include="Workspace\src\app\shared\components\forms\" />
+    <Folder Include="Workspace\src\assets\images\" />
+    <Folder Include="Workspace\src\assets\styles\" />
+  </ItemGroup>
+
 </Project>

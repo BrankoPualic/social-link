@@ -1,0 +1,25 @@
+.auth-background {
+  width: 100dvw;
+  min-height: 100dvh;
+  background-color: $white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  form {
+    width: 30rem;
+    background-color: $white;
+    padding: 2rem 3rem;
+    border-radius: $border-radius;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+
+    .auth-logo img {
+      width: 12.5rem;
+    }
+
+    .form-btn-group {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
