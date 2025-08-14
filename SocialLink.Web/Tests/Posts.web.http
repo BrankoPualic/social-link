@@ -1,0 +1,59 @@
+@SocialLink.Web_HostAddress = https://localhost:7175/posts
+@SocialLink.AccessToken = 123
+@SocialLink.PostId = 00000000-0000-0000-0000-000000000001
+
+GET {{SocialLink.Web_HostAddress}}/{{SocialLink.PostId}}
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "UserId": ""
+}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/comments
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "PostId": {{SocialLink.PostId}}
+}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/comments/create
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "UserId": "",
+    "PostId": {{SocialLink.PostId}},
+    "ParentId: "null",
+    "Message": ""
+}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/comments/update
+Content-Type: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "Id": "",
+    "UserId": "",
+    "PostId": {{SocialLink.PostId}},
+    "ParentId: "null",
+    "Message": ""
+}
+
+###

@@ -1,0 +1,20 @@
+﻿@SocialLink.Web_HostAddress = https://localhost:7175/notifications
+@SocialLink.AccessToken = 123
+@SocialLink.UserId = 00000000-0000-0000-0000-000000000001
+
+POST {{SocialLink.Web_HostAddress}}
+Accept: application/json
+Content-Type: application/json
+Authorize: Bearer {{SocialLink.AccessToken}}
+
+{
+    "UserId": "{{SocialLink.UserId}}"
+}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/read
+Accept: application/json
+Authorize: Bearer {{SocialLink.AccessToken}}
+
+{}

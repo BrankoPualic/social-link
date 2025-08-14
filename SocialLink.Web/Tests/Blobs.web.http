@@ -1,0 +1,38 @@
+@SocialLink.Web_HostAddress = https://localhost:7175/blobs
+@SocialLink.AccessToken = 123
+@SocialLink.BlobId = 1
+
+POST {{SocialLink.Web_HostAddress}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "BlobIds": "[]"
+}
+
+###
+
+GET {{SocialLink.Web_HostAddress}}/{{SocialLink.BlobId}}
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/delete
+Content-Type: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "BlobId": "{{SocialLink.BlobId}}
+}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/restore
+Content-Type: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "BlobId": "{{SocialLink.BlobId}}
+}

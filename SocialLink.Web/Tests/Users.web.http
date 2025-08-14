@@ -1,0 +1,112 @@
+@SocialLink.Web_HostAddress = https://localhost:7175/users
+@SocialLink.AccessToken = 123
+@SocialLink.UserId = 00000000-0000-0000-0000-000000000001
+
+POST {{SocialLink.Web_HostAddress}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "",
+    "password": ""
+}
+
+###
+
+GET {{SocialLink.Web_HostAddress}}/profile/{{SocialLink.UserId}}
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/update
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/follow
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/unfollow
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/checkFollowStatus
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/acceptFollow
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/rejectFollow
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "FollowerId": "",
+    "FollowingId": ""
+}
+
+###
+
+GET {{SocialLink.Web_HostAddress}}/notificationPreferences/{{SocialLink.UserId}}
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+###
+
+POST {{SocialLink.Web_HostAddress}}/saveNotificationPreferences
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}
+
+{
+    "Preferences": "[]"
+}
+
+###
+
+GET {{SocialLink.Web_HostAddress}}/possibleNotificationPreferences
+Accept: application/json
+Authorization: Bearer {{SocialLink.AccessToken}}

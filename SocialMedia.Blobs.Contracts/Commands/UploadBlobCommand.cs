@@ -1,6 +1,0 @@
-﻿using SocialMedia.Blobs.Contracts.Dtos;
-using SocialMedia.SharedKernel.UseCases;
-
-namespace SocialMedia.Blobs.Contracts.Commands;
-
-public sealed record UploadBlobCommand(UploadFileDto Data) : Command<UploadResult>;
