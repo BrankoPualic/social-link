@@ -28,6 +28,8 @@ builder.Configuration.AddAzureKeyVault(
 	Settings.TokenCredential
 );
 
+builder.Services.AddCors();
+
 builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
 
 builder.Services
@@ -60,6 +62,11 @@ using (var scope = app.Services.CreateScope())
 }
 
 BsonSerializer.RegisterSerializer(new GuidSerializer(MongoDB.Bson.GuidRepresentation.Standard));
+
+app.UseCors(builder => builder
+	.AllowAnyHeader()
+	.AllowAnyMethod()
+	.AllowAnyOrigin());
 
 app.UseAuthentication()
 	.UseAuthorization()

@@ -1,5 +1,6 @@
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { BaseComponentGeneric } from "./base";
+import { PageLoaderService } from "../../core/services/page-loader.service";
 
 /**
  * Import ReactiveFormsModule inside component imports if it's standalone component.
@@ -8,9 +9,10 @@ export abstract class BaseFormComponent<T extends object> extends BaseComponentG
   form: FormGroup;
 
   constructor(
+    loaderService: PageLoaderService,
     protected fb: FormBuilder
   ) {
-    super();
+    super(loaderService);
 
     this.form = this.fb.group({});
   }

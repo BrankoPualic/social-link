@@ -1,13 +1,12 @@
 ﻿using Ardalis.Result;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SocialLink.Users;
-using SocialLink.Users.Application.Dtos;
-using SocialLink.Users.Application.Interfaces;
-using SocialLink.Users.Domain;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.SharedKernel.UseCases;
+using SocialLink.Users.Application.Dtos;
+using SocialLink.Users.Application.Interfaces;
+using SocialLink.Users.Domain;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
 
@@ -51,6 +50,6 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 
 		await cleanup();
 
-		return Result.Success(new TokenDto { Token = authManager.GenerateJwtToken(model) });
+		return Result.Success(new TokenDto { Content = authManager.GenerateJwtToken(model) });
 	}
 }

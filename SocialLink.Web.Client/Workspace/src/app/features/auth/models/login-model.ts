@@ -1,4 +1,4 @@
-export interface ILoginModel {
-  username: string;
-  passoword: string;
+export class LoginModel {
+  email?: string;
+  password?: string;
 }

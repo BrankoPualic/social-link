@@ -1,8 +1,8 @@
 ﻿using Ardalis.Result;
+using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.Interfaces;
 using SocialLink.Users.Domain;
-using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
 internal sealed record LoginCommand(LoginDto Data) : Command<TokenDto>;
@@ -15,17 +15,17 @@ internal class LoginCommandHandler(IUserDatabaseContext db, IUserRepository user
 
 		var model = await userRepository.GetByEmailAsync(data.Email);
 		if (model is null)
-			return Result.NotFound("User not found.");
+			return Result.Invalid(new ValidationError(nameof(User), "User not found"));
 
 		bool passwordsMatch = authManager.VerifyPassword(data.Password, model.Password);
 		if (!passwordsMatch)
-			return Result.NotFound("User not found.");
+			return Result.Invalid(new ValidationError(nameof(User), "User not found"));
 
 		// Log entry
 		userRepository.CreateLoginLog(model.Id);
 
 		await db.SaveChangesAsync(true, ct);
 
-		return Result.Success(new TokenDto { Token = authManager.GenerateJwtToken(model) });
+		return Result.Success(new TokenDto { Content = authManager.GenerateJwtToken(model) });
 	}
 }

@@ -1,6 +1,6 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
+using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Commands;
 
@@ -18,13 +18,6 @@ internal class Login(IMediator mediator) : Endpoint<LoginDto, TokenDto>
 	{
 		var result = await mediator.Send(new LoginCommand(req), ct);
 
-		if (result.IsOk())
-		{
-			await Send.OkAsync(result, ct);
-		}
-		else if (result.IsNotFound())
-		{
-			await Send.NotFoundAsync(ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct: ct);
 	}
 }

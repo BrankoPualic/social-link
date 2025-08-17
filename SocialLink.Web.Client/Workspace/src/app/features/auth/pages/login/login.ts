@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormComponent } from '../../../../shared/base/base-form';
-import { ILoginModel } from '../../models/login-model';
+import { LoginModel } from '../../models/login-model';
 import { InputText } from '../../../../shared/components/forms/input-text';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { PageLoaderService } from '../../../../core/services/page-loader.service';
+import { ErrorService } from '../../../../core/services/error.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +15,15 @@ import { RouterLink } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
-export class Login extends BaseFormComponent<ILoginModel> implements OnInit {
+export class Login extends BaseFormComponent<LoginModel> implements OnInit {
   constructor(
-    fb: FormBuilder
+    loaderService: PageLoaderService,
+    fb: FormBuilder,
+    private authService: AuthService,
+    private errorService: ErrorService,
+    private router: Router
   ) {
-    super(fb);
+    super(loaderService, fb);
   }
 
   ngOnInit(): void {
@@ -24,12 +32,20 @@ export class Login extends BaseFormComponent<ILoginModel> implements OnInit {
 
   override initializeForm(): void {
     this.form = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      email: [''],
+      password: ['']
     })
   }
 
   override submit(): void {
-    throw new Error('Method not implemented.');
+    this.loading = true;
+
+    this.authService.login(this.form.value)
+      .pipe(
+        finalize(() => this.loading = false)
+      ).subscribe({
+        next: () => { console.log('next'), this.router.navigateByUrl('/') },
+        error: (_) => this.errorService.add(_.error.errors)
+      });
   }
 }

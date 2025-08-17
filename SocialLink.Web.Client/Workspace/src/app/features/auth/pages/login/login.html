@@ -1,17 +1,19 @@
 <div class="auth-background">
-  <form>
+  <form [formGroup]="form">
     <div class="mb-4 text-center auth-logo">
       <img src="../../../../../assets/images/logo-pink.svg" alt="Pink logo" />
     </div>
 
-    <app-input-text [formControl]="$any(form.controls['username'])"
-                    [label]="'Username'"
-                    [required]="true" />
+    <app-input-text [formControl]="$any(form.controls['email'])"
+                    [label]="'Email'"
+                    [required]="true"
+                    [validation]="'email'" />
 
     <app-input-text [formControl]="$any(form.controls['password'])"
                     [label]="'Password'"
                     [type]="'password'"
-                    [required]="true" />
+                    [required]="true"
+                    [validation]="'password'" />
 
     <div class="form-btn-group">
       <button class="btn btn-sm align-self-center btn-primary col-3 py-2 mt-2" (click)="submit()">Login</button>
