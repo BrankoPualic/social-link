@@ -12,7 +12,7 @@ public static class EndpointExtensions
 	{
 		var task = result.Status switch
 		{
-			ResultStatus.Ok => httpContext.Response.SendOkAsync(result, cancellation: ct),
+			ResultStatus.Ok => httpContext.Response.SendOkAsync(result.Value, cancellation: ct),
 			ResultStatus.Created => httpContext.Response.SendCreatedAtAsync(null, cancellation: ct),
 			ResultStatus.NoContent => httpContext.Response.SendNoContentAsync(ct),
 			ResultStatus.NotFound => httpContext.Response.SendNotFoundAsync(ct),

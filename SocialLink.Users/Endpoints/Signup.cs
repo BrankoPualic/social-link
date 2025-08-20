@@ -1,8 +1,8 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Commands;
 
@@ -37,13 +37,6 @@ internal class Signup(IMediator mediator) : Endpoint<SignupDto, TokenDto>
 
 		var result = await mediator.Send(new SignupCommand(req, fileDtos.FirstOrDefault()), ct);
 
-		if (result.IsOk())
-		{
-			await Send.OkAsync(result, ct);
-		}
-		else if (result.IsInvalid())
-		{
-			await Send.ErrorsAsync(cancellation: ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct: ct);
 	}
 }

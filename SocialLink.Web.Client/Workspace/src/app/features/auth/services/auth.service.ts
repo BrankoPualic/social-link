@@ -39,7 +39,7 @@ export class AuthService {
     if (!token || !token.content)
       return;
 
-    this.storageService.set('token', JSON.stringify(token));
+    this.storageService.set('token', JSON.stringify(token.content));
   }
 
   private decodeToken = (token: Token) => token.content && JSON.parse(atob(token.content.split('.')[1]));
