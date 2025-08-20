@@ -9,6 +9,8 @@ using SocialLink.Notifications;
 using SocialLink.Posts;
 using SocialLink.SharedKernel;
 using SocialLink.Users;
+using SocialLink.Web.Binders;
+using SocialLink.Web.Middlewares;
 using SocialLink.Web.Objects;
 using System.Reflection;
 
@@ -32,6 +34,7 @@ builder.Services.AddCors();
 
 builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
 
+builder.Services.AddSingleton(typeof(IRequestBinder<>), typeof(JsonModelBinder<>));
 builder.Services
 	.AddAuthenticationJwtBearer(_ => _.SigningKey = builder.Configuration["Jwt:SecretKey"])
 	.AddAuthorization()
@@ -51,6 +54,8 @@ builder.Services.AddBlobsModuleServices(builder.Configuration, logger, mediatRAs
 builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblies(mediatRAssemblies.ToArray()));
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Check third party services connection
 using (var scope = app.Services.CreateScope())
