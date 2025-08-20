@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Domain;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Blobs.Integrations;
@@ -17,6 +18,8 @@ internal class DeleteBlobCommandHandler(IBlobDatabaseContext db) : MongoCommandH
 
 		var updateBuilder = Builders<Blob>.Update;
 		var update = updateBuilder.Set(_ => _.IsActive, false);
+
+		update = update.WithAudit(db.CurrentUser.Id);
 
 		var result = await db.Blobs.UpdateOneAsync(filter, update, cancellationToken: ct);
 

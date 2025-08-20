@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
-using SocialLink.Notifications;
 using SocialLink.Notifications.Domain;
+using SocialLink.SharedKernel;
 
 namespace SocialLink.Notifications.Data;
 
-internal sealed class NotificationMongoContext : INotificationMongoContext
+internal sealed class NotificationMongoContext : MongoDatabaseContext, INotificationMongoContext
 {
 	private readonly IMongoDatabase _db;
 
-	public NotificationMongoContext(IConfiguration config, IMongoClient client)
+	public NotificationMongoContext(IConfiguration config, IMongoClient client, IIdentityUser currentUser) : base(currentUser)
 	{
 		string databaseName = config.GetSection("MongoDatabases")["Notifications"];
 		_db = client.GetDatabase(databaseName);

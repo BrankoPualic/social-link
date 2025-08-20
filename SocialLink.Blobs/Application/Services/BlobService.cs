@@ -42,7 +42,7 @@ internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBl
 	{
 		var isNew = blob == null;
 
-		blob ??= new Blob { Id = Guid.NewGuid() };
+		blob ??= new Blob { Id = Guid.NewGuid(), IsActive = true };
 
 		var (uri, cleanup) = await azureBlobRepository.UploadIntoSinglesDirectoryAsync(GetContainerName(), blob.Id, file);
 
@@ -53,7 +53,7 @@ internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBl
 		blob.Size = file.Size ?? file.Buffer.Length;
 
 		if (isNew)
-			await db.Blobs.InsertOneAsync(blob);
+			await db.ExecuteWithAuditAsync(blob, isNew, _ => db.Blobs.InsertOneAsync(_));
 
 		return (blob, cleanup);
 	}

@@ -12,7 +12,7 @@ internal class AzureBlobRepository : IAzureBlobRepository
 
 	private BlobContainerClient GetClient(string containerName) => GetClient(containerName, StorageName);
 
-	protected virtual string StorageName => "blobs";
+	protected virtual string StorageName => Settings.AzureStorageName;
 
 	public async Task<string> GetBlobSasUri(string containerName, Guid id, string blobName) => await GetBlobSasUri(containerName, $"{id}/{blobName}");
 

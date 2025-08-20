@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using SocialLink.Blobs.Domain;
+using SocialLink.SharedKernel;
 
 namespace SocialLink.Blobs.Data;
 
-internal sealed class BlobDatabaseContext : IBlobDatabaseContext
+internal sealed class BlobDatabaseContext : MongoDatabaseContext, IBlobDatabaseContext
 {
 	private readonly IMongoDatabase _db;
 
-	public BlobDatabaseContext(IConfiguration config, IMongoClient client)
+	public BlobDatabaseContext(IConfiguration config, IMongoClient client, IIdentityUser currentUser) : base(currentUser)
 	{
 		string databaseName = config.GetSection("MongoDatabases")["Blobs"];
 		_db = client.GetDatabase(databaseName);

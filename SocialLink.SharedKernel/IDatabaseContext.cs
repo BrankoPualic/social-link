@@ -1,12 +1,14 @@
-﻿namespace SocialLink.SharedKernel;
+﻿using SocialLink.SharedKernel.Domain;
+
+namespace SocialLink.SharedKernel;
 
 public interface IDatabaseContextBase
-{ }
+{
+	IIdentityUser CurrentUser { get; }
+}
 
 public interface IEFDatabaseContext : IDatabaseContextBase
 {
-	IIdentityUser CurrentUser { get; }
-
 	bool HasChanges();
 
 	void ClearChanges();
@@ -17,4 +19,7 @@ public interface IEFDatabaseContext : IDatabaseContextBase
 }
 
 public interface IMongoDatabaseContext : IDatabaseContextBase
-{ }
+{
+	Task<T> ExecuteWithAuditAsync<T>(T entity, bool isNew, Func<T, Task> mongoOperation)
+		where T : IAuditedDomainModel;
+}
