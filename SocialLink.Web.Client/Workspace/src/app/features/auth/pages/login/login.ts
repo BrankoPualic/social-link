@@ -4,7 +4,7 @@ import { BaseFormComponent } from '../../../../shared/base/base-form';
 import { LoginModel } from '../../models/login.model';
 import { InputText } from '../../../../shared/components/forms/input-text';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { PageLoaderService } from '../../../../core/services/page-loader.service';
 import { ErrorService } from '../../../../core/services/error.service';
 import { finalize } from 'rxjs/internal/operators/finalize';

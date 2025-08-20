@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../../../core/services/api.service';
-import { LoginModel } from '../models/login.model';
-import { Token } from '../models/token';
+import { ApiService } from './api.service';
 import { filter, map } from 'rxjs/operators';
-import { StorageService } from '../../../core/services/storage.service';
-import { FileUploadService } from '../../../core/services/file-upload.service';
+import { StorageService } from './storage.service';
+import { FileUploadService } from './file-upload.service';
 import { HttpResponse, HttpEventType } from '@angular/common/http';
+import { LoginModel } from '../../features/auth/models/login.model';
+import { Token } from '../../features/auth/models/token';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class AuthService {
   constructor(
     private apiService: ApiService,
     private storageService: StorageService,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private router: Router
   ) { }
 
   login(data: LoginModel) {
@@ -31,6 +33,11 @@ export class AuthService {
         map(_ => _.body as Token),
         map(_ => this.setToken(_))
       );
+  }
+
+  signout() {
+    this.storageService.remove('token');
+    this.router.navigateByUrl('/login');
   }
 
   getToken = () => this.storageService.get('token');

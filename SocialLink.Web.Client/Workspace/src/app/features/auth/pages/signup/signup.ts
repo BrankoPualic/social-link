@@ -5,7 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { BaseFormComponent } from '../../../../shared/base/base-form';
 import { PageLoaderService } from '../../../../core/services/page-loader.service';
 import { SignupModel } from '../../models/signup.model';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { ErrorService } from '../../../../core/services/error.service';
 import { finalize } from 'rxjs/internal/operators/finalize';
 import { Dropdown } from '../../../../shared/components/forms/dropdown';
