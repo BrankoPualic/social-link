@@ -1,6 +1,16 @@
 import { Routes } from '@angular/router';
 import { authRoutes } from './features/auth/auth.routes';
+import { homeRoutes } from './features/home/home.routes';
+import { errorRoutes } from './features/errors/error.routes';
 
 export const routes: Routes = [
-  ...authRoutes
+  ...authRoutes,
+  ...homeRoutes,
+  ...errorRoutes,
+
+  {
+    path: "**",
+    redirectTo: "not-found",
+    pathMatch: "full"
+  }
 ];

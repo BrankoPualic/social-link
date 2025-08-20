@@ -8,7 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Workspace\public\" />
+    <Folder Include="Workspace\src\app\core\interceptors\" />
     <Folder Include="Workspace\src\app\features\auth\pages\" />
+    <Folder Include="Workspace\src\app\features\errors\pages\" />
     <Folder Include="Workspace\src\app\shared\base\" />
     <Folder Include="Workspace\src\app\shared\components\forms\" />
     <Folder Include="Workspace\src\app\shared\directives\" />
