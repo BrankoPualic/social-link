@@ -47,6 +47,7 @@ export class Signup extends BaseFormComponent<SignupModel> implements IFileUploa
 
   override submit(): void {
     this.loading = true;
+    this.errorService.clean();
 
     this.authService.signup(this.form.value, this.file)
       .pipe(

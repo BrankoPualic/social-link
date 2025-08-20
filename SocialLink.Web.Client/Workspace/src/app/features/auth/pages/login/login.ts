@@ -8,10 +8,11 @@ import { AuthService } from '../../services/auth.service';
 import { PageLoaderService } from '../../../../core/services/page-loader.service';
 import { ErrorService } from '../../../../core/services/error.service';
 import { finalize } from 'rxjs/internal/operators/finalize';
+import { ValidationDirective } from '../../../../shared/directives/validation.directive';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, InputText, RouterLink],
+  imports: [ReactiveFormsModule, InputText, RouterLink, ValidationDirective],
   templateUrl: './login.html'
 })
 export class Login extends BaseFormComponent<LoginModel> {
@@ -34,6 +35,7 @@ export class Login extends BaseFormComponent<LoginModel> {
 
   override submit(): void {
     this.loading = true;
+    this.errorService.clean();
 
     this.authService.login(this.form.value)
       .pipe(
