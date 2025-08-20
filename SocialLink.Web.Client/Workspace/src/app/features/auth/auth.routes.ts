@@ -6,8 +6,9 @@ export const authRoutes: Routes = [
     title: "Login",
     loadComponent: () => import("./pages/login/login").then(_ => _.Login)
   },
-  //{
-  //  path: "signup",
-  //  title: "Signup"
-  //}
+  {
+    path: "signup",
+    title: "Signup",
+    loadComponent: () => import("./pages/signup/signup").then(_ => _.Signup)
+  }
 ];

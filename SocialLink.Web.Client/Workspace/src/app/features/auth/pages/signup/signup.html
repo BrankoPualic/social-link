@@ -1,0 +1,96 @@
+<div class="auth-background">
+  <form [formGroup]="form" class="signup-form">
+    <div class="mb-4 text-center auth-logo">
+      <img src="../../../../../assets/images/logo-pink.svg" alt="Pink logo" />
+    </div>
+
+    <div class="mb-3 d-flex flex-column">
+      <div class="d-flex flex-md-row flex-column align-items-md-center">
+        <label class="col-12 col-md-3">
+          Profile Image
+        </label>
+
+        <div class="col-12 col-md-9">
+          <input type="file"
+                 class="form-control"
+                 (change)="onFileChange($event)" />
+        </div>
+      </div>
+    </div>
+
+    <app-input-text [formControl]="$any(form.controls['firstName'])"
+                    [label]="'First Name'"
+                    [required]="true"
+                    [validation]="'firstName'" />
+
+    <app-input-text [formControl]="$any(form.controls['lastName'])"
+                    [label]="'Last Name'"
+                    [required]="true"
+                    [validation]="'lastName'" />
+
+    <app-input-text [formControl]="$any(form.controls['username'])"
+                    [label]="'Username'"
+                    [required]="true"
+                    [validation]="'username'" />
+
+    <app-input-text [formControl]="$any(form.controls['email'])"
+                    [label]="'Email'"
+                    [required]="true"
+                    [validation]="'email'" />
+
+    <app-input-text [formControl]="$any(form.controls['password'])"
+                    [label]="'Password'"
+                    [type]="'password'"
+                    [required]="true"
+                    [validation]="'password'" />
+
+    <app-input-text [formControl]="$any(form.controls['repeatPassword'])"
+                    [label]="'Repeat Password'"
+                    [type]="'password'"
+                    [required]="true"
+                    [validation]="'repeatPassword'" />
+
+    <app-dropdown [formControl]="$any(form.controls['genderId'])"
+                  [label]="'Gender'"
+                  [required]="true"
+                  [validation]="'genderId'"
+                  [loadMethod]="lookupService.get('/users/genders')" />
+
+    <div class="mb-3 d-flex flex-column">
+      <div class="d-flex flex-md-row flex-column align-items-md-center">
+        <label class="col-12 col-md-3">
+          Date of Birth
+        </label>
+
+        <div class="col-12 col-md-9">
+          <input type="date"
+                 class="form-control"
+                 [formControl]="$any(form.controls['dateOfBirth'])" />
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3 d-flex flex-column">
+      <div class="form-check" aria-describedby="privacyHelp">
+        <input class="form-check-input"
+               type="checkbox"
+               id="privacy"
+               [formControl]="$any(form.controls['isPrivate'])" />
+        <label class="form-check-label pointer" for="privacy">
+          Do you want your profile to be private?
+        </label>
+      </div>
+      <div id="privacyHelp" class="form-text">
+        This setting can be changed later in profile settings.
+      </div>
+    </div>
+
+    <div class="form-btn-group">
+      <button class="btn btn-sm align-self-center btn-primary col-3 py-2 mt-2" (click)="submit()">Sign up</button>
+    </div>
+
+    <div class="col-12 mt-3 text-center">
+      Already have an account? <a class="text-decoration-none" [routerLink]="['/login']">Log in</a>
+    </div>
+  </form>
+</div>

@@ -6,8 +6,15 @@
   justify-content: center;
   align-items: center;
 
-  form {
+  form.login-form {
     width: 30rem;
+  }
+
+  form.signup-form {
+    width: 42.5rem;
+  }
+
+  form {
     background-color: $white;
     padding: 2rem 3rem;
     border-radius: $border-radius;

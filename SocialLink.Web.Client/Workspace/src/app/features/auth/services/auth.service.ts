@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../../core/services/api.service';
-import { LoginModel } from '../models/login-model';
+import { LoginModel } from '../models/login.model';
 import { Token } from '../models/token';
-import { map } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { StorageService } from '../../../core/services/storage.service';
+import { FileUploadService } from '../../../core/services/file-upload.service';
+import { HttpResponse, HttpEventType } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ import { StorageService } from '../../../core/services/storage.service';
 export class AuthService {
   constructor(
     private apiService: ApiService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private fileUploadService: FileUploadService
   ) { }
 
   login(data: LoginModel) {
@@ -21,9 +24,11 @@ export class AuthService {
       );
   }
 
-  signup(data: any) {
-    return this.apiService.post<Token>('/users/signup', data)
+  signup(data: any, file?: File) {
+    return this.fileUploadService.uploadMultipart<any, Token>('/users/signup', file ? [file] : [], data)
       .pipe(
+        filter((event): event is HttpResponse<Token> => event.type === HttpEventType.Response),
+        map(_ => _.body as Token),
         map(_ => this.setToken(_))
       );
   }

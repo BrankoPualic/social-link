@@ -1,13 +1,14 @@
 ﻿using Ardalis.Result;
 using FastEndpoints;
 using MediatR;
-using SocialLink.Users.Application.Dtos;
+using Microsoft.AspNetCore.Http;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Commands;
 
 namespace SocialLink.Users.Endpoints;
 
-internal class Signup(IMediator mediator) : Endpoint<SignupRequest, TokenDto>
+internal class Signup(IMediator mediator) : Endpoint<SignupDto, TokenDto>
 {
 	public override void Configure()
 	{
@@ -16,7 +17,7 @@ internal class Signup(IMediator mediator) : Endpoint<SignupRequest, TokenDto>
 		AllowFileUploads();
 	}
 
-	public override async Task HandleAsync(SignupRequest req, CancellationToken ct)
+	public override async Task HandleAsync(SignupDto req, CancellationToken ct)
 	{
 		var files = HttpContext.Request.Form.Files;
 
@@ -34,7 +35,7 @@ internal class Signup(IMediator mediator) : Endpoint<SignupRequest, TokenDto>
 
 		var fileDtos = await Task.WhenAll(fileReads);
 
-		var result = await mediator.Send(new SignupCommand(req.Model, fileDtos.FirstOrDefault()), ct);
+		var result = await mediator.Send(new SignupCommand(req, fileDtos.FirstOrDefault()), ct);
 
 		if (result.IsOk())
 		{

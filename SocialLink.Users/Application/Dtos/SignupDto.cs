@@ -1,5 +1,4 @@
-﻿using SocialLink.Users.Domain;
-using SocialLink.SharedKernel;
+﻿using SocialLink.SharedKernel;
 using SocialLink.Users.Domain;
 
 namespace SocialLink.Users.Application.Dtos;
@@ -20,20 +19,23 @@ internal class SignupDto
 
 	public eGender GenderId { get; set; }
 
+	public DateTime? DateOfBirth { get; set; }
+
 	public bool IsPrivate { get; set; }
 
 	public void ToModel(User model)
 	{
-		model.GenerateIdIfNew();
-
 		if (model.IsNew)
 			model.IsActive = true;
+
+		model.GenerateIdIfNew();
 
 		model.FirstName = FirstName;
 		model.LastName = LastName;
 		model.Username = Username;
 		model.Email = Email;
 		model.GenderId = GenderId;
+		model.DateOfBirth = DateOfBirth;
 		model.IsPrivate = IsPrivate;
 		model.Roles = [new UserRole { RoleId = eSystemRole.Member }];
 	}
