@@ -23,4 +23,47 @@ export class Functions {
   private static cleanseAssertionOperators(parsedName: string): string {
     return parsedName.replace(/[?!]/g, '');
   }
+
+  // Date
+
+  static formatRequestDates(data: any): void {
+    // Ignore things that aren't objects.
+    if (typeof data !== 'object')
+      return data;
+
+    for (let key in data) {
+      if (data.hasOwnProperty(key)) {
+        const value = data[key];
+
+        if (value instanceof Date) {
+          data[key] = value.toISOString();
+        } else if (typeof value === 'object') {
+          this.formatRequestDates(value);
+        }
+      }
+    }
+  }
+
+  // JSON
+
+  static toJson(data: any): string {
+    try {
+      return JSON.stringify(data, Functions.removeCircularReferences());
+    } catch (error) {
+      console.error('Error serializing object:', error);
+      return '{}';
+    }
+  }
+
+  private static removeCircularReferences() {
+    const seen = new WeakSet();
+    return (key: any, value: any) => {
+      if (typeof value === 'object' && value !== null) {
+        if (seen.has(value))
+          return '[Circular]';
+        seen.add(value);
+      }
+      return value;
+    }
+  }
 }

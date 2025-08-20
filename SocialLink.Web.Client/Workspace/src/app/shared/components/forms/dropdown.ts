@@ -1,10 +1,12 @@
-import { Component, Self, input } from "@angular/core";
-import { ControlValueAccessor, FormControl, NgControl, ReactiveFormsModule } from "@angular/forms";
+import { Component, OnInit, Self, input } from "@angular/core";
 import { RequiredFieldMark } from "./required-field-mark";
+import { ControlValueAccessor, FormControl, NgControl, ReactiveFormsModule } from "@angular/forms";
 import { ValidationDirective } from "../../directives/validation.directive";
+import { Observable, take } from "rxjs";
+import { Lookup } from "../../../core/models/lookup";
 
 @Component({
-  selector: 'app-input-text',
+  selector: 'app-dropdown',
   standalone: true,
   imports: [RequiredFieldMark, ReactiveFormsModule, ValidationDirective],
   template: `
@@ -15,28 +17,35 @@ import { ValidationDirective } from "../../directives/validation.directive";
         </label>
 
         <div class="col-12 col-md-9">
-          <input
-            type="{{ type() }}"
-            class="form-control"
-            [formControl]="control"
-            placeholder="{{ placeholder() }}"
-          />
+          <select class="form-select" [formControl]="control">
+            @for (item of data; track $index) {
+              <option [value]="item.id">{{ item.description }}</option>
+            }
+          </select>
         </div>
       </div>
     </div>
   `
 })
-export class InputText implements ControlValueAccessor {
+export class Dropdown implements ControlValueAccessor, OnInit {
   label = input('');
-  type = input('text');
   required = input(false);
-  placeholder = input('');
   validation = input('');
+  loadMethod = input<Observable<Lookup[]>>();
+  data: Lookup[] = [];
 
   constructor(
     @Self() public ngControl: NgControl
   ) {
     this.ngControl.valueAccessor = this;
+  }
+
+  ngOnInit(): void {
+    if (this.loadMethod()) {
+      this.loadMethod()?.pipe(take(1)).subscribe({
+        next: _ => this.data = _
+      });
+    }
   }
 
   writeValue(obj: any): void { }

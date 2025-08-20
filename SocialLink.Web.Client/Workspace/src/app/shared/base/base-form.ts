@@ -15,6 +15,7 @@ export abstract class BaseFormComponent<T extends object> extends BaseComponentG
     super(loaderService);
 
     this.form = this.fb.group({});
+    this.initializeForm();
   }
 
   abstract initializeForm(): void;

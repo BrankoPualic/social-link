@@ -11,5 +11,5 @@ export class ErrorService {
 
   clean = () => this.errors.set([]);
 
-  convertToError = (err: Record<string, string[]>): Error[] => Object.entries(err).map(([key, errors]) => ({ key, errors }));
+  convertToError = (err: Record<string, string[]>): Error[] => err && Object.entries(err).map(([key, errors]) => ({ key, errors }));
 }
