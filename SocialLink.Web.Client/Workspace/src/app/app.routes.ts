@@ -10,7 +10,7 @@ export const routes: Routes = [
 
   {
     path: "**",
-    redirectTo: "not-found",
+    redirectTo: "",
     pathMatch: "full"
   }
 ];

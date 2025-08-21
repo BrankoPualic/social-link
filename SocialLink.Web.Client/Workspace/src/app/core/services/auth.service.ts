@@ -49,5 +49,25 @@ export class AuthService {
     this.storageService.set('token', JSON.stringify(token.content));
   }
 
-  private decodeToken = (token: Token) => token.content && JSON.parse(atob(token.content.split('.')[1]));
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    return !!token && this.isTokenValid(token);
+  };
+
+  isTokenValid(token: string): boolean {
+    if (!token)
+      return false;
+
+    try {
+      const decodedToken = this.decodeToken(token);
+      const expirationTime = decodedToken.exp * 1000;
+      return expirationTime > Date.now();
+    }
+    catch (err) {
+      console.error('Error decoding token:', err);
+      return false;
+    }
+  }
+
+  private decodeToken = (token: string) => token && JSON.parse(atob(token.split('.')[1]));
 }
