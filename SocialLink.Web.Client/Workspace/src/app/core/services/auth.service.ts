@@ -35,7 +35,7 @@ export class AuthService {
       );
   }
 
-  signout() {
+  logout() {
     this.storageService.remove('token');
     this.router.navigateByUrl('/login');
   }

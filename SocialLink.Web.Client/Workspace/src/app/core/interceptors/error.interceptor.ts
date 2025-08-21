@@ -15,7 +15,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       if (err) {
         switch (err.status) {
           case 401:
-            authService.signout();
+            authService.logout();
             break;
           case 403:
             router.navigateByUrl('/unauthorized');
