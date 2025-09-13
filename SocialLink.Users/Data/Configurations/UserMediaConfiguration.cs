@@ -15,7 +15,7 @@ internal class UserMediaConfiguration : IEntityTypeConfiguration<UserMedia>
 			.HasForeignKey(_ => _.UserId)
 			.OnDelete(DeleteBehavior.Restrict);
 
-		builder.HasIndex(_ => new { _.UserId, _.Type })
+		builder.HasIndex(_ => new { _.UserId, _.Type, _.IsActive })
 			.IncludeProperties(_ => new { _.BlobId });
 	}
 }

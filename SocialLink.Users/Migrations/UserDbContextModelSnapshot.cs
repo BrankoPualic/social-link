@@ -177,9 +177,9 @@ namespace SocialLink.Users.Migrations
 
                     b.HasKey("UserId", "BlobId");
 
-                    b.HasIndex("UserId", "Type");
+                    b.HasIndex("UserId", "Type", "IsActive");
 
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("UserId", "Type"), new[] { "BlobId" });
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("UserId", "Type", "IsActive"), new[] { "BlobId" });
 
                     b.ToTable("UserMedia", "user");
                 });
