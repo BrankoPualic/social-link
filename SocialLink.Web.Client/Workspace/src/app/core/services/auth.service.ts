@@ -7,6 +7,7 @@ import { HttpResponse, HttpEventType } from '@angular/common/http';
 import { LoginModel } from '../../features/auth/models/login.model';
 import { Token } from '../../features/auth/models/token';
 import { Router } from '@angular/router';
+import { eSystemRole } from '../enumerators/system-role.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -42,11 +43,19 @@ export class AuthService {
 
   getToken = () => this.storageService.get('token');
 
+  getUserId() {
+    const token = this.getToken();
+    if (!token)
+      return null;
+
+    return this.decodeToken(token).UserId;
+  }
+
   setToken(token: Token): void {
     if (!token || !token.content)
       return;
 
-    this.storageService.set('token', JSON.stringify(token.content));
+    this.storageService.set('token', token.content);
   }
 
   isLoggedIn(): boolean {
@@ -67,6 +76,16 @@ export class AuthService {
       console.error('Error decoding token:', err);
       return false;
     }
+  }
+
+  hasAccess(role: eSystemRole): boolean {
+    const token = this.getToken();
+    if (!token)
+      return false;
+
+    const roles: string[] = this.decodeToken(token).Roles.split(',');
+
+    return !!roles.length && roles.includes(role.toString());
   }
 
   private decodeToken = (token: string) => token && JSON.parse(atob(token.split('.')[1]));

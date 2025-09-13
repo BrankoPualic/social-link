@@ -1,0 +1,52 @@
+<div class="d-flex flex-row">
+  <app-navigation />
+
+  <div class="container-fluid p-4">
+    <div class="d-flex flex-lg-row flex-column">
+      <div class="profile-image border rounded">
+        <img class="rounded img-fluid" [src]="getProfileImage()" alt="Profile image" />
+      </div>
+
+      <div class="col-9 ms-lg-4">
+        <div class="row">
+          <span class="col-lg-2 col-12 fw-semibold">Full Name:</span>
+          <span class="col-lg-10 col-12">{{ user?.fullName }}</span>
+        </div>
+        <div class="row">
+          <span class="col-lg-2 col-12 fw-semibold">Username:</span>
+          <span class="col-lg-10 col-12">{{ user?.username }}</span>
+        </div>
+        <div class="row">
+          <span class="col-lg-2 col-12 fw-semibold">Posts:</span>
+          <span class="col-lg-10 col-12" [ngClass]="{'text-black-50': !user?.posts}">{{ user?.posts }}</span>
+        </div>
+        <div class="row">
+          <span class="col-lg-2 col-12 fw-semibold">Followers:</span>
+          <span class="col-lg-10 col-12" [ngClass]="{'text-black-50': !user?.followers}">{{ user?.followers }}</span>
+        </div>
+        <div class="row">
+          <span class="col-lg-2 col-12 fw-semibold">Following:</span>
+          <span class="col-lg-10 col-12" [ngClass]="{'text-black-50': !user?.following}">{{ user?.following }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-lg-3 mt-1 d-flex flex-lg-row flex-column">
+      @if (isCurrentUser)
+      {
+         <button class="btn btn-outline-primary px-3 me-lg-2">Edit profile</button>
+         <button class="btn btn-outline-primary px-3 mt-lg-0 mt-1">Upload profile image</button>
+      }
+      @else if (!isFollowed)
+      {
+        <button class="btn btn-primary px-3">Follow</button>
+      }
+      @else
+      {
+        <button class="btn btn-outline-primary px-3 me-lg-2">Unfollow</button>
+        <button class="btn btn-outline-primary px-3 mt-lg-0 mt-1">Message</button>
+      }
+    </div>
+  </div>
+
+</div>

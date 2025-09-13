@@ -22,9 +22,16 @@ internal class UserDto
 
 	public BlobDto ProfileImage { get; set; }
 
+	public int? Posts { get; set; }
+
+	public int? Followers { get; set; }
+
+	public int? Following { get; set; }
+
 	public static Expression<Func<User, UserDto>> Projection => _ => new()
 	{
 		Id = _.Id,
+		Username = _.Username,
 		FirstName = _.FirstName,
 		LastName = _.LastName,
 		FullName = _.FullName,

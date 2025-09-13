@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SocialLink.Blobs.Contracts.Queries;
+using SocialLink.Posts.Contracts;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 
@@ -32,6 +33,21 @@ internal class GetProfileQueryHandler(IUserDatabaseContext db, IMediator mediato
 		var blobResult = await mediator.Send(new GetBlobQuery(profileImageId), ct);
 		if (blobResult.IsSuccess)
 			result.ProfileImage = blobResult.Value;
+
+		var follows = await db.Follows
+			.Where(_ => _.FollowerId == userId || _.FollowingId == userId)
+			.GroupBy(_ => 1)
+			.Select(g => new
+			{
+				Followers = g.Count(_ => _.FollowingId == userId),
+				Following = g.Count(_ => _.FollowerId == userId)
+			})
+			.FirstOrDefaultAsync(ct);
+
+		result.Followers = follows?.Followers ?? 0;
+		result.Following = follows?.Following ?? 0;
+
+		result.Posts = await mediator.Send(new GetUserPostCountQuery(userId), ct);
 
 		return Result.Success(result);
 	}

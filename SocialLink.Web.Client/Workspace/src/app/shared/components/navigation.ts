@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
+import { AuthService } from "../../core/services/auth.service";
 
 @Component({
   selector: 'app-navigation',
@@ -11,12 +12,12 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
       </div>
 
       <ul>
-        <li routerLink="" routerLinkActive="active"><i class="fa-regular fa-house"></i> Home</li>
+        <li routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fa-regular fa-house"></i> Home</li>
         <li routerLinkActive="active"><i class="fa-solid fa-magnifying-glass"></i> Search</li>
         <li routerLinkActive="active"><i class="fa-regular fa-message"></i> Inbox</li>
         <li routerLinkActive="active"><i class="fa-regular fa-bell"></i> Notifications</li>
 
-        <li routerLinkActive="active"><i class="fa-regular fa-user"></i> Profile</li>
+        <li [routerLink]="['/profile', userId]" routerLinkActive="active"><i class="fa-regular fa-user"></i> Profile</li>
         <li><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</li>
       </ul>
     </div>
@@ -53,4 +54,10 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
     }
   `
 })
-export class Navigation { }
+export class Navigation {
+  userId?: string;
+
+  constructor(private authService: AuthService) {
+    this.userId = this.authService.getUserId();
+  }
+}

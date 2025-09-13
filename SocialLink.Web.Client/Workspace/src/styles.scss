@@ -15,3 +15,50 @@
   font-size: 0.875em;
   color: $error;
 }
+
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+  color: $white;
+
+  &:hover {
+    background-color: darken($primary, 10%);
+    border-color: darken($primary, 10%);
+  }
+
+  &:focus, &:active {
+    background-color: darken($primary, 15%) !important;
+    border-color: darken($primary, 15%);
+    box-shadow: none;
+    outline: none;
+  }
+
+  &:disabled {
+    background-color: $primary-light;
+    border-color: $primary-light;
+  }
+}
+
+.btn-outline-primary {
+  background-color: transparent;
+  border-color: $primary;
+  color: $primary;
+
+  &:hover {
+    background-color: darken($primary, 10%);
+    border-color: darken($primary, 10%);
+  }
+
+  &:focus, &:active {
+    background-color: darken($primary, 15%) !important;
+    border-color: darken($primary, 15%);
+    box-shadow: none;
+    outline: none;
+  }
+
+  &:disabled {
+    background-color: transparent;
+    border-color: $primary-light;
+    color: $primary-light;
+  }
+}

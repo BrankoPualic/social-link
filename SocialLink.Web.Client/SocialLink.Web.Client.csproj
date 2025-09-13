@@ -9,14 +9,16 @@
   <ItemGroup>
     <Folder Include="Workspace\public\" />
     <Folder Include="Workspace\src\app\core\interceptors\" />
+    <Folder Include="Workspace\src\app\core\guards\" />
     <Folder Include="Workspace\src\app\features\auth\pages\" />
     <Folder Include="Workspace\src\app\features\errors\pages\" />
     <Folder Include="Workspace\src\app\shared\base\" />
     <Folder Include="Workspace\src\app\shared\components\forms\" />
     <Folder Include="Workspace\src\app\shared\directives\" />
     <Folder Include="Workspace\src\app\shared\interfaces\" />
-    <Folder Include="Workspace\src\assets\images\" />
+    <Folder Include="Workspace\src\app\shared\models\" />
     <Folder Include="Workspace\src\assets\styles\" />
-  </ItemGroup>
+  	<Folder Include="Workspace\src\app\features\user\pages" />
+</ItemGroup>
 
 </Project>

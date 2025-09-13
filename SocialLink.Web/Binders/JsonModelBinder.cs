@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 namespace SocialLink.Web.Binders;
 
+[Obsolete("Find a way to use default fastendpoint formdata binding")]
 public class JsonModelBinder<TRequest> : IRequestBinder<TRequest> where TRequest : notnull, new()
 {
 	private static JsonSerializerSettings DeserializationSettings { get; } = new()

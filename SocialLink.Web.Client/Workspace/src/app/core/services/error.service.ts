@@ -12,4 +12,6 @@ export class ErrorService {
   clean = () => this.errors.set([]);
 
   convertToError = (err: Record<string, string[]>): Error[] => err && Object.entries(err).map(([key, errors]) => ({ key, errors }));
+
+  // TODO: Create methods for teast message error or put it into base component
 }

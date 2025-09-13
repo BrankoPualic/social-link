@@ -9,7 +9,6 @@ using SocialLink.Notifications;
 using SocialLink.Posts;
 using SocialLink.SharedKernel;
 using SocialLink.Users;
-using SocialLink.Web.Binders;
 using SocialLink.Web.Middlewares;
 using SocialLink.Web.Objects;
 using System.Reflection;
@@ -34,7 +33,8 @@ builder.Services.AddCors();
 
 builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
 
-builder.Services.AddSingleton(typeof(IRequestBinder<>), typeof(JsonModelBinder<>));
+// TODO: Find a way to use default fastendpoint formdata binding (endpoint: UsersModel -> Signup, UsersModule -> UpdateProfileImage)
+//builder.Services.AddSingleton(typeof(IRequestBinder<>), typeof(JsonModelBinder<>));
 builder.Services
 	.AddAuthenticationJwtBearer(_ => _.SigningKey = builder.Configuration["Jwt:SecretKey"])
 	.AddAuthorization()
