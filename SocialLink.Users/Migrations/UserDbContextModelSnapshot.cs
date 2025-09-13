@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialLink.Users.Data;
 
-
 #nullable disable
 
 namespace SocialLink.Users.Migrations
@@ -170,12 +169,17 @@ namespace SocialLink.Users.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("Type")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UploadedOn")
                         .HasColumnType("datetime2");
 
                     b.HasKey("UserId", "BlobId");
 
-                    b.HasIndex("BlobId");
+                    b.HasIndex("UserId", "Type");
+
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("UserId", "Type"), new[] { "BlobId" });
 
                     b.ToTable("UserMedia", "user");
                 });

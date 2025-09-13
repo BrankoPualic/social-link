@@ -8,6 +8,8 @@ internal class UserMedia
 
 	public Guid BlobId { get; set; }
 
+	public eUserMedia? Type { get; set; }
+
 	public bool IsActive { get; set; }
 
 	public DateTime UploadedOn { get; set; }
