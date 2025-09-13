@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLink.Blobs.Contracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLink.Web.Client", "SocialLink.Web.Client\SocialLink.Web.Client.csproj", "{84791DCF-884A-438F-8A3F-8D15C22F69B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLink.Posts.Contracts", "SocialLink.Post.Contract\SocialLink.Posts.Contracts.csproj", "{5123E94F-ABEB-48A8-90DB-FA390923FD01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{84791DCF-884A-438F-8A3F-8D15C22F69B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84791DCF-884A-438F-8A3F-8D15C22F69B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84791DCF-884A-438F-8A3F-8D15C22F69B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5123E94F-ABEB-48A8-90DB-FA390923FD01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5123E94F-ABEB-48A8-90DB-FA390923FD01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5123E94F-ABEB-48A8-90DB-FA390923FD01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5123E94F-ABEB-48A8-90DB-FA390923FD01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +118,7 @@ Global
 		{C839E4C2-1B51-4AA9-8959-F2F8D2AF3422} = {7AF4CA6F-3969-4931-9222-5922474DD243}
 		{D621345B-FA52-41C1-80A9-FA8909275544} = {7AF4CA6F-3969-4931-9222-5922474DD243}
 		{84791DCF-884A-438F-8A3F-8D15C22F69B9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{5123E94F-ABEB-48A8-90DB-FA390923FD01} = {CCA945CD-E4E8-4FE3-91D6-AFA88A4E413E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64397CE0-FE19-4458-8417-6364F523CC1B}

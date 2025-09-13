@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SocialLink.Blobs.Contracts\SocialLink.Blobs.Contracts.csproj" />
+    <ProjectReference Include="..\SocialLink.Post.Contract\SocialLink.Posts.Contracts.csproj" />
     <ProjectReference Include="..\SocialLink.SharedKernel\SocialLink.SharedKernel.csproj" />
     <ProjectReference Include="..\SocialLink.Users.Contracts\SocialLink.Users.Contracts.csproj" />
   </ItemGroup>
