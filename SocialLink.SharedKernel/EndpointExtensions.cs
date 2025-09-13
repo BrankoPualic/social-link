@@ -24,7 +24,7 @@ public static class EndpointExtensions
 		await task;
 	}
 
-	public static Task SendValidationErrorsAsync<T>(this Result<T> result, HttpContext httpContext, int statusCode = 400, CancellationToken ct = default)
+	private static Task SendValidationErrorsAsync<T>(this Result<T> result, HttpContext httpContext, int statusCode = 400, CancellationToken ct = default)
 	{
 		if (result.ValidationErrors is null || !result.ValidationErrors.Any())
 			return Task.CompletedTask;

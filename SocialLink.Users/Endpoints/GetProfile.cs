@@ -1,7 +1,7 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Queries;
 
@@ -19,13 +19,6 @@ internal class GetProfile(IMediator mediator) : Endpoint<GetProfileRequest, User
 	{
 		var result = await mediator.Send(new GetProfileQuery(req.UserId), ct);
 
-		if (result.IsOk())
-		{
-			await Send.OkAsync(result, ct);
-		}
-		else if (result.IsNotFound())
-		{
-			await Send.NotFoundAsync(ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct);
 	}
 }

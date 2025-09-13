@@ -1,4 +1,5 @@
-﻿using SocialLink.Users.Domain;
+﻿using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.Users.Domain;
 using System.Linq.Expressions;
 
 namespace SocialLink.Users.Application.Dtos;
@@ -18,6 +19,8 @@ internal class UserDto
 	public eGender GenderId { get; set; }
 
 	public bool IsPrivate { get; set; }
+
+	public BlobDto ProfileImage { get; set; }
 
 	public static Expression<Func<User, UserDto>> Projection => _ => new()
 	{

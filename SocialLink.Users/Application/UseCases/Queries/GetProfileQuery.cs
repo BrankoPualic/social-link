@@ -1,12 +1,14 @@
 ﻿using Ardalis.Result;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SocialLink.Users.Application.Dtos;
+using SocialLink.Blobs.Contracts.Queries;
 using SocialLink.SharedKernel.UseCases;
+using SocialLink.Users.Application.Dtos;
 
 namespace SocialLink.Users.Application.UseCases.Queries;
 internal sealed record GetProfileQuery(Guid UserId) : Query<UserDto>;
 
-internal class GetProfileQueryHandler(IUserDatabaseContext db) : EFQueryHandler<GetProfileQuery, UserDto>(db)
+internal class GetProfileQueryHandler(IUserDatabaseContext db, IMediator mediator) : EFQueryHandler<GetProfileQuery, UserDto>(db)
 {
 	public override async Task<Result<UserDto>> Handle(GetProfileQuery req, CancellationToken ct)
 	{
@@ -17,8 +19,19 @@ internal class GetProfileQueryHandler(IUserDatabaseContext db) : EFQueryHandler<
 			.Select(UserDto.Projection)
 			.FirstOrDefaultAsync(ct);
 
-		if (result == null)
-			return Result.NotFound("User not found.");
+		if (result is null)
+			return Result.Invalid(new ValidationError("User not found"));
+
+		var profileImageId = await db.Media
+			.Where(_ => _.UserId == userId)
+			.Where(_ => _.Type == eUserMedia.ProfileImage)
+			.Where(_ => _.IsActive)
+			.Select(_ => _.BlobId)
+			.FirstOrDefaultAsync(ct);
+
+		var blobResult = await mediator.Send(new GetBlobQuery(profileImageId), ct);
+		if (blobResult.IsSuccess)
+			result.ProfileImage = blobResult.Value;
 
 		return Result.Success(result);
 	}
