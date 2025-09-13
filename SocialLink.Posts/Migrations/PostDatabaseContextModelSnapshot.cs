@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialLink.Posts.Data;
 
-
 #nullable disable
 
 namespace SocialLink.Posts.Migrations
@@ -155,12 +154,13 @@ namespace SocialLink.Posts.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Type")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UploadedOn")
                         .HasColumnType("datetime2");
 
                     b.HasKey("PostId", "BlobId");
-
-                    b.HasIndex("BlobId");
 
                     b.ToTable("PostMedia", "post");
                 });

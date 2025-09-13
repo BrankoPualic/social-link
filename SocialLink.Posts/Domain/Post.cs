@@ -14,7 +14,5 @@ internal class Post : AuditedDomainModel<Guid>
 
 	public virtual ICollection<Comment> Comments { get; set; } = [];
 
-	public virtual ICollection<PostLike> Likes { get; set; } = [];
-
 	public virtual ICollection<PostMedia> Media { get; set; } = [];
 }

@@ -14,7 +14,5 @@ internal class PostMediaConfiguration : IEntityTypeConfiguration<PostMedia>
 			.WithMany(_ => _.Media)
 			.HasForeignKey(_ => _.PostId)
 			.OnDelete(DeleteBehavior.Restrict);
-
-		builder.HasIndex(_ => _.BlobId);
 	}
 }

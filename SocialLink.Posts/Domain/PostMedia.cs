@@ -8,6 +8,8 @@ internal class PostMedia
 
 	public Guid BlobId { get; set; }
 
+	public ePostMedia? Type { get; set; }
+
 	public int Order { get; set; }
 
 	public bool IsActive { get; set; }
