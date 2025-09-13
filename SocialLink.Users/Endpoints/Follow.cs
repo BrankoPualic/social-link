@@ -1,7 +1,7 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Commands;
 
@@ -19,17 +19,6 @@ internal class Follow(IMediator mediator) : Endpoint<FollowDto>
 	{
 		var result = await mediator.Send(new FollowCommand(req), ct);
 
-		if (result.IsNoContent())
-		{
-			await Send.NoContentAsync(ct);
-		}
-		else if (result.IsNotFound())
-		{
-			await Send.NotFoundAsync(ct);
-		}
-		else if (result.IsInvalid())
-		{
-			await Send.ErrorsAsync(cancellation: ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct);
 	}
 }

@@ -36,6 +36,7 @@ internal class GetProfileQueryHandler(IUserDatabaseContext db, IMediator mediato
 
 		var follows = await db.Follows
 			.Where(_ => _.FollowerId == userId || _.FollowingId == userId)
+			.Where(_ => !_.IsPending)
 			.GroupBy(_ => 1)
 			.Select(g => new
 			{

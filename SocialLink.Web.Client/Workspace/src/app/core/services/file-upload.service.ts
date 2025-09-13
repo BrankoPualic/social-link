@@ -34,8 +34,7 @@ export class FileUploadService {
     files.forEach((file, index) => formData.append(`files[${index}]`, file));
 
     if (model) {
-      Functions.formatRequestDates(model);
-      formData.append('model', Functions.toJson(model));
+      Functions.appendFormData(formData, model);
     }
 
     const req = new HttpRequest('POST', this._apiUrl + url, formData, {

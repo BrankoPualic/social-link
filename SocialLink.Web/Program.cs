@@ -33,8 +33,6 @@ builder.Services.AddCors();
 
 builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
 
-// TODO: Find a way to use default fastendpoint formdata binding (endpoint: UsersModel -> Signup, UsersModule -> UpdateProfileImage)
-//builder.Services.AddSingleton(typeof(IRequestBinder<>), typeof(JsonModelBinder<>));
 builder.Services
 	.AddAuthenticationJwtBearer(_ => _.SigningKey = builder.Configuration["Jwt:SecretKey"])
 	.AddAuthorization()

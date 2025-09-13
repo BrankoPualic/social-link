@@ -44,26 +44,24 @@ export class Functions {
     }
   }
 
-  // JSON
+  static appendFormData(formData: FormData, data: any, parentKey = '') {
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        const value = data[key];
+        const fullKey = parentKey ? `${parentKey}.${key}` : key;
 
-  static toJson(data: any): string {
-    try {
-      return JSON.stringify(data, Functions.removeCircularReferences());
-    } catch (error) {
-      console.error('Error serializing object:', error);
-      return '{}';
-    }
-  }
-
-  private static removeCircularReferences() {
-    const seen = new WeakSet();
-    return (key: any, value: any) => {
-      if (typeof value === 'object' && value !== null) {
-        if (seen.has(value))
-          return '[Circular]';
-        seen.add(value);
+        if (value instanceof Date) {
+          formData.append(fullKey, value.toISOString());
+        }
+        else if (typeof value === 'object' && value != null) {
+          this.appendFormData(formData, value, fullKey);
+        }
+        else {
+          if (value !== null && value !== undefined) {
+            formData.append(fullKey, value as any);
+          }
+        }
       }
-      return value;
     }
   }
 }

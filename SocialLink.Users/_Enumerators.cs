@@ -17,3 +17,15 @@ internal enum eUserMedia
 	[Description("Profile Image")]
 	ProfileImage = 100,
 }
+
+internal enum eFollowStatus
+{
+	[Description("Unknown")]
+	Unknown = 0,
+
+	[Description("Pending")]
+	Pending = 1,
+
+	[Description("Active")]
+	Active = 2
+}

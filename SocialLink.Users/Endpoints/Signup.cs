@@ -1,6 +1,5 @@
 ﻿using FastEndpoints;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
@@ -19,9 +18,7 @@ internal class Signup(IMediator mediator) : Endpoint<SignupDto, TokenDto>
 
 	public override async Task HandleAsync(SignupDto req, CancellationToken ct)
 	{
-		var files = HttpContext.Request.Form.Files;
-
-		var fileReads = files?.Select(async file =>
+		var fileReads = Files?.Select(async file =>
 		{
 			using var stream = new MemoryStream();
 			await file.CopyToAsync(stream);

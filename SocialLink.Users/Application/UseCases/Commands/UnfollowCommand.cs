@@ -1,7 +1,7 @@
 ﻿using Ardalis.Result;
 using Microsoft.EntityFrameworkCore;
-using SocialLink.Users.Application.Dtos;
 using SocialLink.SharedKernel.UseCases;
+using SocialLink.Users.Application.Dtos;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
 
@@ -19,7 +19,7 @@ internal class UnfollowCommandHandler(IUserDatabaseContext db) : EFCommandHandle
 			.FirstOrDefaultAsync(ct);
 
 		if (follow is null)
-			return Result.NotFound("Follow doesn't exist.");
+			return Result.Invalid(new ValidationError("Follow doesn't exist"));
 
 		db.Follows.Remove(follow);
 		await db.SaveChangesAsync(false, ct);

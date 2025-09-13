@@ -44,7 +44,7 @@ internal class User : AuditedDomainModel<Guid>
 
 	public bool IsMuted(eNotificationType notificationType)
 	{
-		Guard.Against.NullOrEmpty(NotificationPreferences, nameof(NotificationPreference));
+		Guard.Against.Null(NotificationPreferences, nameof(NotificationPreference));
 
 		return NotificationPreferences.Any(_ => _.NotificationTypeId == notificationType && _.IsMuted);
 	}

@@ -1,8 +1,8 @@
 ﻿using Ardalis.Result;
 using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.Interfaces;
-using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Domain;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
@@ -16,24 +16,25 @@ internal class FollowCommandHandler(IUserDatabaseContext db, INotificationServic
 		var data = req.Data;
 
 		var follower = await db.Users
+			.Include(_ => _.NotificationPreferences)
 			.AsNoTracking()
 			.FirstOrDefaultAsync(_ => _.Id == data.FollowerId, ct);
 		if (follower is null)
-			return Result.NotFound("Follower user not found.");
+			return Result.Invalid(new ValidationError("Follower user not found"));
 
 		var following = await db.Users
 			.Include(_ => _.NotificationPreferences)
 			.AsNoTracking()
 			.FirstOrDefaultAsync(_ => _.Id == data.FollowingId, ct);
 		if (following is null)
-			return Result.NotFound("Following user not found.");
+			return Result.Invalid(new ValidationError("Following user not found"));
 
 		var follow = await db.Follows.FirstOrDefaultAsync(_ => _.FollowerId == data.FollowerId && _.FollowingId == data.FollowingId, ct);
 		if (follow is not null)
 		{
 			string message = follow.IsPending
-				? "Follow already sent."
-				: "User already followed.";
+				? "Follow already sent"
+				: "User already followed";
 
 			return Result.Invalid(new ValidationError(message));
 		}

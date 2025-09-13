@@ -7,7 +7,7 @@ using SocialLink.Users.Application.UseCases.Queries;
 namespace SocialLink.Users.Endpoints;
 
 [Authorize]
-internal class CheckFollowStatus(IMediator mediator) : Endpoint<FollowDto, bool>
+internal class CheckFollowStatus(IMediator mediator) : Endpoint<FollowDto, eFollowStatus>
 {
 	public override void Configure()
 	{

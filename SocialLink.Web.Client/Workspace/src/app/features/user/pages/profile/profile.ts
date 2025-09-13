@@ -5,10 +5,11 @@ import { BaseComponentGeneric } from '../../../../shared/base/base';
 import { UserModel } from '../../models/user.model';
 import { PageLoaderService } from '../../../../core/services/page-loader.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { finalize, forkJoin, of, take } from 'rxjs';
+import { Observable, finalize, forkJoin, of, switchMap, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { eGender } from '../../../../core/enumerators/gender.enum';
 import { ActivatedRoute } from '@angular/router';
+import { eFollowStatus } from '../../../../core/enumerators/follow-status.enum';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +22,8 @@ export class Profile extends BaseComponentGeneric<UserModel> {
   user?: UserModel;
   currentUserId?: string;
   isCurrentUser = false;
-  isFollowed = false;
+  followStatus?: eFollowStatus;
+  eFollowStatus = eFollowStatus;
 
   constructor(
     loaderService: PageLoaderService,
@@ -45,19 +47,47 @@ export class Profile extends BaseComponentGeneric<UserModel> {
 
     forkJoin({
       user: this.apiService.get<UserModel>(`/users/profile/${this.userId}`),
-      isFollowed: this.isCurrentUser
-        ? of(false)
-        : this.apiService.post<boolean>('/users/checkFollowStatus', {
-          followerId: this.currentUserId,
-          followingId: this.userId
-        })
+      followStatus: this.isCurrentUser
+        ? of(eFollowStatus.Unknown)
+        : this.checkFollowStatus()
     }).pipe(
       take(1),
       finalize(() => this.loading = false)
     ).subscribe(result => {
       this.user = result.user;
-      this.isFollowed = result.isFollowed;
+      this.followStatus = result.followStatus;
     })
+  }
+
+  follow(): void {
+    this.apiService.post('/users/follow', {
+      followerId: this.currentUserId,
+      followingId: this.userId
+    }).pipe(
+      switchMap(() => this.checkFollowStatus()),
+      take(1)
+    ).subscribe({
+      next: status => this.followStatus = status
+    })
+  }
+
+  unfollow(): void {
+    this.apiService.post('/users/unfollow', {
+      followerId: this.currentUserId,
+      followingId: this.userId
+    }).pipe(
+      switchMap(() => this.checkFollowStatus()),
+      take(1)
+    ).subscribe({
+      next: status => this.followStatus = status
+    })
+  }
+
+  private checkFollowStatus(): Observable<eFollowStatus> {
+    return this.apiService.post<eFollowStatus>('/users/checkFollowStatus', {
+      followerId: this.currentUserId,
+      followingId: this.userId
+    });
   }
 
   getProfileImage(): string {
