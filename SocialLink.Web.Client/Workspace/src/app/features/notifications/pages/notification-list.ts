@@ -22,6 +22,10 @@ import { Notification } from "./notification";
             {
               <app-notification [notification]="notification" (removed)="remove($event)"/>
             }
+            @if (notifications.length == 0)
+            {
+              <span>There are no new notifications.</span>
+            }
           </div>
         </div>
   </div>`
