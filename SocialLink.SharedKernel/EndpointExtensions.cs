@@ -33,6 +33,8 @@ public static class EndpointExtensions
 			.Select(_ => new ValidationFailure(_.Identifier, _.ErrorMessage))
 			.ToList();
 
+		// TODO: If validation error do not provide key, this line throws exception.
+		// TODO: Find and fix all validation errors without keys
 		return httpContext.Response.SendErrorsAsync(failures, statusCode, null, ct);
 	}
 }

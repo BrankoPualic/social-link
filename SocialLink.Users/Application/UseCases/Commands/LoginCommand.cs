@@ -13,7 +13,7 @@ internal class LoginCommandHandler(IUserDatabaseContext db, IUserRepository user
 	{
 		var data = req.Data;
 
-		var model = await userRepository.GetByEmailAsync(data.Email);
+		var model = await userRepository.GetByEmailAsync(data.Email, ct);
 		if (model is null)
 			return Result.Invalid(new ValidationError(nameof(User), "User not found"));
 

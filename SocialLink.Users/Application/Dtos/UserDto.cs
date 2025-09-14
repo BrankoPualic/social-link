@@ -22,6 +22,8 @@ internal class UserDto
 
 	public string Biography { get; set; }
 
+	public DateTime? DateOfBirth { get; set; }
+
 	public BlobDto ProfileImage { get; set; }
 
 	public int? Posts { get; set; }
@@ -38,8 +40,9 @@ internal class UserDto
 		LastName = _.LastName,
 		FullName = _.FullName,
 		GenderId = _.GenderId,
-		IsPrivate = _.IsPrivate,
-		Biography = _.Biography
+		DateOfBirth = _.DateOfBirth,
+		Biography = _.Biography,
+		IsPrivate = _.IsPrivate
 	};
 
 	public void ToModel(User model)
@@ -48,7 +51,8 @@ internal class UserDto
 		model.FirstName = FirstName;
 		model.LastName = LastName;
 		model.GenderId = GenderId;
-		model.IsPrivate = IsPrivate;
+		model.DateOfBirth = DateOfBirth;
 		model.Biography = Biography;
+		model.IsPrivate = IsPrivate;
 	}
 }

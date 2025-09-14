@@ -5,11 +5,11 @@ namespace SocialLink.Users.Data;
 
 internal class UserRepository(IUserDatabaseContext db) : IUserRepository
 {
-	public Task<User> GetByEmailAsync(string email) =>
+	public Task<User> GetByEmailAsync(string email, CancellationToken ct) =>
 		db.Users
 		.Include(_ => _.Roles)
 		.Where(_ => _.Email == email)
-		.FirstOrDefaultAsync();
+		.FirstOrDefaultAsync(ct);
 
 	public void CreateLoginLog(Guid userId) =>
 		db.Logins.Add(new()
@@ -28,4 +28,10 @@ internal class UserRepository(IUserDatabaseContext db) : IUserRepository
 			UploadedOn = DateTime.UtcNow,
 			Type = type
 		});
+
+	public Task<bool> IsUsernameTaken(string username, CancellationToken ct) =>
+		db.Users.AnyAsync(_ => _.Username == username, ct);
+
+	public Task<bool> IsEmailRegistered(string email, CancellationToken ct) =>
+		db.Users.AnyAsync(_ => _.Email == email, ct);
 }

@@ -1,6 +1,5 @@
 ﻿using Ardalis.Result;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.SharedKernel.UseCases;
@@ -19,13 +18,11 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 		var data = req.Data;
 		var file = req.File;
 
-		var emailExists = await db.Users.AnyAsync(_ => _.Email == data.Email, ct);
-		if (emailExists)
-			return Result.Invalid(new ValidationError(nameof(User.Email), "Email is already in use."));
+		if (await userRepository.IsEmailRegistered(data.Email, ct))
+			return Result.Invalid(new ValidationError(nameof(User.Email), "Email is already registered"));
 
-		var usernameExists = await db.Users.AnyAsync(_ => _.Username == data.Username, ct);
-		if (usernameExists)
-			return Result.Invalid(new ValidationError(nameof(User.Username), "Username is already in use."));
+		if (await userRepository.IsUsernameTaken(data.Username, ct))
+			return Result.Invalid(new ValidationError(nameof(User.Username), "Username is taken"));
 
 		User model = new();
 		data.ToModel(model);
