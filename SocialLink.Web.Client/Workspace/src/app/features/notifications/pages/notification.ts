@@ -8,7 +8,6 @@ import { NotificationComponentMap } from "../components/_notification-component-
 import { CommonModule } from "@angular/common";
 import { TimeAgoPipe } from "../../../core/pipes/time-ago.pipe";
 
-// TODO: Add back (click)="read()" inside template on main element after finished testing
 @Component({
   selector: 'app-notification',
   imports: [CommonModule, TimeAgoPipe],
