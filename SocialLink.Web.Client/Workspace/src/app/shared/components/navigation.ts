@@ -15,7 +15,7 @@ import { AuthService } from "../../core/services/auth.service";
         <li routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fa-regular fa-house"></i> Home</li>
         <li routerLinkActive="active"><i class="fa-solid fa-magnifying-glass"></i> Search</li>
         <li routerLinkActive="active"><i class="fa-regular fa-message"></i> Inbox</li>
-        <li routerLinkActive="active"><i class="fa-regular fa-bell"></i> Notifications</li>
+        <li [routerLink]="['/notifications']" routerLinkActive="active"><i class="fa-regular fa-bell"></i> Notifications</li>
 
         <li [routerLink]="['/profile', userId]" routerLinkActive="active"><i class="fa-regular fa-user"></i> Profile</li>
         <li><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</li>
