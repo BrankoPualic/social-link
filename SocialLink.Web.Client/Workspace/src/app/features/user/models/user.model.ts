@@ -10,6 +10,7 @@ export class UserModel {
   genderId?: eGender;
   isPrivate?: boolean;
   biography?: string;
+  dateOfBirth?: Date | string;
   profileImage?: BlobModel;
   posts?: number;
   followers?: number;

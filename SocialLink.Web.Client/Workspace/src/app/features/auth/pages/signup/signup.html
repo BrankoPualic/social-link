@@ -56,19 +56,8 @@
                   [validation]="'genderId'"
                   [loadMethod]="lookupService.get('/users/genders')" />
 
-    <div class="mb-3 d-flex flex-column">
-      <div class="d-flex flex-md-row flex-column align-items-md-center">
-        <label class="col-12 col-md-3">
-          Date of Birth
-        </label>
-
-        <div class="col-12 col-md-9">
-          <input type="date"
-                 class="form-control"
-                 [formControl]="$any(form.controls['dateOfBirth'])" />
-        </div>
-      </div>
-    </div>
+    <app-input-date [formControl]="$any(form.controls['dateOfBirth'])"
+                    [label]="'Date of Birth'" />
 
     <app-text-area [formControl]="$any(form.controls['biography'])"
                    [label]="'Biography'"

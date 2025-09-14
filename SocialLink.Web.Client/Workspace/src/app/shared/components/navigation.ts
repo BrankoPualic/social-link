@@ -18,7 +18,7 @@ import { AuthService } from "../../core/services/auth.service";
         <li [routerLink]="['/notifications']" routerLinkActive="active"><i class="fa-regular fa-bell"></i> Notifications</li>
 
         <li [routerLink]="['/profile', userId]" routerLinkActive="active"><i class="fa-regular fa-user"></i> Profile</li>
-        <li><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</li>
+        <li (click)="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</li>
       </ul>
     </div>
   `,
@@ -60,4 +60,6 @@ export class Navigation {
   constructor(private authService: AuthService) {
     this.userId = this.authService.getUserId();
   }
+
+  logout = () => this.authService.logout();
 }

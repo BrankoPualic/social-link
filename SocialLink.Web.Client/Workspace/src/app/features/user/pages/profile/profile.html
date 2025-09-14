@@ -38,7 +38,7 @@
     <div class="mt-lg-3 mt-1 d-flex flex-lg-row flex-column">
       @if (isCurrentUser)
       {
-      <button class="btn btn-outline-primary px-3 me-lg-2">Edit profile</button>
+      <button class="btn btn-outline-primary px-3 me-lg-2" [routerLink]="['/profile', userId, 'edit']">Edit profile</button>
       <button class="btn btn-outline-primary px-3 mt-lg-0 mt-1" (click)="fileUpload.click()">Upload profile image</button>
       <input type="file" style="display: none" #fileUpload (change)="onFileChange($event)" />
       }

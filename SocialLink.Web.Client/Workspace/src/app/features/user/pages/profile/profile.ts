@@ -8,14 +8,14 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { Observable, finalize, forkJoin, of, switchMap, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { eGender } from '../../../../core/enumerators/gender.enum';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { eFollowStatus } from '../../../../core/enumerators/follow-status.enum';
 import { IFileUploadForm } from '../../../../shared/interfaces/file-upload-form.interface';
 import { FileUploadService } from '../../../../core/services/file-upload.service';
 
 @Component({
   selector: 'app-profile',
-  imports: [Navigation, CommonModule],
+  imports: [Navigation, CommonModule, RouterLink],
   templateUrl: './profile.html',
   styleUrl: './profile.scss'
 })

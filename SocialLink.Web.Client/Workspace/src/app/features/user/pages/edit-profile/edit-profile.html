@@ -1,0 +1,56 @@
+<div class="d-flex flex-row">
+  <app-navigation />
+
+  <form [formGroup]="form" class="container-fluid p-4">
+    <h5>Edit profile</h5>
+
+    <app-input-text [formControl]="$any(form.controls['firstName'])"
+                    [label]="'First Name'"
+                    [required]="true"
+                    [validation]="'firstName'" />
+
+    <app-input-text [formControl]="$any(form.controls['lastName'])"
+                    [label]="'Last Name'"
+                    [required]="true"
+                    [validation]="'lastName'" />
+
+    <app-input-text [formControl]="$any(form.controls['username'])"
+                    [label]="'Username'"
+                    [required]="true"
+                    [validation]="'username'" />
+
+    <app-dropdown [formControl]="$any(form.controls['genderId'])"
+                  [label]="'Gender'"
+                  [required]="true"
+                  [validation]="'genderId'"
+                  [loadMethod]="lookupService.get('/users/genders')" />
+
+    <app-input-date [formControl]="$any(form.controls['dateOfBirth'])"
+                    [label]="'Date of Birth'" />
+
+    <app-text-area [formControl]="$any(form.controls['biography'])"
+                   [label]="'Biography'"
+                   [validation]="'biography'"
+                   [maxLength]="150" />
+
+    <div class="mb-3 d-flex flex-column">
+      <div class="d-flex flex-row align-items-center">
+        <label class="col-11 col-md-3 pointer" for="privacy">
+          Profile is private
+        </label>
+
+        <div class="form-check col-1 col-md-9 ps-0 ps-md-4">
+          <input class="form-check-input float-end float-md-start"
+                 type="checkbox"
+                 id="privacy"
+                 [formControl]="$any(form.controls['isPrivate'])" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-btn-group">
+      <button class="btn btn-sm align-self-center btn-outline-primary py-2 px-4 ms-2 float-end" (click)="cancel()">Cancel</button>
+      <button class="btn btn-sm align-self-center btn-primary py-2 px-4 float-end" (click)="submit()">Save</button>
+    </div>
+  </form>
+</div>

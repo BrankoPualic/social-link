@@ -12,10 +12,11 @@ import { Dropdown } from '../../../../shared/components/forms/dropdown';
 import { LookupService } from '../../../../core/services/lookup.service';
 import { IFileUploadForm } from '../../../../shared/interfaces/file-upload-form.interface';
 import { TextArea } from '../../../../shared/components/forms/text-area';
+import { InputDate } from '../../../../shared/components/forms/input-date';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, InputText, Dropdown, TextArea, RouterLink],
+  imports: [ReactiveFormsModule, InputText, Dropdown, TextArea, InputDate, RouterLink],
   templateUrl: './signup.html'
 })
 export class Signup extends BaseFormComponent<SignupModel> implements IFileUploadForm {
