@@ -1,3 +1,3 @@
 ﻿namespace SocialLink.Users.Endpoints;
 
-internal sealed record UploadProfileImageRequest(Guid Model);
+internal sealed record UploadProfileImageRequest(Guid UserId);

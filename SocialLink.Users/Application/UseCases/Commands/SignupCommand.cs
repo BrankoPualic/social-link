@@ -40,7 +40,7 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 				return Result.Invalid(new ValidationError(string.Join(',', uploadResult.Errors)));
 
 			cleanup = uploadResult.Value.Cleanup;
-			userRepository.CreateMedia(model.Id, uploadResult.Value.BlobId);
+			userRepository.CreateMedia(model.Id, uploadResult.Value.BlobId, eUserMedia.ProfileImage);
 		}
 
 		// Log entry

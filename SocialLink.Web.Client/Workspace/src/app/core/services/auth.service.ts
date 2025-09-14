@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { filter, map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 import { FileUploadService } from './file-upload.service';
-import { HttpResponse, HttpEventType } from '@angular/common/http';
 import { LoginModel } from '../../features/auth/models/login.model';
 import { Token } from '../../features/auth/models/token';
 import { Router } from '@angular/router';
@@ -23,6 +22,7 @@ export class AuthService {
   login(data: LoginModel) {
     return this.apiService.post<Token>('/users/login', data)
       .pipe(
+        take(1),
         map(_ => this.setToken(_))
       );
   }
@@ -30,8 +30,7 @@ export class AuthService {
   signup(data: any, file?: File) {
     return this.fileUploadService.uploadMultipart<any, Token>('/users/signup', file ? [file] : [], data)
       .pipe(
-        filter((event): event is HttpResponse<Token> => event.type === HttpEventType.Response),
-        map(_ => _.body as Token),
+        take(1),
         map(_ => this.setToken(_))
       );
   }

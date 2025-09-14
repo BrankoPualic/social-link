@@ -6,5 +6,5 @@ internal interface IUserRepository
 
 	void CreateLoginLog(Guid userId);
 
-	void CreateMedia(Guid userId, Guid blobId);
+	void CreateMedia(Guid userId, Guid blobId, eUserMedia type);
 }

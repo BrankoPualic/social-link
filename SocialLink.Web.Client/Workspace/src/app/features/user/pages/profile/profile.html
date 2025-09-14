@@ -35,7 +35,8 @@
       @if (isCurrentUser)
       {
       <button class="btn btn-outline-primary px-3 me-lg-2">Edit profile</button>
-      <button class="btn btn-outline-primary px-3 mt-lg-0 mt-1">Upload profile image</button>
+      <button class="btn btn-outline-primary px-3 mt-lg-0 mt-1" (click)="fileUpload.click()">Upload profile image</button>
+      <input type="file" style="display: none" #fileUpload (change)="onFileChange($event)" />
       }
       @else if (followStatus == eFollowStatus.Pending)
       {

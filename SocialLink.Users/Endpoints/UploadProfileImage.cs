@@ -1,8 +1,8 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.SharedKernel;
 using SocialLink.Users.Application.UseCases.Commands;
 
 namespace SocialLink.Users.Endpoints;
@@ -18,14 +18,12 @@ internal class UploadProfileImage(IMediator mediator) : Endpoint<UploadProfileIm
 
 	public override async Task HandleAsync(UploadProfileImageRequest req, CancellationToken ct)
 	{
-		var files = HttpContext.Request.Form.Files;
-
-		if (files.Count is 0)
+		if (Files.Count is 0)
 		{
 			await Send.ErrorsAsync(400, ct);
 		}
 
-		var fileReads = files.Select(async file =>
+		var fileReads = Files.Select(async file =>
 		{
 			using var stream = new MemoryStream();
 			await file.CopyToAsync(stream);
@@ -39,15 +37,8 @@ internal class UploadProfileImage(IMediator mediator) : Endpoint<UploadProfileIm
 
 		var fileDtos = await Task.WhenAll(fileReads);
 
-		var result = await mediator.Send(new UploadProfileImageCommand(req.Model, fileDtos.FirstOrDefault()), ct);
+		var result = await mediator.Send(new UploadProfileImageCommand(req.UserId, fileDtos.FirstOrDefault()), ct);
 
-		if (result.IsNoContent())
-		{
-			await Send.NoContentAsync(ct);
-		}
-		else if (result.IsInvalid())
-		{
-			await Send.ErrorsAsync(400, ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct);
 	}
 }

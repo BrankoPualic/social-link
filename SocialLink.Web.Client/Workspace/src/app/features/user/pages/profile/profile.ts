@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { eGender } from '../../../../core/enumerators/gender.enum';
 import { ActivatedRoute } from '@angular/router';
 import { eFollowStatus } from '../../../../core/enumerators/follow-status.enum';
+import { IFileUploadForm } from '../../../../shared/interfaces/file-upload-form.interface';
+import { FileUploadService } from '../../../../core/services/file-upload.service';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +19,7 @@ import { eFollowStatus } from '../../../../core/enumerators/follow-status.enum';
   templateUrl: './profile.html',
   styleUrl: './profile.scss'
 })
-export class Profile extends BaseComponentGeneric<UserModel> {
+export class Profile extends BaseComponentGeneric<UserModel> implements IFileUploadForm {
   userId?: string;
   user?: UserModel;
   currentUserId?: string;
@@ -29,6 +31,7 @@ export class Profile extends BaseComponentGeneric<UserModel> {
     loaderService: PageLoaderService,
     private authService: AuthService,
     private apiService: ApiService,
+    private fileUploadService: FileUploadService,
     private route: ActivatedRoute
   ) {
     super(loaderService);
@@ -92,5 +95,21 @@ export class Profile extends BaseComponentGeneric<UserModel> {
 
   getProfileImage(): string {
     return this.user?.profileImage?.url || `./assets/images/${this.user?.genderId === eGender.Male ? `man.png` : `woman.png`}`;
+  }
+
+  onFileChange(e: Event): void {
+    const input = e.target as HTMLInputElement;
+    if (!input.files?.length)
+      return;
+
+    this.loading = true;
+    this.fileUploadService.upload('/users/uploadProfileImage', input.files[0], { userId: this.currentUserId })
+      .pipe(
+        take(1),
+        finalize(() => this.loading = false)
+      ).subscribe({
+        next: () => this.load(),
+        //TODO: Handle errors after implementing toast show error message
+      });
   }
 }

@@ -1,7 +1,7 @@
-import { HttpClient, HttpEvent, HttpRequest } from "@angular/common/http";
+import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Functions } from "../../shared/functions";
-import { Observable } from "rxjs";
+import { Observable, filter, map } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class FileUploadService {
   private _apiUrl = 'https://localhost:7175';
   constructor(private http: HttpClient) { }
 
-  upload<T>(url: string, file: File, params?: any) {
+  upload<T>(url: string, file: File, params?: any): Observable<T> {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -25,10 +25,14 @@ export class FileUploadService {
       responseType: 'json'
     });
 
-    return this.http.request<T>(req);
+    return this.http.request<T>(req)
+      .pipe(
+        filter(event => event.type === HttpEventType.Response),
+        map(event => (event as HttpResponse<T>).body as T)
+      );
   }
 
-  uploadMultipart<T, TResponse>(url: string, files: File[], model?: T): Observable<HttpEvent<TResponse>> {
+  uploadMultipart<T, TResponse>(url: string, files: File[], model?: T): Observable<TResponse> {
     const formData = new FormData();
 
     files.forEach((file, index) => formData.append(`files[${index}]`, file));
@@ -42,6 +46,10 @@ export class FileUploadService {
       responseType: 'json'
     });
 
-    return this.http.request<TResponse>(req);
+    return this.http.request<TResponse>(req)
+      .pipe(
+        filter(event => event.type === HttpEventType.Response),
+        map(event => (event as HttpResponse<TResponse>).body as TResponse)
+      );
   }
 }
