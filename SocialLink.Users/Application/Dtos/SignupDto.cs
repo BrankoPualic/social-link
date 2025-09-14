@@ -23,6 +23,8 @@ internal class SignupDto
 
 	public bool IsPrivate { get; set; }
 
+	public string Biography { get; set; }
+
 	public void ToModel(User model)
 	{
 		if (model.IsNew)
@@ -37,6 +39,7 @@ internal class SignupDto
 		model.GenderId = GenderId;
 		model.DateOfBirth = DateOfBirth;
 		model.IsPrivate = IsPrivate;
+		model.Biography = Biography;
 		model.Roles = [new UserRole { RoleId = eSystemRole.Member }];
 	}
 }

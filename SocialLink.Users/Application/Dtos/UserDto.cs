@@ -20,6 +20,8 @@ internal class UserDto
 
 	public bool IsPrivate { get; set; }
 
+	public string Biography { get; set; }
+
 	public BlobDto ProfileImage { get; set; }
 
 	public int? Posts { get; set; }
@@ -37,6 +39,7 @@ internal class UserDto
 		FullName = _.FullName,
 		GenderId = _.GenderId,
 		IsPrivate = _.IsPrivate,
+		Biography = _.Biography
 	};
 
 	public void ToModel(User model)
@@ -46,5 +49,6 @@ internal class UserDto
 		model.LastName = LastName;
 		model.GenderId = GenderId;
 		model.IsPrivate = IsPrivate;
+		model.Biography = Biography;
 	}
 }
