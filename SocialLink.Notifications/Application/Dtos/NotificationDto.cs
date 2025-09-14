@@ -14,6 +14,8 @@ internal class NotificationDto
 
 	public string Title { get; set; }
 
+	public string Message { get; set; }
+
 	public string Details { get; set; }
 
 	public bool IsRead { get; set; }
@@ -26,6 +28,7 @@ internal class NotificationDto
 		UserId = _.UserId,
 		TypeId = _.TypeId,
 		Title = _.Title,
+		Message = _.Message,
 		Details = _.Details,
 		IsRead = _.IsRead,
 		CreatedOn = _.CreatedOn,

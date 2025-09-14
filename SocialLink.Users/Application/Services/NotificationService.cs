@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using SocialLink.Users.Application.Interfaces;
-using SocialLink.Users.Domain;
 using SocialLink.Notifications.Contracts;
 using SocialLink.Notifications.Contracts.Details;
 using SocialLink.SharedKernel;
+using SocialLink.Users.Application.Interfaces;
+using SocialLink.Users.Domain;
 
 namespace SocialLink.Users.Application.Services;
 
@@ -16,12 +16,13 @@ internal class NotificationService(IMediator mediator) : INotificationService
 
 		await mediator.Send(new CreateNotificationCommand(new FollowRequestDetails
 		{
+			Message = FollowRequestDetails.DefaultMessage(follower.Username),
 			UserId = following.Id,
 			FollowerId = follower.Id,
 			FollowerName = follower.Username,
 			Actions = [
 					new () {
-						Label = "Action",
+						Label = "Accept",
 						Endpoint = "/users/acceptFollow",
 						Method = eNotificationActionMethodType.Post
 					},
@@ -41,6 +42,7 @@ internal class NotificationService(IMediator mediator) : INotificationService
 
 		await mediator.Send(new CreateNotificationCommand(new FollowAcceptedDetails
 		{
+			Message = FollowAcceptedDetails.DefaultMessage(follow.Following.Username),
 			UserId = follow.FollowerId,
 			FollowingId = follow.FollowingId,
 			FollowingName = follow.Following.Username,
@@ -54,6 +56,7 @@ internal class NotificationService(IMediator mediator) : INotificationService
 
 		await mediator.Send(new CreateNotificationCommand(new StartFollowingDetails
 		{
+			Message = StartFollowingDetails.DefaultMessage(follower.Username),
 			UserId = following.Id,
 			FollowerId = follower.Id,
 			FollowerName = follower.Username,

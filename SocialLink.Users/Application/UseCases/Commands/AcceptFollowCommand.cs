@@ -1,8 +1,8 @@
 ﻿using Ardalis.Result;
 using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.Interfaces;
-using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
 
@@ -23,7 +23,7 @@ internal class AcceptFollowCommandHandler(IUserDatabaseContext db, INotification
 			.FirstOrDefaultAsync(ct);
 
 		if (follow is null)
-			return Result.NotFound("Follow request not found.");
+			return Result.Invalid(new ValidationError("Follow request not found"));
 
 		follow.IsPending = false;
 		await db.SaveChangesAsync(false, ct);

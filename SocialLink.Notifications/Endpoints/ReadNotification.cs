@@ -1,9 +1,9 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using SocialLink.Notifications.Application.Dtos;
 using SocialLink.Notifications.Application.UseCases.Commands;
+using SocialLink.SharedKernel;
 
 namespace SocialLink.Notifications.Endpoints;
 
@@ -19,13 +19,6 @@ internal class ReadNotification(IMediator mediator) : Endpoint<NotificationDto>
 	{
 		var result = await mediator.Send(new ReadNotificationCommand(req), ct);
 
-		if (result.IsNoContent())
-		{
-			await Send.NoContentAsync(ct);
-		}
-		else if (result.IsNotFound())
-		{
-			await Send.NotFoundAsync(ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct);
 	}
 }

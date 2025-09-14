@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 using Serilog;
-using SocialLink.Notifications;
 using SocialLink.Notifications.Domain;
 
 namespace SocialLink.Notifications.Application.ScheduledTasks;
@@ -24,7 +23,7 @@ internal class ReadNotificationsCleanupScheduleTask(IServiceProvider serviceProv
 		var db = scope.ServiceProvider.GetRequiredService<INotificationMongoContext>();
 
 		var builder = Builders<Notification>.Filter;
-		var filter = builder.Lt(_ => _.IsRead, true);
+		var filter = builder.Eq(_ => _.IsRead, true);
 		try
 		{
 			var result = db.Notifications.DeleteMany(filter);

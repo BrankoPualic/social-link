@@ -1,6 +1,5 @@
 ﻿using Ardalis.Result;
 using MongoDB.Driver;
-using SocialLink.Notifications;
 using SocialLink.Notifications.Application.Dtos;
 using SocialLink.Notifications.Domain;
 using SocialLink.SharedKernel.UseCases;
@@ -22,7 +21,7 @@ internal class ReadNotificationCommandHandler(INotificationMongoContext db) : Mo
 
 		var model = await db.Notifications.FindOneAndUpdateAsync(filter, update, cancellationToken: ct);
 		if (model is null)
-			return Result.NotFound("Notification not found.");
+			return Result.Invalid(new ValidationError("Notification not found"));
 
 		return Result.NoContent();
 	}

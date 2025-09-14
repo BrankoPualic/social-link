@@ -1,7 +1,5 @@
 ﻿using Ardalis.Result;
 using MongoDB.Driver;
-using SocialLink.Notifications;
-using SocialLink.Notifications.Application;
 using SocialLink.Notifications.Application.Dtos;
 using SocialLink.Notifications.Domain;
 using SocialLink.SharedKernel;
@@ -17,7 +15,7 @@ internal class GetNotificationsQueryHandler(INotificationMongoContext db) : Mong
 		var search = req.Search;
 
 		var builder = Builders<Notification>.Filter;
-		var filter = builder.Eq(_ => _.UserId, search.UserId);
+		var filter = builder.Eq(_ => _.UserId, search.UserId) & builder.Eq(_ => _.IsRead, false);
 
 		var result = await db.Notifications.MongoSearchAsync(
 			search,
