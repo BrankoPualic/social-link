@@ -28,6 +28,8 @@ internal class User : AuditedDomainModel<Guid>
 
 	public bool IsLocked { get; set; }
 
+	public string Biography { get; set; }
+
 	public virtual ICollection<UserRole> Roles { get; set; } = [];
 
 	public virtual ICollection<UserLogin> Logins { get; set; } = [];

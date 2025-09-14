@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SocialLink.Users.Domain;
 using SocialLink.SharedKernel.Data;
+using SocialLink.Users.Domain;
 
 namespace SocialLink.Users.Data.Configurations;
 
@@ -33,5 +33,8 @@ internal class UserConfiguration : BaseDomainModelConfiguration<User, Guid>
 			.IsUnique();
 		builder.HasIndex(_ => _.Username)
 			.IsUnique();
+
+		builder.Property(_ => _.Biography)
+			.HasMaxLength(150);
 	}
 }
