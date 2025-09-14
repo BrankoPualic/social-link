@@ -70,6 +70,11 @@
       </div>
     </div>
 
+    <app-text-area [formControl]="$any(form.controls['biography'])"
+                   [label]="'Biography'"
+                   [validation]="'biography'"
+                   [maxLength]="150" />
+
     <div class="mb-3 d-flex flex-column">
       <div class="form-check" aria-describedby="privacyHelp">
         <input class="form-check-input"

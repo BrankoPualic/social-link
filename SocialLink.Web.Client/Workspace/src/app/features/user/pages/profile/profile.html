@@ -28,6 +28,10 @@
           <span class="col-lg-2 col-12 fw-semibold">Following:</span>
           <span class="col-lg-10 col-12" [ngClass]="{'text-black-50': !user?.following}">{{ user?.following }}</span>
         </div>
+        <div class="row">
+          <span class="col-lg-2 col-12 fw-semibold">Biography:</span>
+          <span class="col-lg-10 col-12">{{ user?.biography }}</span>
+        </div>
       </div>
     </div>
 

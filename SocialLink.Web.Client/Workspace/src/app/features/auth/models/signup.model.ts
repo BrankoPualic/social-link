@@ -10,4 +10,5 @@ export class SignupModel {
   genderId?: eGender;
   dateOfBirth?: Date | string;
   isPrivate?: boolean;
+  biography?: string;
 }

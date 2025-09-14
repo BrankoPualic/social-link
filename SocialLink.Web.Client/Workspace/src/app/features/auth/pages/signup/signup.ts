@@ -11,10 +11,11 @@ import { finalize } from 'rxjs/internal/operators/finalize';
 import { Dropdown } from '../../../../shared/components/forms/dropdown';
 import { LookupService } from '../../../../core/services/lookup.service';
 import { IFileUploadForm } from '../../../../shared/interfaces/file-upload-form.interface';
+import { TextArea } from '../../../../shared/components/forms/text-area';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, InputText, Dropdown, RouterLink],
+  imports: [ReactiveFormsModule, InputText, Dropdown, TextArea, RouterLink],
   templateUrl: './signup.html'
 })
 export class Signup extends BaseFormComponent<SignupModel> implements IFileUploadForm {
@@ -41,6 +42,7 @@ export class Signup extends BaseFormComponent<SignupModel> implements IFileUploa
       [this.nameof(_ => _.repeatPassword)]: [],
       [this.nameof(_ => _.genderId)]: [],
       [this.nameof(_ => _.dateOfBirth)]: [],
+      [this.nameof(_ => _.biography)]: [],
       [this.nameof(_ => _.isPrivate)]: [false]
     });
   }
