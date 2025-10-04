@@ -74,4 +74,8 @@ export class Functions {
       }
     }
   }
+
+  // String
+
+  static formatString = (text?: string): string => !!text ? text.replace(/\n/g, '<br/>') : '';
 }

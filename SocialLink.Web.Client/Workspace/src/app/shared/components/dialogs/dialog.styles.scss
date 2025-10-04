@@ -1,0 +1,64 @@
+@import '../../../../assets/styles/variables.scss';
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 10000;
+
+  .dialog {
+    background: $white;
+    border-radius: $border-radius;
+    margin-top: 0.5rem;
+    min-width: 300px;
+    overflow: auto;
+    box-shadow: $box-shadow;
+    animation: fadeIn 0.2s ease;
+
+    &.dialog-delete {
+        .dialog-header {
+            background-color: $primary;
+            color: $white;
+        }
+    }
+
+    .dialog-header {
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      box-shadow: $box-shadow2;
+    }
+
+    .dialog-body {
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .dialog-footer {
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      box-shadow: $box-shadow2;
+
+      .dialog-actions {
+        margin: 0 0 0 auto;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

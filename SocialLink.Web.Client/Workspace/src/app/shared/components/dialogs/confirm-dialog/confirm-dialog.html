@@ -1,0 +1,16 @@
+<div class="dialog-backdrop">
+  <div class="dialog">
+
+    <div class="dialog-header">{{ title() }}</div>
+
+    <div class="dialog-body" [innerHtml]="formatString(message())"></div>
+
+    <div class="dialog-footer">
+      <div class="dialog-actions">
+        <button class="btn btn-sm btn-primary" (click)="confirm()">Confirm</button>
+        <button class="btn btn-sm btn-outline-primary ms-2" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
