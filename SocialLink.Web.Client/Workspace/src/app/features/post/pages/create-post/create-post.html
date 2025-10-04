@@ -1,0 +1,63 @@
+<app-navigation />
+
+<form class="container-fluid p-4" [formGroup]="form">
+
+  <div class="mb-3 d-flex flex-column">
+    <div class="d-flex flex-md-row flex-column align-items-md-center">
+      <label class="col-12 col-md-3">Media</label>
+
+      <div class="col-12 col-md-9">
+        <input type="file"
+               class="form-control"
+               (change)="onFileChange($event)"
+               multiple
+               accept="image/*" />
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3 d-flex flex-md-row flex-column">
+    <label class="col-12 col-md-3">Media Preview</label>
+    <div class="col-12 col-md-9 p-1 preview-container">
+      @if (previews.length === 0)
+      {
+        <span class="small">No file uploaded</span>
+      }
+      @for(preview of previews; track $index)
+      {
+      <div class="preview-item">
+        <span class="file-remove" (click)="removeFile($index)">&times;</span>
+        <img [src]="preview" alt="Preview" />
+      </div>
+      }
+
+    </div>
+  </div>
+
+  <app-text-area [formControl]="$any(form.controls['description'])"
+                 [label]="'Description'"
+                 [validation]="'description'"
+                 [maxLength]="500" />
+
+  <div class="mb-3 d-flex flex-column">
+    <div class="d-flex flex-row align-items-center">
+      <label class="col-11 col-md-3 pointer" for="allowComments">
+        Allow Comments
+      </label>
+
+      <div class="form-check col-1 col-md-9 ps-0 ps-md-4">
+        <input class="form-check-input float-end float-md-start"
+               type="checkbox"
+               id="allowComments"
+               [formControl]="$any(form.controls['allowComments'])" />
+      </div>
+    </div>
+  </div>
+
+  <div appValidation="post"></div>
+
+  <div>
+    <button class="btn btn-sm btn-primary py-2 px-4" (click)="submit()">Create</button>
+  </div>
+
+</form>

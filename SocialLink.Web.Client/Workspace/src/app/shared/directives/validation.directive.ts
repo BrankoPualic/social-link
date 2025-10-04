@@ -30,7 +30,7 @@ export class ValidationDirective {
       this.renderer.removeClass(el, 'is-valid');
     });
 
-    if (errors.length == 0)
+    if (errors === undefined || errors.length == 0)
       return;
 
     const error = errors.find(_ => _.key === this.appValidation());

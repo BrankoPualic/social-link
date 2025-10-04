@@ -1,14 +1,15 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Application.UseCases.Commands;
+using SocialLink.SharedKernel;
 
 namespace SocialLink.Posts.Endpoints;
 
 [Authorize]
-internal class CreatePost(IMediator mediator) : Endpoint<CreatePostRequest>
+internal class CreatePost(IMediator mediator) : Endpoint<PostCreateDto>
 {
 	public override void Configure()
 	{
@@ -16,7 +17,7 @@ internal class CreatePost(IMediator mediator) : Endpoint<CreatePostRequest>
 		AllowFileUploads();
 	}
 
-	public override async Task HandleAsync(CreatePostRequest req, CancellationToken ct)
+	public override async Task HandleAsync(PostCreateDto req, CancellationToken ct)
 	{
 		var files = HttpContext.Request.Form.Files;
 
@@ -34,19 +35,8 @@ internal class CreatePost(IMediator mediator) : Endpoint<CreatePostRequest>
 
 		var fileDtos = await Task.WhenAll(filesReads);
 
-		var result = await mediator.Send(new CreatePostCommand(req.Model, fileDtos.ToList()), ct);
+		var result = await mediator.Send(new CreatePostCommand(req, fileDtos.ToList()), ct);
 
-		if (result.IsCreated())
-		{
-			await Send.OkAsync(result, ct);
-		}
-		else if (result.IsInvalid())
-		{
-			await Send.ErrorsAsync(400, ct);
-		}
-		else if (result.IsError())
-		{
-			await Send.ErrorsAsync(500, ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct);
 	}
 }

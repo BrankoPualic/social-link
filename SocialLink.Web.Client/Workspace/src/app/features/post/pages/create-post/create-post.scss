@@ -1,0 +1,31 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.preview-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow: auto;
+
+  .preview-item {
+    position: relative;
+
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border-radius: $border-radius;
+      //border: 1px solid #ccc;
+      box-shadow: $box-shadow2;
+    }
+
+    .file-remove {
+      color: $primary;
+      font-size: 1.5rem;
+      position: absolute;
+      top: 0rem;
+      right: 0.25rem;
+      line-height: 1.2rem;
+      cursor: pointer;
+    }
+  }
+}

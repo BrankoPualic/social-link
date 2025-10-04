@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SocialLink.Posts.Data;
+using SocialLink.Posts.Domain;
 using System.Diagnostics;
 using System.Reflection;
 using ILogger = Serilog.ILogger;
@@ -18,6 +19,7 @@ public static class PostsModule
 			.LogTo(_ => Debug.WriteLine(_), LogLevel.Warning));
 
 		services.AddScoped<IPostDatabaseContext, PostDatabaseContext>();
+		services.AddScoped<IPostRepository, PostRepository>();
 
 		mediatRAssemblies.Add(typeof(PostsModule).Assembly);
 

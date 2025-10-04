@@ -13,7 +13,7 @@ public static class EndpointExtensions
 		var task = result.Status switch
 		{
 			ResultStatus.Ok => httpContext.Response.SendOkAsync(result.Value, cancellation: ct),
-			ResultStatus.Created => httpContext.Response.SendCreatedAtAsync(null, cancellation: ct),
+			ResultStatus.Created => httpContext.Response.SendCreatedAtAsync("", responseBody: result.Value, cancellation: ct),
 			ResultStatus.NoContent => httpContext.Response.SendNoContentAsync(ct),
 			ResultStatus.NotFound => httpContext.Response.SendNotFoundAsync(ct),
 			ResultStatus.Invalid => result.SendValidationErrorsAsync(httpContext, ct: ct),

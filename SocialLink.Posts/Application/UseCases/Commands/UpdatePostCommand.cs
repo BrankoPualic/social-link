@@ -1,6 +1,7 @@
 ﻿using Ardalis.Result;
-using SocialLink.Posts;
+using Microsoft.EntityFrameworkCore;
 using SocialLink.Posts.Application.Dtos;
+using SocialLink.Posts.Domain;
 using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Posts.Application.UseCases.Commands;
@@ -13,9 +14,9 @@ internal class UpdatePostCommandHandler(IPostDatabaseContext db) : EFCommandHand
 	{
 		var data = req.Data;
 
-		var model = await db.Posts.FindAsync([data.Id], ct);
+		var model = await db.Posts.FirstOrDefaultAsync(_ => _.Id == data.Id, ct);
 		if (model is null)
-			return Result.NotFound("Post not found.");
+			return Result.Invalid(new ValidationError(nameof(Post), "Post not found."));
 
 		data.ToModel(model);
 

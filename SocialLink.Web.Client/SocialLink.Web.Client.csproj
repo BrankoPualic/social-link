@@ -15,6 +15,7 @@
     <Folder Include="Workspace\src\app\features\auth\pages\" />
     <Folder Include="Workspace\src\app\features\errors\pages\" />
     <Folder Include="Workspace\src\app\features\notifications\pages\" />
+    <Folder Include="Workspace\src\app\features\post\pages\" />
     <Folder Include="Workspace\src\app\shared\base\" />
     <Folder Include="Workspace\src\app\shared\components\forms\" />
     <Folder Include="Workspace\src\app\shared\directives\" />
