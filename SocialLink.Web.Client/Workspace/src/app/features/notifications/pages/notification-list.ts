@@ -13,7 +13,7 @@ import { Notification } from "./notification";
 @Component({
   selector: 'app-notification-list',
   imports: [Notification, Navigation],
-  template: `<div class="d-flex flex-row">
+  template: `
         <app-navigation />
 
         <div class="container-fluid p-4">
@@ -24,11 +24,11 @@ import { Notification } from "./notification";
             }
             @if (notifications.length == 0)
             {
-              <span>There are no new notifications.</span>
+              <span class="text-center">There are no new notifications.</span>
             }
           </div>
         </div>
-  </div>`
+    `
 })
 export class NotificationList extends BaseComponent {
   searchOptions = new NotificationSearch();

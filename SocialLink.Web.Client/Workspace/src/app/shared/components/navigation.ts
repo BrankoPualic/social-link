@@ -6,19 +6,19 @@ import { AuthService } from "../../core/services/auth.service";
   selector: 'app-navigation',
   imports: [RouterLink, RouterLinkActive],
   template: `
-    <div class="navigation">
-      <div class="mb-4 logo" routerLink="">
+    <div class="d-flex align-items-center justify-content-between col-12 py-1 py-md-2 px-4 navigation">
+      <div class="logo d-none d-md-block" routerLink="">
         <img src="../../../../../assets/images/logo-pink.svg" alt="Pink logo" />
       </div>
 
-      <ul>
-        <li routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fa-regular fa-house"></i> Home</li>
-        <li routerLinkActive="active"><i class="fa-solid fa-magnifying-glass"></i> Search</li>
-        <li routerLinkActive="active"><i class="fa-regular fa-message"></i> Inbox</li>
-        <li [routerLink]="['/notifications']" routerLinkActive="active"><i class="fa-regular fa-bell"></i> Notifications</li>
+      <ul class="d-flex mb-0 ps-0 flex-grow-1 flex-md-grow-0 justify-content-between">
+        <li class="m-2" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fa-regular fa-house"></i><span class="d-md-inline d-none"> Home</span></li>
+        <li class="m-2" routerLinkActive="active"><i class="fa-solid fa-magnifying-glass"></i><span class="d-md-inline d-none"> Search</span></li>
+        <li class="m-2" routerLinkActive="active"><i class="fa-regular fa-message"></i><span class="d-md-inline d-none"> Inbox</span></li>
+        <li class="m-2" [routerLink]="['/notifications']" routerLinkActive="active"><i class="fa-regular fa-bell"></i><span class="d-md-inline d-none"> Notifications</span></li>
 
-        <li [routerLink]="['/profile', userId]" routerLinkActive="active"><i class="fa-regular fa-user"></i> Profile</li>
-        <li (click)="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</li>
+        <li class="m-2" [routerLink]="['/profile', userId]" routerLinkActive="active"><i class="fa-regular fa-user"></i><span class="d-md-inline d-none"> Profile</span></li>
+        <li class="m-2" (click)="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i><span class="d-md-inline d-none"> Log out</span></li>
       </ul>
     </div>
   `,
@@ -26,16 +26,9 @@ import { AuthService } from "../../core/services/auth.service";
     @import '../../../assets/styles/variables.scss';
 
     .navigation {
-      width: 16.5rem;
-      min-height: 100dvh;
-      position: sticky;
-      background-color: $white;
-      box-shadow: $box-shadow;
-      padding: 1.5rem 0;
-
+      box-shadow: $box-shadow2;
       .logo {
         cursor: pointer;
-        padding: 0 2rem;
 
         img {
           width: 12.5rem
@@ -44,7 +37,6 @@ import { AuthService } from "../../core/services/auth.service";
 
       ul li {
         cursor: pointer;
-        margin-bottom: 1rem;
         font-weight: 500;
 
         &.active {
