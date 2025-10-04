@@ -12,10 +12,11 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { eFollowStatus } from '../../../../core/enumerators/follow-status.enum';
 import { IFileUploadForm } from '../../../../shared/interfaces/file-upload-form.interface';
 import { FileUploadService } from '../../../../core/services/file-upload.service';
+import { Posts } from '../../../post/components/posts/posts';
 
 @Component({
   selector: 'app-profile',
-  imports: [Navigation, CommonModule, RouterLink],
+  imports: [Navigation, CommonModule, RouterLink, Posts],
   templateUrl: './profile.html',
   styleUrl: './profile.scss'
 })

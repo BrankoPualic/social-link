@@ -56,4 +56,10 @@
     <button class="btn btn-primary px-3" (click)="follow()">Follow</button>
     }
   </div>
+
+  @if (followStatus == eFollowStatus.Active || isCurrentUser)
+  {
+  <div class="fs-5 my-3">Posts</div>
+  <app-posts [userId]="userId"/>
+  }
 </div>

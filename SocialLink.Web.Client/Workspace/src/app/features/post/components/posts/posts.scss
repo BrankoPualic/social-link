@@ -1,0 +1,19 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.post-preview {
+  img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow2;
+    cursor: pointer;
+  }
+
+  .post-info {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin: 0.5rem 0;
+  }
+}

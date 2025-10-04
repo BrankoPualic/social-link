@@ -15,12 +15,12 @@
     <Folder Include="Workspace\src\app\features\auth\pages\" />
     <Folder Include="Workspace\src\app\features\errors\pages\" />
     <Folder Include="Workspace\src\app\features\notifications\pages\" />
+    <Folder Include="Workspace\src\app\features\post\components\" />
     <Folder Include="Workspace\src\app\features\post\pages\" />
     <Folder Include="Workspace\src\app\shared\base\" />
     <Folder Include="Workspace\src\app\shared\components\forms\" />
     <Folder Include="Workspace\src\app\shared\directives\" />
     <Folder Include="Workspace\src\app\shared\interfaces\" />
-    <Folder Include="Workspace\src\app\shared\models\" />
     <Folder Include="Workspace\src\assets\styles\" />
   	<Folder Include="Workspace\src\app\features\user\pages" />
 </ItemGroup>

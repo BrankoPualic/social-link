@@ -1,10 +1,9 @@
 ﻿using Ardalis.Result;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SocialLink.Posts.Application;
+using SocialLink.Blobs.Contracts.Queries;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
-using SocialLink.Blobs.Contracts.Queries;
 using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Contracts;
@@ -34,6 +33,9 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 			ct
 		);
 
+		if (result.TotalCount == 0)
+			return Result.Success(new PagedResponse<PostDto>());
+
 		var postIds = result.Items.SelectIds(_ => _.Id);
 
 		var blobIds = await db.Media
@@ -45,13 +47,13 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 
 		var blobsResult = await mediator.Send(new GetBlobsQuery(blobIds), ct);
 		if (blobsResult.IsNotFound())
-			return Result.NotFound(blobsResult.Errors.ToArray());
+			return Result.Invalid(new ValidationError(nameof(Post.Media), string.Join(',', blobsResult.Errors.ToArray())));
 
 		var userIds = result.Items.SelectIds(_ => _.UserId);
 
 		var usersResult = await mediator.Send(new GetUsersContractQuery(userIds), ct);
 		if (usersResult.IsNotFound())
-			return Result.NotFound(usersResult.Errors.ToArray());
+			return Result.Invalid(new ValidationError(nameof(PostDto.User), string.Join(',', usersResult.Errors.ToArray())));
 
 		var blobsMap = blobsResult.Value.ToDictionary(_ => _.Id);
 		var usersMap = usersResult.Value.ToDictionary(_ => _.Id);

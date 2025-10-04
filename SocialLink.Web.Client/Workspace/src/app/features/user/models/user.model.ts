@@ -1,5 +1,5 @@
 import { eGender } from "../../../core/enumerators/gender.enum";
-import { BlobModel } from "../../../shared/models/blob.model";
+import { BlobModel } from "../../../core/models/blob.model";
 
 export class UserModel {
   id?: string;

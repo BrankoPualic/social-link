@@ -1,0 +1,18 @@
+<app-page-loader [containerLoader]="postsLoading"/>
+
+<div class="d-flex flex-wrap" style="gap: 10px;">
+  @for (post of posts; track $index)
+  {
+  <div class="post-preview">
+    <img [src]="post.media?.[0]?.url" alt="Post media preview" />
+    <div class="post-info">
+      <span class="me-2 small"><i class="fa-regular fa-heart"></i> {{ post.likesCount }}</span>
+      <span class="small"><i class="fa-regular fa-comment"></i> {{ post.commentsCount }}</span>
+    </div>
+  </div>
+  }
+  @if (posts.length === 0)
+  {
+    Nothing posted yet.
+  }
+</div>

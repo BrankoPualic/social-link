@@ -1,0 +1,41 @@
+import { Component, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
+import { PostModel } from '../../models/post.model';
+import { ApiService } from '../../../../core/services/api.service';
+import { finalize, take } from 'rxjs';
+import { PagedResponse } from '../../../../core/models/paged-response';
+import { PageLoaderComponent } from '../../../../shared/components/page-loader';
+
+@Component({
+  selector: 'app-posts',
+  imports: [PageLoaderComponent],
+  templateUrl: './posts.html',
+  styleUrl: './posts.scss'
+})
+export class Posts implements OnChanges {
+  postsLoading = false;
+  posts: PostModel[] = [];
+  userId = input<string | undefined>(undefined);
+
+  constructor(
+    private apiService: ApiService
+  ) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['userId'] && changes['userId'].currentValue) {
+      this.load();
+    }
+  }
+
+  load(): void {
+    this.postsLoading = true;
+
+    this.apiService.post<PagedResponse<PostModel>>('/posts', { userId: this.userId() })
+      .pipe(
+        take(1),
+        finalize(() => this.postsLoading = false)
+      )
+      .subscribe({
+        next: result => this.posts = result.items || []
+      })
+  }
+}
