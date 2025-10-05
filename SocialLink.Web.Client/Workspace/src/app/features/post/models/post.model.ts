@@ -11,4 +11,5 @@ export class PostModel {
   createdOn?: Date | string;
   user?: UserLightModel;
   media?: BlobModel[];
+  isLiked?: boolean;
 }

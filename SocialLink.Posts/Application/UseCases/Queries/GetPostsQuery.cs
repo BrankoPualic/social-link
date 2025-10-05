@@ -61,7 +61,11 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 		var likesMap = await db.PostLikes
 			.Where(_ => postIds.Contains(_.PostId))
 			.GroupBy(_ => _.PostId)
-			.ToDictionaryAsync(_ => _.Key, _ => _.Count(), ct);
+			.ToDictionaryAsync(_ => _.Key, _ => new
+			{
+				Count = _.Count(),
+				IsLiked = _.Any(_ => _.UserId == db.CurrentUser.Id)
+			}, ct);
 
 		var commentsMap = await db.Comments
 			.Where(_ => postIds.Contains(_.PostId))
@@ -77,8 +81,10 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 
 			post.User = usersMap.GetValueOrDefault(post.UserId);
 
-			post.LikesCount = likesMap.GetValueOrDefault(post.Id);
+			post.LikesCount = likesMap.GetValueOrDefault(post.Id)?.Count;
 			post.CommentsCount = commentsMap.GetValueOrDefault(post.Id);
+
+			post.IsLiked = likesMap.GetValueOrDefault(post.Id)?.IsLiked;
 		}
 
 		return Result.Success(result);

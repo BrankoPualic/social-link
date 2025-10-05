@@ -1,5 +1,4 @@
 ﻿using Ardalis.Result;
-using SocialLink.Posts;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
 using SocialLink.SharedKernel.UseCases;
@@ -15,7 +14,7 @@ internal class CreateCommentCommandHandler(IPostDatabaseContext db) : EFCommandH
 		var data = req.Data;
 
 		if (data is null || string.IsNullOrWhiteSpace(data?.Message))
-			return Result.Invalid(new ValidationError("Message is missing."));
+			return Result.Invalid(new ValidationError(nameof(Comment), "Message is missing"));
 
 		var model = new Comment();
 		data.ToModel(model);

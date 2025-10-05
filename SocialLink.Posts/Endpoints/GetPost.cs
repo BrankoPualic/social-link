@@ -1,9 +1,9 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Application.UseCases.Queries;
+using SocialLink.SharedKernel;
 
 namespace SocialLink.Posts.Endpoints;
 
@@ -19,13 +19,6 @@ internal class GetPost(IMediator mediator) : Endpoint<GetPostRequest, PostDto>
 	{
 		var result = await mediator.Send(new GetPostQuery(req.PostId), ct);
 
-		if (result.IsSuccess)
-		{
-			await Send.OkAsync(result, ct);
-		}
-		else if (result.IsNotFound())
-		{
-			await Send.NotFoundAsync(ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct);
 	}
 }

@@ -25,6 +25,8 @@ internal class PostDto
 
 	public List<BlobDto> Media { get; set; } = [];
 
+	public bool? IsLiked { get; set; }
+
 	public static Expression<Func<Post, PostDto>> Projection => _ => new()
 	{
 		Id = _.Id,

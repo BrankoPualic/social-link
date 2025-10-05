@@ -57,9 +57,12 @@
     }
   </div>
 
-  @if (followStatus == eFollowStatus.Active || isCurrentUser)
+  @if (isCurrentUser ||
+      (user?.isPrivate && followStatus == eFollowStatus.Active) ||
+      !user?.isPrivate
+  )
   {
   <div class="fs-5 my-3">Posts</div>
-  <app-posts [userId]="userId"/>
+  <app-posts [userId]="userId" />
   }
 </div>

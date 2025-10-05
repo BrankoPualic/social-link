@@ -4,10 +4,12 @@ import { ApiService } from '../../../../core/services/api.service';
 import { finalize, take } from 'rxjs';
 import { PagedResponse } from '../../../../core/models/paged-response';
 import { PageLoaderComponent } from '../../../../shared/components/page-loader';
+import { RouterLink } from '@angular/router';
+import { HeartIcon } from '../../../../shared/components/heart-icon';
 
 @Component({
   selector: 'app-posts',
-  imports: [PageLoaderComponent],
+  imports: [PageLoaderComponent, RouterLink, HeartIcon],
   templateUrl: './posts.html',
   styleUrl: './posts.scss'
 })

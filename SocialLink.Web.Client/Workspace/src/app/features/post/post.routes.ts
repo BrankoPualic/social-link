@@ -8,4 +8,10 @@ export const postRoutes: Route[] = [
     loadComponent: () => import("./pages/create-post/create-post").then(_ => _.CreatePost),
     canActivate: [authGuard]
   },
+  {
+    path: "post/:id",
+    title: "Post",
+    loadComponent: () => import("./pages/post/post").then(_ => _.Post),
+    canActivate: [authGuard]
+  }
 ];

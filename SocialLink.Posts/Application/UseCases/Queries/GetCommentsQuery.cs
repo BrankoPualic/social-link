@@ -18,7 +18,7 @@ internal class GetCommentsQueryHandler(IPostDatabaseContext db, IMediator mediat
 	{
 		var search = req.Search;
 		if (search is null || search?.PostId is null)
-			return Result.NotFound("Post not found.");
+			return Result.Invalid(new ValidationError(nameof(Post), "Post not found"));
 
 		var filters = new List<Expression<Func<Comment, bool>>>()
 		{
@@ -34,11 +34,14 @@ internal class GetCommentsQueryHandler(IPostDatabaseContext db, IMediator mediat
 			ct
 		);
 
+		if (result.TotalCount == 0)
+			return Result.Success(new PagedResponse<CommentDto>());
+
 		var userIds = result.Items.SelectIds(_ => _.UserId);
 
 		var usersResult = await mediator.Send(new GetUsersContractQuery(userIds), ct);
 		if (usersResult.IsNotFound())
-			return Result.NotFound(usersResult.Errors.ToArray());
+			return Result.Invalid(new ValidationError(nameof(CommentDto.User), string.Join(',', usersResult.Errors.ToArray())));
 
 		var usersMap = usersResult.Value.ToDictionary(_ => _.Id);
 

@@ -1,5 +1,4 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using SocialLink.Posts.Application;
@@ -21,13 +20,6 @@ internal class GetComments(IMediator mediator) : Endpoint<CommentSearch, PagedRe
 	{
 		var result = await mediator.Send(new GetCommentsQuery(req), ct);
 
-		if (result.IsOk())
-		{
-			await Send.OkAsync(result, ct);
-		}
-		else if (result.IsNotFound())
-		{
-			await Send.NotFoundAsync(ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct);
 	}
 }

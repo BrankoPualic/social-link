@@ -1,9 +1,9 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Application.UseCases.Commands;
+using SocialLink.SharedKernel;
 
 namespace SocialLink.Posts.Endpoints;
 
@@ -19,13 +19,6 @@ internal class CreateComment(IMediator mediator) : Endpoint<CommentEditDto>
 	{
 		var result = await mediator.Send(new CreateCommentCommand(req), ct);
 
-		if (result.IsCreated())
-		{
-			await Send.OkAsync(result, ct);
-		}
-		else if (result.IsInvalid())
-		{
-			await Send.ErrorsAsync(400, ct);
-		}
+		await result.SendResponseAsync(HttpContext, ct);
 	}
 }

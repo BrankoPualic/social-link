@@ -1,8 +1,9 @@
 ﻿using Ardalis.Result;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SocialLink.Posts.Application.Dtos;
 using SocialLink.Blobs.Contracts.Queries;
+using SocialLink.Posts.Application.Dtos;
+using SocialLink.Posts.Domain;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Contracts;
 
@@ -19,7 +20,7 @@ internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) 
 			.Select(PostDto.Projection)
 			.FirstOrDefaultAsync(_ => _.Id == postId, ct);
 		if (model is null)
-			return Result.NotFound("Post not found.");
+			return Result.Invalid(new ValidationError(nameof(Post), "Post not found"));
 
 		var blobIds = await db.Media
 			.Where(_ => _.PostId == postId)
@@ -29,7 +30,7 @@ internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) 
 
 		var blobsResult = await mediator.Send(new GetBlobsQuery(blobIds), ct);
 		if (blobsResult.IsNotFound())
-			return Result.NotFound(blobsResult.Errors.ToArray());
+			return Result.Invalid(new ValidationError(nameof(Post.Media), string.Join(',', blobsResult.Errors.ToArray())));
 
 		var orderedBlobs = blobIds
 			.Select(id => blobsResult.Value.FirstOrDefault(_ => _.Id == id))
@@ -40,12 +41,24 @@ internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) 
 
 		var userResult = await mediator.Send(new GetUserContractQuery(model.UserId), ct);
 		if (userResult.IsNotFound())
-			return Result.NotFound(userResult.Errors.ToArray());
+			return Result.Invalid(new ValidationError(nameof(PostDto.User), string.Join(',', userResult.Errors.ToArray())));
 
-		model.LikesCount = await db.PostLikes.CountAsync(_ => _.PostId == postId, ct);
+		var postLikeInfo = await db.PostLikes
+			.Where(_ => _.PostId == postId)
+			.GroupBy(_ => _.PostId)
+			.Select(_ => new
+			{
+				LikesCount = _.Count(),
+				IsLiked = _.Any(_ => _.UserId == db.CurrentUser.Id),
+			})
+			.FirstOrDefaultAsync(ct);
+
+		model.LikesCount = postLikeInfo?.LikesCount;
+		model.IsLiked = postLikeInfo?.IsLiked;
 		model.CommentsCount = await db.Comments.CountAsync(_ => _.PostId == postId, ct);
 
 		model.User = userResult.Value;
+
 
 		return Result.Success(model);
 	}
