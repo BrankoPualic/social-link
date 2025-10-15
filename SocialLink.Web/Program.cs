@@ -1,6 +1,7 @@
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
+using MediatR;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Serilog;
@@ -9,6 +10,7 @@ using SocialLink.Notifications;
 using SocialLink.Posts;
 using SocialLink.SharedKernel;
 using SocialLink.Users;
+using SocialLink.Web;
 using SocialLink.Web.Middlewares;
 using SocialLink.Web.Objects;
 using System.Reflection;
@@ -41,6 +43,8 @@ builder.Services
 
 builder.Services.AddScoped<IIdentityUser, IdentityUser>();
 
+builder.Services.AddMemoryCache();
+
 // Add Module Services
 List<Assembly> mediatRAssemblies = [typeof(Program).Assembly];
 builder.Services.AddUsersModuleServices(builder.Configuration, logger, mediatRAssemblies);
@@ -50,6 +54,7 @@ builder.Services.AddBlobsModuleServices(builder.Configuration, logger, mediatRAs
 
 // Set up MediatR
 builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblies(mediatRAssemblies.ToArray()));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
 
 var app = builder.Build();
 
