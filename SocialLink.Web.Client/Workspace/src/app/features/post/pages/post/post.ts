@@ -1,22 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponentGeneric } from '../../../../shared/base/base';
 import { PostModel } from '../../models/post.model';
 import { PageLoaderService } from '../../../../core/services/page-loader.service';
-import { finalize, forkJoin, take } from 'rxjs';
+import { finalize, take } from 'rxjs';
 import { ApiService } from '../../../../core/services/api.service';
-import { CommentModel } from '../../models/comment.model';
-import { PagedResponse } from '../../../../core/models/paged-response';
 import { Navigation } from '../../../../shared/components/navigation';
 import { CommonModule } from '@angular/common';
 import { Functions } from '../../../../shared/functions';
 import { AuthService } from '../../../../core/services/auth.service';
 import { HeartIcon } from '../../../../shared/components/heart-icon';
 import { MessageBox } from '../../../../shared/components/message-box';
+import { Comments } from '../../../comment/components/comments/comments';
 
 @Component({
   selector: 'app-post',
-  imports: [Navigation, CommonModule, HeartIcon, MessageBox],
+  imports: [Navigation, CommonModule, HeartIcon, MessageBox, Comments],
   templateUrl: './post.html',
   styleUrl: './post.scss'
 })
@@ -24,7 +23,7 @@ export class Post extends BaseComponentGeneric<PostModel> {
   userId?: string;
   postId?: string;
   post?: PostModel;
-  comments: CommentModel[] = [];
+  reloadComments = signal<boolean>(false);
 
   activeCarouselMedia = 0;
 
@@ -47,18 +46,14 @@ export class Post extends BaseComponentGeneric<PostModel> {
   load(): void {
     this.loading = true;
 
-    forkJoin({
-      post: this.apiService.get<PostModel>(`/posts/${this.postId}`),
-      comments: this.apiService.post<PagedResponse<CommentModel>>('/posts/comments', { postId: this.postId })
-    })
+    this.apiService.get<PostModel>(`/posts/${this.postId}`)
       .pipe(
         take(1),
         finalize(() => this.loading = false)
       )
-      .subscribe(result => {
-        this.post = result.post;
-        this.comments = result.comments.items!;
-      })
+      .subscribe({
+        next: result => this.post = result
+      });
   }
 
   likePost(): void {
@@ -84,18 +79,10 @@ export class Post extends BaseComponentGeneric<PostModel> {
         take(1)
       )
       .subscribe({
-        next: commentId => this.comments.push({
-          // TODO: REmove this part and load comments again
-          id: commentId,
-          userId: this.userId,
-          postId: this.postId,
-          message: e,
-          createdOn: new Date()
-        }),
+        next: commentId => this.reloadComments.set(true),
         error: _ => console.error(_.error.errors)
       });
   }
-
 
   previousMedia = () => this.activeCarouselMedia--;
   nextMedia = () => this.activeCarouselMedia++;

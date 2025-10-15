@@ -10,4 +10,5 @@ export class CommentModel {
   repliesCount?: number;
   createdOn?: Date | string;
   user?: UserLightModel;
+  isLiked?: boolean;
 }

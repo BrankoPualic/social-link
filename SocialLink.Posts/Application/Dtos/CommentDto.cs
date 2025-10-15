@@ -24,6 +24,8 @@ internal class CommentDto
 
 	public UserContractDto User { get; set; }
 
+	public bool? IsLiked { get; set; }
+
 	public static Expression<Func<Comment, CommentDto>> Projection => _ => new()
 	{
 		Id = _.Id,

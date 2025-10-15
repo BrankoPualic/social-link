@@ -50,7 +50,11 @@ internal class GetCommentsQueryHandler(IPostDatabaseContext db, IMediator mediat
 		var likesMap = await db.CommentLikes
 			.Where(_ => commentIds.Contains(_.CommentId))
 			.GroupBy(_ => _.CommentId)
-			.ToDictionaryAsync(_ => _.Key, _ => _.Count(), ct);
+			.ToDictionaryAsync(_ => _.Key, _ => new
+			{
+				Count = _.Count(),
+				IsLiked = _.Any(_ => _.UserId == db.CurrentUser.Id)
+			}, ct);
 
 		var repliesMap = await db.Comments
 			.Where(_ => commentIds.Contains(_.ParentId ?? Guid.Empty))
@@ -60,8 +64,10 @@ internal class GetCommentsQueryHandler(IPostDatabaseContext db, IMediator mediat
 		foreach (var comment in result.Items)
 		{
 			comment.User = usersMap.GetValueOrDefault(comment.UserId);
-			comment.LikesCount = likesMap.GetValueOrDefault(comment.Id);
 			comment.RepliesCount = repliesMap.GetValueOrDefault(comment.Id);
+
+			comment.LikesCount = likesMap.GetValueOrDefault(comment.Id)?.Count;
+			comment.IsLiked = likesMap.GetValueOrDefault(comment.Id)?.IsLiked;
 		}
 
 		return Result.Success(result);
