@@ -27,6 +27,7 @@ public static class UsersModule
 		services.AddScoped<IUserDatabaseContext, UserDatabaseContext>();
 
 		services.AddScoped<IAuthManager, AuthManager>();
+		services.AddScoped<IAuthTokenProcessor, AuthTokenProcessor>();
 		services.AddScoped<IUserRepository, UserRepository>();
 		services.AddScoped<INotificationService, NotificationService>();
 

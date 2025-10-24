@@ -12,11 +12,11 @@ using SocialLink.Users.Enumerators;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
 
-internal sealed record SignupCommand(SignupDto Data, FileInformationDto File) : Command<TokenDto>;
+internal sealed record SignupCommand(SignupDto Data, FileInformationDto File) : Command;
 
-internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IAuthManager authManager, IMediator mediator) : EFCommandHandler<SignupCommand, TokenDto>(db)
+internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IAuthManager authManager, IAuthTokenProcessor authTokenProcessor, IMediator mediator) : EFCommandHandler<SignupCommand>(db)
 {
-	public override async Task<ResponseWrapper<TokenDto>> Handle(SignupCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(SignupCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 		var file = req.File;
@@ -46,11 +46,29 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 		// Log entry
 		userRepository.CreateLoginLog(model.Id);
 
+		// Generate Access and Refresh tokens
+		var (jwtToken, expiresAt) = authTokenProcessor.GenerateJwtToken(model);
+		var refreshToken = authTokenProcessor.GenerateRefreshToken();
+		var refreshTokenExpiresAt = DateTime.UtcNow.AddDays(Constants.REFRESH_TOKEN_DURATION_IN_DAYS);
+
+		var userRefreshToken = new UserRefreshToken
+		{
+			Id = Guid.NewGuid(),
+			UserId = model.Id,
+			Token = refreshToken,
+			TokenExpiresAt = refreshTokenExpiresAt,
+		};
+
+		db.RefreshTokens.Add(userRefreshToken);
+
 		await db.SaveChangesAsync(true, ct);
 
 		if (cleanup is not null)
 			await cleanup.ExecuteAsync();
 
-		return new(new TokenDto { Content = authManager.GenerateJwtToken(model) });
+		authTokenProcessor.WriteTokenAsHttpOnlyCookie(Constants.ACCESS_TOKEN_COOKIE, jwtToken, expiresAt);
+		authTokenProcessor.WriteTokenAsHttpOnlyCookie(Constants.REFRESH_TOKEN_COOKIE, refreshToken, refreshTokenExpiresAt);
+
+		return new();
 	}
 }

@@ -1,37 +1,40 @@
-import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
-import { inject } from "@angular/core/primitives/di";
+import { HTTP_INTERCEPTORS, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { AuthService } from "../services/auth.service";
-import { catchError } from "rxjs";
+import { Observable, catchError, throwError } from "rxjs";
 
-export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const toastr = inject(ToastrService);
-  const router = inject(Router);
-  const authService = inject(AuthService);
+@Injectable()
+export class ErrorInterceptor implements HttpInterceptor {
+  constructor(
+    private router: Router,
+    private toastrService: ToastrService
+  ) { }
 
-  return next(req).pipe(
-    catchError((err: HttpErrorResponse) => {
-      if (err) {
-        switch (err.status) {
-          case 401:
-            authService.logout();
-            break;
-          case 403:
-            router.navigateByUrl('/unauthorized');
-            break;
-          case 404:
-            router.navigateByUrl('/not-found');
-            break;
-          case 500:
-            toastr.error('Something went wrong. Please contact your system administrator.', 'Server Error');
-            console.error(err);
-            break;
-          default:
-            break;
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    req = req.clone({
+      withCredentials: true,
+    });
+
+    return next.handle(req).pipe(
+      catchError(error => {
+        console.log(error.error);
+
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 404) {
+            this.router.navigateByUrl('/not-found');
+          }
+          else if (error.status === 500) {
+            this.toastrService.error(error.error.errors.map((_: any) => `${_.value}\n`));
+          }
         }
-      }
-      throw err;
-    })
-  )
-};
+
+        return throwError(() => error);
+      })
+    )
+  }
+}
+
+export const errorInterceptorProvider = [
+  { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+];

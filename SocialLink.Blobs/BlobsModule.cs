@@ -36,6 +36,7 @@ public static class BlobsModule
 		services.AddScoped<IBlobDatabaseContext, BlobDatabaseContext>();
 
 		services.AddScoped<IBlobService, BlobService>();
+		services.AddScoped<IFileValidationService, FileValidationService>();
 		services.AddScoped<IAzureBlobRepository, AzureBlobRepository>();
 
 		mediatRAssemblies.Add(typeof(BlobsModule).Assembly);

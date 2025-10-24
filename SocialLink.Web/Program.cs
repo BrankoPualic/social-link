@@ -1,5 +1,7 @@
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Serilog;
@@ -14,6 +16,7 @@ using SocialLink.Web.Behaviors;
 using SocialLink.Web.Middlewares;
 using SocialLink.Web.Objects;
 using System.Reflection;
+using System.Text;
 
 var logger = Log.Logger = new LoggerConfiguration()
 	.Enrich.FromLogContext()
@@ -33,8 +36,22 @@ builder.Configuration.AddAzureKeyVault(
 
 builder.Services.AddCors();
 
-builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
+builder.Services.AddHttpContextAccessor();
 
+// TODO: Maybe set each of these inside Settings and then override Get there to check key vault?
+var jwtSettings = new JwtSettings
+{
+	SigningKey = builder.Configuration.GetSection(nameof(JwtSettings.SigningKey)).Value,
+	Issuer = builder.Configuration.GetSection(nameof(JwtSettings.Issuer)).Value,
+	Audience = builder.Configuration.GetSection(nameof(JwtSettings.Audience)).Value
+};
+
+builder.Services.Configure<JwtSettings>(opt =>
+{
+	opt.SigningKey = jwtSettings.SigningKey;
+	opt.Issuer = jwtSettings.Issuer;
+	opt.Audience = jwtSettings.Audience;
+});
 builder.Services.AddControllers().ConfigureApplicationPartManager(manager =>
 {
 	// Clear all auto-detected controllers.
@@ -44,11 +61,40 @@ builder.Services.AddControllers().ConfigureApplicationPartManager(manager =>
 	manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
 });
 
-//builder.Services
-//	.AddAuthenticationJwtBearer(_ => _.SigningKey = builder.Configuration["Jwt:SecretKey"])
-//	.AddAuthorization()
-//	.AddFastEndpoints()
-//	.SwaggerDocument();
+builder.Services
+	.AddAuthentication(opt =>
+	{
+		opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+		opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		opt.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+	})
+	.AddJwtBearer(options =>
+	{
+		options.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateIssuerSigningKey = true,
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SigningKey ?? throw new InvalidOperationException())),
+			ValidateIssuer = true,
+			ValidIssuer = jwtSettings.Issuer,
+			ValidateAudience = true,
+			ValidAudience = jwtSettings.Audience,
+			ValidateLifetime = true,
+			ClockSkew = TimeSpan.FromSeconds(60)
+		};
+		options.Audience = jwtSettings.Audience;
+		options.ClaimsIssuer = jwtSettings.Issuer;
+
+		options.Events = new JwtBearerEvents
+		{
+			OnMessageReceived = context =>
+			{
+				context.Token = context.Request.Cookies[Constants.ACCESS_TOKEN_COOKIE];
+				return Task.CompletedTask;
+			}
+		};
+	});
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IIdentityUser, IdentityUser>();
 
@@ -70,6 +116,8 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Services.AddValidatorsFromAssemblies(mediatRAssemblies.ToArray());
 
 var app = builder.Build();
+
+app.UseHttpsRedirection();
 
 app.UseCors(builder => builder
 	.WithOrigins("https://localhost:4200")
