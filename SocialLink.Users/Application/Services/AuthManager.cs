@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Ardalis.GuardClauses;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Interfaces;
 using SocialLink.Users.Domain;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,18 +10,25 @@ using System.Text;
 
 namespace SocialLink.Users.Application.Services;
 
-internal class AuthManager(IOptions<JwtSetting> jwtSetting) : IAuthManager
+internal class AuthManager : IAuthManager
 {
-	private readonly JwtSetting _jwtSetting = jwtSetting.Value;
+	private readonly JwtSettings _settings;
+	private readonly byte[] _key;
+	private readonly int _tokenDuration = Constants.TOKEN_DURATION_HOURS;
+
+	public AuthManager(IOptions<JwtSettings> settings)
+	{
+		_settings = settings.Value;
+		Guard.Against.Null(_settings);
+		Guard.Against.Null(_settings.SigningKey);
+		Guard.Against.Null(_settings.Issuer);
+		Guard.Against.Null(_settings.Audience);
+		_key = Encoding.ASCII.GetBytes(_settings.SigningKey);
+	}
 
 	public string GenerateJwtToken(User user)
 	{
 		var tokenHandler = new JwtSecurityTokenHandler();
-		var jwtSecrets = new
-		{
-			Key = Encoding.UTF8.GetBytes(_jwtSetting.SecretKey),
-			_jwtSetting.Duration,
-		};
 
 		var claims = new List<Claim>()
 		{
@@ -34,8 +43,10 @@ internal class AuthManager(IOptions<JwtSetting> jwtSetting) : IAuthManager
 
 		var tokenDescriptor = new SecurityTokenDescriptor
 		{
-			Expires = DateTime.UtcNow.AddDays(jwtSecrets.Duration),
-			SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(jwtSecrets.Key), SecurityAlgorithms.HmacSha512Signature),
+			Expires = DateTime.UtcNow.AddHours(_tokenDuration),
+			Audience = _settings.Audience,
+			Issuer = _settings.Issuer,
+			SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_key), SecurityAlgorithms.HmacSha256Signature),
 			Claims = claims.ToDictionary(claim => claim.Type, claim => (object)claim.Value)
 		};
 
