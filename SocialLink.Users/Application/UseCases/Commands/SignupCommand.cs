@@ -1,7 +1,7 @@
-﻿using Ardalis.Result;
-using MediatR;
+﻿using MediatR;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.Interfaces;
@@ -13,16 +13,16 @@ internal sealed record SignupCommand(SignupDto Data, FileInformationDto File) : 
 
 internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IAuthManager authManager, IMediator mediator) : EFCommandHandler<SignupCommand, TokenDto>(db)
 {
-	public override async Task<Result<TokenDto>> Handle(SignupCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper<TokenDto>> Handle(SignupCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 		var file = req.File;
 
 		if (await userRepository.IsEmailRegistered(data.Email, ct))
-			return Result.Invalid(new ValidationError(nameof(User.Email), "Email is already registered"));
+			return new(new Error(nameof(User.Email), "Email is already registered."));
 
 		if (await userRepository.IsUsernameTaken(data.Username, ct))
-			return Result.Invalid(new ValidationError(nameof(User.Username), "Username is taken"));
+			return new(new Error(nameof(User.Username), "Username is taken."));
 
 		User model = new();
 		data.ToModel(model);
@@ -34,10 +34,10 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 		{
 			var uploadResult = await mediator.Send(new UploadBlobCommand(new UploadFileDto(file, SharedKernel.eBlobType.ProfileImage)), ct);
 			if (!uploadResult.IsSuccess)
-				return Result.Invalid(new ValidationError(string.Join(',', uploadResult.Errors)));
+				return new(uploadResult.Errors);
 
-			cleanup = uploadResult.Value.Cleanup;
-			userRepository.CreateMedia(model.Id, uploadResult.Value.BlobId, eUserMedia.ProfileImage);
+			cleanup = uploadResult.Data.Cleanup;
+			userRepository.CreateMedia(model.Id, uploadResult.Data.BlobId, eUserMedia.ProfileImage);
 		}
 
 		// Log entry
@@ -47,6 +47,6 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 
 		await cleanup();
 
-		return Result.Success(new TokenDto { Content = authManager.GenerateJwtToken(model) });
+		return new(new TokenDto { Content = authManager.GenerateJwtToken(model) });
 	}
 }

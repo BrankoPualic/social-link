@@ -1,29 +1,29 @@
-﻿using Ardalis.Result;
-using SocialLink.Blobs.Application.Interfaces;
+﻿using SocialLink.Blobs.Application.Interfaces;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.Blobs.Contracts.Queries;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Blobs.Integrations;
 
 internal class GetBlobsQueryHandler(IBlobService blobService) : MongoQueryHandler<GetBlobsQuery, List<BlobDto>>
 {
-	public override async Task<Result<List<BlobDto>>> Handle(GetBlobsQuery req, CancellationToken ct)
+	public override async Task<ResponseWrapper<List<BlobDto>>> Handle(GetBlobsQuery req, CancellationToken ct)
 	{
 		var ids = req.BlobIds;
 		if (ids.Count == 0)
-			return Result.Success(new List<BlobDto>());
+			return new();
 
 		var list = await Task.WhenAll(ids.Select(async id =>
 		{
-			var uriResult = await blobService.GetBlobSasUriAsync(id);
-			return uriResult.IsSuccess ? new BlobDto { Id = id, Url = uriResult.Value } : null;
+			var result = await blobService.GetBlobSasUriAsync(id);
+			return result.IsSuccess ? new BlobDto { Id = id, Url = result.Data } : null;
 		}));
 
-		var result = list.Where(_ => _ != null).ToList();
-		if (result.Count == 0)
-			return Result.NotFound("Files not found.");
+		var data = list.Where(_ => _ != null).ToList();
+		if (data.Count == 0)
+			return new(new Error("Files not found."));
 
-		return Result.Success(result);
+		return new(data);
 	}
 }

@@ -20,6 +20,8 @@ public static class UsersModule
 		services.AddDbContext<UserDatabaseContext>(options => options.UseSqlServer(connectionString, _ => _.CommandTimeout(600).EnableRetryOnFailure())
 			.LogTo(_ => Debug.WriteLine(_), LogLevel.Warning));
 
+		services.AddControllers();
+
 		services.AddScoped<IUserDatabaseContext, UserDatabaseContext>();
 
 		services.AddScoped<IAuthManager, AuthManager>();

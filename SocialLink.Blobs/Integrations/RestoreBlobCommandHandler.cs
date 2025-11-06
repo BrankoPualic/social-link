@@ -1,5 +1,4 @@
-﻿using Ardalis.Result;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Domain;
 using SocialLink.SharedKernel;
@@ -9,7 +8,7 @@ namespace SocialLink.Blobs.Integrations;
 
 internal class RestoreBlobCommandHandler(IBlobDatabaseContext db) : MongoCommandHandler<RestoreBlobCommand, Guid>
 {
-	public override async Task<Result<Guid>> Handle(RestoreBlobCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper<Guid>> Handle(RestoreBlobCommand req, CancellationToken ct)
 	{
 		var id = req.BlobId;
 
@@ -25,11 +24,11 @@ internal class RestoreBlobCommandHandler(IBlobDatabaseContext db) : MongoCommand
 
 		if (result.IsAcknowledged && result.ModifiedCount > 0)
 		{
-			return Result.Success(id);
+			return new(id);
 		}
 		else
 		{
-			return Result.Invalid(new ValidationError { ErrorMessage = "File restore failed." });
+			return new(new Error("File restore failed."));
 		}
 	}
 }

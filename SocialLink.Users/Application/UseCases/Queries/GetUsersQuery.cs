@@ -1,9 +1,7 @@
-﻿using Ardalis.Result;
-using SocialLink.Users.Application;
+﻿using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Domain;
-using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 using System.Linq.Expressions;
 
 namespace SocialLink.Users.Application.UseCases.Queries;
@@ -12,7 +10,7 @@ internal sealed record GetUsersQuery(UserSearch Search) : Query<PagedResponse<Us
 
 internal class GetUsersQueryHandler(IUserDatabaseContext db) : EFQueryHandler<GetUsersQuery, PagedResponse<UserDto>>(db)
 {
-	public override async Task<Result<PagedResponse<UserDto>>> Handle(GetUsersQuery req, CancellationToken ct)
+	public override async Task<ResponseWrapper<PagedResponse<UserDto>>> Handle(GetUsersQuery req, CancellationToken ct)
 	{
 		var search = req.Search;
 
@@ -35,6 +33,6 @@ internal class GetUsersQueryHandler(IUserDatabaseContext db) : EFQueryHandler<Ge
 			ct
 		);
 
-		return Result.Success(result);
+		return new(result);
 	}
 }

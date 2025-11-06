@@ -1,5 +1,5 @@
-﻿using Ardalis.Result;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.Interfaces;
@@ -10,7 +10,7 @@ internal sealed record AcceptFollowCommand(FollowDto Data) : Command;
 
 internal class AcceptFollowCommandHandler(IUserDatabaseContext db, INotificationService notificationService) : EFCommandHandler<AcceptFollowCommand>(db)
 {
-	public override async Task<Result> Handle(AcceptFollowCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(AcceptFollowCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
@@ -23,13 +23,13 @@ internal class AcceptFollowCommandHandler(IUserDatabaseContext db, INotification
 			.FirstOrDefaultAsync(ct);
 
 		if (follow is null)
-			return Result.Invalid(new ValidationError("Follow request not found"));
+			return new(new Error("Follow request not found."));
 
 		follow.IsPending = false;
 		await db.SaveChangesAsync(false, ct);
 
 		await notificationService.SendFollowAcceptedAsync(follow, ct);
 
-		return Result.NoContent();
+		return new();
 	}
 }

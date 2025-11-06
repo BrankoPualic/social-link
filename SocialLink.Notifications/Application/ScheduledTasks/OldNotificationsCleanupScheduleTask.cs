@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 using Serilog;
-using SocialLink.Notifications;
 using SocialLink.Notifications.Domain;
 
 namespace SocialLink.Notifications.Application.ScheduledTasks;

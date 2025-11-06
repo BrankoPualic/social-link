@@ -1,5 +1,5 @@
-﻿using Ardalis.Result;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Domain;
@@ -10,7 +10,7 @@ internal sealed record UpdateUserCommand(UserDto Data) : Command;
 
 internal class UpdateUserCommandHandler(IUserDatabaseContext db, IUserRepository userRepository) : EFCommandHandler<UpdateUserCommand>(db)
 {
-	public override async Task<Result> Handle(UpdateUserCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(UpdateUserCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
@@ -19,15 +19,15 @@ internal class UpdateUserCommandHandler(IUserDatabaseContext db, IUserRepository
 			.FirstOrDefaultAsync(ct);
 
 		if (model is null)
-			return Result.Invalid(new ValidationError(nameof(User), "User not found"));
+			return new(new Error(nameof(User), "User not found."));
 
 		if (data.Username != model.Username && await userRepository.IsUsernameTaken(data.Username, ct))
-			return Result.Invalid(new ValidationError(nameof(User.Username), "Username is taken"));
+			return new(new Error(nameof(User.Username), "Username is taken."));
 
 		data.ToModel(model);
 
 		await db.SaveChangesAsync(true, ct);
 
-		return Result.NoContent();
+		return new();
 	}
 }

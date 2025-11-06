@@ -1,7 +1,7 @@
-﻿using Ardalis.Result;
-using Microsoft.EntityFrameworkCore;
-using SocialLink.Users.Application.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
+using SocialLink.Users.Application.Dtos;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
 
@@ -9,16 +9,16 @@ internal sealed record SaveNotificationPreferencesCommand(List<NotificationPrefe
 
 internal class SaveNotificationPreferencesCommandHandler(IUserDatabaseContext db) : EFCommandHandler<SaveNotificationPreferencesCommand>(db)
 {
-	public override async Task<Result> Handle(SaveNotificationPreferencesCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(SaveNotificationPreferencesCommand req, CancellationToken ct)
 	{
 		var preferences = req.Preferences;
-		if (preferences.Count < 1)
-			return Result.NoContent();
+		if (preferences.Count == 0)
+			return new();
 
 		var preferenceIds = preferences.Select(_ => _.Id).ToList();
 		var userId = preferences.Select(_ => _.UserId).FirstOrDefault();
 		if (userId == Guid.Empty)
-			return Result.NotFound("User not found.");
+			return new(new Error("User not found."));
 
 		var existingPreferences = await db.NotificationPreferences
 			.Where(_ => _.UserId == userId)
@@ -36,6 +36,6 @@ internal class SaveNotificationPreferencesCommandHandler(IUserDatabaseContext db
 
 		await db.SaveChangesAsync(false, ct);
 
-		return Result.NoContent();
+		return new();
 	}
 }

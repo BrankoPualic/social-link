@@ -29,6 +29,8 @@ public static class BlobsModule
 			return client;
 		});
 
+		services.AddControllers();
+
 		services.AddScoped<IBlobDatabaseContext, BlobDatabaseContext>();
 
 		services.AddScoped<IBlobService, BlobService>();

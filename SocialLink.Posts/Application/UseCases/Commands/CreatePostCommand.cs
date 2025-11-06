@@ -1,5 +1,4 @@
-﻿using Ardalis.Result;
-using MediatR;
+﻿using MediatR;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.Posts.Application.Dtos;
@@ -12,13 +11,13 @@ internal sealed record CreatePostCommand(PostCreateDto Data, List<FileInformatio
 
 internal class CreatePostCommandHandler(IPostDatabaseContext db, IMediator mediator, IPostRepository postRepository) : EFCommandHandler<CreatePostCommand, Guid>(db)
 {
-	public override async Task<Result<Guid>> Handle(CreatePostCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper<Guid>> Handle(CreatePostCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 		var files = req.Files;
 
 		if (data is null || files.Count is 0 || string.IsNullOrWhiteSpace(data?.Description) && files.Count is 0)
-			return Result.Invalid(new ValidationError(nameof(Post), "Data is missing"));
+			return new(new Error(nameof(Post), "Data is missing."));
 
 		var model = new Post();
 		data.ToModel(model);
@@ -26,10 +25,10 @@ internal class CreatePostCommandHandler(IPostDatabaseContext db, IMediator media
 		var uploadData = files.Select(Map()).NotNull().ToList();
 		var uploadResult = await mediator.Send(new UploadBlobsCommand(uploadData), ct);
 		if (!uploadResult.IsSuccess)
-			return Result.Invalid(new ValidationError(nameof(Post), "Something went wrong while uploading files"));
+			return new(new Error(nameof(Post), "Something went wrong while uploading files."));
 
 
-		foreach (var (uploadedMedia, index) in uploadResult.Value.WithIndex())
+		foreach (var (uploadedMedia, index) in uploadResult.Data.WithIndex())
 		{
 			// TODO: How to know which type we uploaded ???
 			// ANSWER: Because on upload blobs we use Task.WhenAll. We preserve order of uploaded data.
@@ -45,9 +44,9 @@ internal class CreatePostCommandHandler(IPostDatabaseContext db, IMediator media
 		db.Posts.Add(model);
 		await db.SaveChangesAsync(true, ct);
 
-		await Task.WhenAll(uploadResult.Value.Select(_ => _.Cleanup()));
+		await Task.WhenAll(uploadResult.Data.Select(_ => _.Cleanup()));
 
-		return Result.Created(model.Id);
+		return new(model.Id);
 	}
 
 	private static Func<FileInformationDto, UploadFileDto> Map() => _ =>

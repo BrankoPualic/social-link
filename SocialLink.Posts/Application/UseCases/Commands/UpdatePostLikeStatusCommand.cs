@@ -1,6 +1,6 @@
-﻿using Ardalis.Result;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SocialLink.Posts.Application.Dtos;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Posts.Application.UseCases.Commands;
@@ -9,7 +9,7 @@ internal sealed record UpdatePostLikeStatusCommand(PostLikeDto Data) : Command;
 
 internal class UpdatePostLikeStatusCommandHandler(IPostDatabaseContext db) : EFCommandHandler<UpdatePostLikeStatusCommand>(db)
 {
-	public override async Task<Result> Handle(UpdatePostLikeStatusCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(UpdatePostLikeStatusCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
@@ -31,6 +31,6 @@ internal class UpdatePostLikeStatusCommandHandler(IPostDatabaseContext db) : EFC
 
 		await db.SaveChangesAsync(false, ct);
 
-		return Result.NoContent();
+		return new();
 	}
 }

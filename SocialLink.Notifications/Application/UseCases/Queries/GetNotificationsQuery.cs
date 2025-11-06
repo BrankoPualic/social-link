@@ -1,5 +1,4 @@
-﻿using Ardalis.Result;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using SocialLink.Notifications.Application.Dtos;
 using SocialLink.Notifications.Domain;
 using SocialLink.SharedKernel;
@@ -10,7 +9,7 @@ internal sealed record GetNotificationsQuery(NotificationSearch Search) : Query<
 
 internal class GetNotificationsQueryHandler(INotificationMongoContext db) : MongoQueryHandler<GetNotificationsQuery, PagedResponse<NotificationDto>>
 {
-	public override async Task<Result<PagedResponse<NotificationDto>>> Handle(GetNotificationsQuery req, CancellationToken ct)
+	public override async Task<ResponseWrapper<PagedResponse<NotificationDto>>> Handle(GetNotificationsQuery req, CancellationToken ct)
 	{
 		var search = req.Search;
 
@@ -26,6 +25,6 @@ internal class GetNotificationsQueryHandler(INotificationMongoContext db) : Mong
 			ct
 		);
 
-		return Result.Success(result);
+		return new(result);
 	}
 }

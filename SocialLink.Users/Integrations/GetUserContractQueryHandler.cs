@@ -1,7 +1,7 @@
-﻿using Ardalis.Result;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SocialLink.Blobs.Contracts.Queries;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Contracts;
 
@@ -9,7 +9,7 @@ namespace SocialLink.Users.Integrations;
 
 internal class GetUserContractQueryHandler(IUserDatabaseContext db, IMediator mediator) : EFQueryHandler<GetUserContractQuery, UserContractDto>(db)
 {
-	public override async Task<Result<UserContractDto>> Handle(GetUserContractQuery req, CancellationToken ct)
+	public override async Task<ResponseWrapper<UserContractDto>> Handle(GetUserContractQuery req, CancellationToken ct)
 	{
 		var userId = req.UserId;
 
@@ -23,7 +23,7 @@ internal class GetUserContractQueryHandler(IUserDatabaseContext db, IMediator me
 			.FirstOrDefaultAsync(ct);
 
 		if (model is null)
-			return Result.NotFound("User not found.");
+			return new(new Error("User not found."));
 
 		var blobId = await db.Media
 			.Where(_ => _.UserId == userId)
@@ -32,11 +32,11 @@ internal class GetUserContractQueryHandler(IUserDatabaseContext db, IMediator me
 			.FirstOrDefaultAsync(ct);
 
 		var blobResult = await mediator.Send(new GetBlobQuery(blobId), ct);
-		if (blobResult.IsNotFound())
-			return Result.NotFound(blobResult.Errors.ToArray());
+		if (!blobResult.IsSuccess)
+			return new(blobResult.Errors);
 
-		model.ProfileImage = blobResult.Value.Url;
+		model.ProfileImage = blobResult.Data.Url;
 
-		return Result.Success(model);
+		return new(model);
 	}
 }

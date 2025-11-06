@@ -1,5 +1,4 @@
-﻿using Ardalis.Result;
-using SocialLink.Notifications.Contracts;
+﻿using SocialLink.Notifications.Contracts;
 using SocialLink.Notifications.Domain;
 using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
@@ -8,7 +7,7 @@ namespace SocialLink.Notifications.Integrations;
 
 internal class CreateNotificationCommandHandler(INotificationMongoContext db) : MongoCommandHandler<CreateNotificationCommand>
 {
-	public override async Task<Result> Handle(CreateNotificationCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(CreateNotificationCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
@@ -25,6 +24,6 @@ internal class CreateNotificationCommandHandler(INotificationMongoContext db) : 
 
 		await db.Notifications.InsertOneAsync(model, cancellationToken: ct);
 
-		return Result.Success();
+		return new();
 	}
 }

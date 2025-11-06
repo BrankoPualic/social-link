@@ -1,5 +1,5 @@
-﻿using Ardalis.Result;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 
@@ -9,7 +9,7 @@ internal sealed record CheckFollowStatusQuery(FollowDto Data) : Query<eFollowSta
 
 internal class CheckFollowStatusQueryHandler(IUserDatabaseContext db) : EFQueryHandler<CheckFollowStatusQuery, eFollowStatus>(db)
 {
-	public override async Task<Result<eFollowStatus>> Handle(CheckFollowStatusQuery req, CancellationToken ct)
+	public override async Task<ResponseWrapper<eFollowStatus>> Handle(CheckFollowStatusQuery req, CancellationToken ct)
 	{
 		var data = req.Data;
 
@@ -18,7 +18,7 @@ internal class CheckFollowStatusQueryHandler(IUserDatabaseContext db) : EFQueryH
 			.Where(_ => _.FollowingId == data.FollowingId)
 			.FirstOrDefaultAsync(ct);
 
-		return Result.Success(
+		return new(
 			follow is not null
 				? follow.IsPending
 				? eFollowStatus.Pending

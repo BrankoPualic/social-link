@@ -1,5 +1,5 @@
-﻿using Ardalis.Result;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 
@@ -9,7 +9,7 @@ internal sealed record UnfollowCommand(FollowDto Data) : Command;
 
 internal class UnfollowCommandHandler(IUserDatabaseContext db) : EFCommandHandler<UnfollowCommand>(db)
 {
-	public override async Task<Result> Handle(UnfollowCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(UnfollowCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
@@ -19,11 +19,11 @@ internal class UnfollowCommandHandler(IUserDatabaseContext db) : EFCommandHandle
 			.FirstOrDefaultAsync(ct);
 
 		if (follow is null)
-			return Result.Invalid(new ValidationError("Follow doesn't exist"));
+			return new(new Error("Follow doesn't exist."));
 
 		db.Follows.Remove(follow);
 		await db.SaveChangesAsync(false, ct);
 
-		return Result.NoContent();
+		return new();
 	}
 }

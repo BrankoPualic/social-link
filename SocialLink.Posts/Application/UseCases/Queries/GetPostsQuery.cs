@@ -1,5 +1,4 @@
-﻿using Ardalis.Result;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SocialLink.Blobs.Contracts.Queries;
 using SocialLink.Posts.Application.Dtos;
@@ -15,7 +14,7 @@ internal sealed record GetPostsQuery(PostSearch Search) : Query<PagedResponse<Po
 
 internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator) : EFQueryHandler<GetPostsQuery, PagedResponse<PostDto>>(db)
 {
-	public override async Task<Result<PagedResponse<PostDto>>> Handle(GetPostsQuery req, CancellationToken ct)
+	public override async Task<ResponseWrapper<PagedResponse<PostDto>>> Handle(GetPostsQuery req, CancellationToken ct)
 	{
 		var search = req.Search;
 
@@ -34,7 +33,7 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 		);
 
 		if (result.TotalCount == 0)
-			return Result.Success(new PagedResponse<PostDto>());
+			return new();
 
 		var postIds = result.Items.SelectIds(_ => _.Id);
 
@@ -46,17 +45,17 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 			.ToListAsync(ct);
 
 		var blobsResult = await mediator.Send(new GetBlobsQuery(blobIds), ct);
-		if (blobsResult.IsNotFound())
-			return Result.Invalid(new ValidationError(nameof(Post.Media), string.Join(',', blobsResult.Errors.ToArray())));
+		if (!blobsResult.IsSuccess)
+			return new(blobsResult.Errors);
 
 		var userIds = result.Items.SelectIds(_ => _.UserId);
 
 		var usersResult = await mediator.Send(new GetUsersContractQuery(userIds), ct);
-		if (usersResult.IsNotFound())
-			return Result.Invalid(new ValidationError(nameof(PostDto.User), string.Join(',', usersResult.Errors.ToArray())));
+		if (!usersResult.IsSuccess)
+			return new(usersResult.Errors);
 
-		var blobsMap = blobsResult.Value.ToDictionary(_ => _.Id);
-		var usersMap = usersResult.Value.ToDictionary(_ => _.Id);
+		var blobsMap = blobsResult.Data.ToDictionary(_ => _.Id);
+		var usersMap = usersResult.Data.ToDictionary(_ => _.Id);
 
 		var likesMap = await db.PostLikes
 			.Where(_ => postIds.Contains(_.PostId))
@@ -87,6 +86,6 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 			post.IsLiked = likesMap.GetValueOrDefault(post.Id)?.IsLiked;
 		}
 
-		return Result.Success(result);
+		return new(result);
 	}
 }

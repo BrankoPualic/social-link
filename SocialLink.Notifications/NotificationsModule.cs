@@ -27,6 +27,8 @@ public static class NotificationsModule
 		});
 		services.AddSingleton<IMongoHealthChecker, MongoHealthChecker>();
 
+		services.AddControllers();
+
 		services.AddScoped<INotificationMongoContext, NotificationMongoContext>();
 
 		services.AddHostedService<OldNotificationsCleanupScheduleTask>();

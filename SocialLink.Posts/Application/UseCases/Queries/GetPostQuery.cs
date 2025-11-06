@@ -1,9 +1,9 @@
-﻿using Ardalis.Result;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SocialLink.Blobs.Contracts.Queries;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Contracts;
 
@@ -12,7 +12,7 @@ internal sealed record GetPostQuery(Guid PostId) : Query<PostDto>;
 
 internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) : EFQueryHandler<GetPostQuery, PostDto>(db)
 {
-	public override async Task<Result<PostDto>> Handle(GetPostQuery req, CancellationToken ct)
+	public override async Task<ResponseWrapper<PostDto>> Handle(GetPostQuery req, CancellationToken ct)
 	{
 		var postId = req.PostId;
 
@@ -20,7 +20,7 @@ internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) 
 			.Select(PostDto.Projection)
 			.FirstOrDefaultAsync(_ => _.Id == postId, ct);
 		if (model is null)
-			return Result.Invalid(new ValidationError(nameof(Post), "Post not found"));
+			return new(new Error(nameof(Post), "Post not found."));
 
 		var blobIds = await db.Media
 			.Where(_ => _.PostId == postId)
@@ -29,19 +29,19 @@ internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) 
 			.ToListAsync(ct);
 
 		var blobsResult = await mediator.Send(new GetBlobsQuery(blobIds), ct);
-		if (blobsResult.IsNotFound())
-			return Result.Invalid(new ValidationError(nameof(Post.Media), string.Join(',', blobsResult.Errors.ToArray())));
+		if (!blobsResult.IsSuccess)
+			return new(blobsResult.Errors);
 
 		var orderedBlobs = blobIds
-			.Select(id => blobsResult.Value.FirstOrDefault(_ => _.Id == id))
+			.Select(id => blobsResult.Data.FirstOrDefault(_ => _.Id == id))
 			.Where(_ => _ is not null)
 			.ToList();
 
 		model.Media = orderedBlobs;
 
 		var userResult = await mediator.Send(new GetUserContractQuery(model.UserId), ct);
-		if (userResult.IsNotFound())
-			return Result.Invalid(new ValidationError(nameof(PostDto.User), string.Join(',', userResult.Errors.ToArray())));
+		if (!userResult.IsSuccess)
+			return new(userResult.Errors);
 
 		var postLikeInfo = await db.PostLikes
 			.Where(_ => _.PostId == postId)
@@ -57,9 +57,8 @@ internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) 
 		model.IsLiked = postLikeInfo?.IsLiked;
 		model.CommentsCount = await db.Comments.CountAsync(_ => _.PostId == postId, ct);
 
-		model.User = userResult.Value;
+		model.User = userResult.Data;
 
-
-		return Result.Success(model);
+		return new(model);
 	}
 }

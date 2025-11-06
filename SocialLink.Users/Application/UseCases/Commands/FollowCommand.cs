@@ -1,5 +1,5 @@
-﻿using Ardalis.Result;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.Interfaces;
@@ -11,7 +11,7 @@ internal sealed record FollowCommand(FollowDto Data) : Command;
 
 internal class FollowCommandHandler(IUserDatabaseContext db, INotificationService notificationService) : EFCommandHandler<FollowCommand>(db)
 {
-	public override async Task<Result> Handle(FollowCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(FollowCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
@@ -20,23 +20,23 @@ internal class FollowCommandHandler(IUserDatabaseContext db, INotificationServic
 			.AsNoTracking()
 			.FirstOrDefaultAsync(_ => _.Id == data.FollowerId, ct);
 		if (follower is null)
-			return Result.Invalid(new ValidationError("Follower user not found"));
+			return new(new Error("Follower user not found."));
 
 		var following = await db.Users
 			.Include(_ => _.NotificationPreferences)
 			.AsNoTracking()
 			.FirstOrDefaultAsync(_ => _.Id == data.FollowingId, ct);
 		if (following is null)
-			return Result.Invalid(new ValidationError("Following user not found"));
+			return new(new Error("Following user not found."));
 
 		var follow = await db.Follows.FirstOrDefaultAsync(_ => _.FollowerId == data.FollowerId && _.FollowingId == data.FollowingId, ct);
 		if (follow is not null)
 		{
 			string message = follow.IsPending
-				? "Follow already sent"
-				: "User already followed";
+				? "Follow already sent."
+				: "User already followed.";
 
-			return Result.Invalid(new ValidationError(message));
+			return new(new Error(message));
 		}
 
 		var model = new UserFollow();
@@ -50,6 +50,6 @@ internal class FollowCommandHandler(IUserDatabaseContext db, INotificationServic
 		await notificationService.SendFollowRequestAsync(follower, following, ct);
 		await notificationService.SendStartFollowingAsync(follower, following, ct);
 
-		return Result.NoContent();
+		return new();
 	}
 }

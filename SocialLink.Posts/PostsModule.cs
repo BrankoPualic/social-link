@@ -18,6 +18,8 @@ public static class PostsModule
 		services.AddDbContext<PostDatabaseContext>(options => options.UseSqlServer(connectionString, _ => _.CommandTimeout(600).EnableRetryOnFailure())
 			.LogTo(_ => Debug.WriteLine(_), LogLevel.Warning));
 
+		services.AddControllers();
+
 		services.AddScoped<IPostDatabaseContext, PostDatabaseContext>();
 		services.AddScoped<IPostRepository, PostRepository>();
 

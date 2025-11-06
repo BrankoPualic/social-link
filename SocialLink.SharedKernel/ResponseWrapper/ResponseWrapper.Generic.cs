@@ -4,6 +4,10 @@ public class ResponseWrapper<T> : ResponseWrapper
 {
 	private readonly T _data;
 
+	public ResponseWrapper() : base()
+	{
+	}
+
 	public ResponseWrapper(Error errors) : base(errors)
 	{
 	}

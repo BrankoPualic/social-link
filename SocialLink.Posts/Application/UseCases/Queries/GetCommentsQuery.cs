@@ -1,5 +1,4 @@
-﻿using Ardalis.Result;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
@@ -14,11 +13,11 @@ internal sealed record GetCommentsQuery(CommentSearch Search) : Query<PagedRespo
 
 internal class GetCommentsQueryHandler(IPostDatabaseContext db, IMediator mediator) : EFQueryHandler<GetCommentsQuery, PagedResponse<CommentDto>>(db)
 {
-	public override async Task<Result<PagedResponse<CommentDto>>> Handle(GetCommentsQuery req, CancellationToken ct)
+	public override async Task<ResponseWrapper<PagedResponse<CommentDto>>> Handle(GetCommentsQuery req, CancellationToken ct)
 	{
 		var search = req.Search;
 		if (search is null || search?.PostId is null)
-			return Result.Invalid(new ValidationError(nameof(Post), "Post not found"));
+			return new(new Error(nameof(Post), "Post not found."));
 
 		var filters = new List<Expression<Func<Comment, bool>>>()
 		{
@@ -35,15 +34,15 @@ internal class GetCommentsQueryHandler(IPostDatabaseContext db, IMediator mediat
 		);
 
 		if (result.TotalCount == 0)
-			return Result.Success(new PagedResponse<CommentDto>());
+			return new();
 
 		var userIds = result.Items.SelectIds(_ => _.UserId);
 
 		var usersResult = await mediator.Send(new GetUsersContractQuery(userIds), ct);
-		if (usersResult.IsNotFound())
-			return Result.Invalid(new ValidationError(nameof(CommentDto.User), string.Join(',', usersResult.Errors.ToArray())));
+		if (!usersResult.IsSuccess)
+			return new(usersResult.Errors);
 
-		var usersMap = usersResult.Value.ToDictionary(_ => _.Id);
+		var usersMap = usersResult.Data.ToDictionary(_ => _.Id);
 
 		var commentIds = result.Items.SelectIds(_ => _.Id);
 
@@ -70,6 +69,6 @@ internal class GetCommentsQueryHandler(IPostDatabaseContext db, IMediator mediat
 			comment.IsLiked = likesMap.GetValueOrDefault(comment.Id)?.IsLiked;
 		}
 
-		return Result.Success(result);
+		return new(result);
 	}
 }

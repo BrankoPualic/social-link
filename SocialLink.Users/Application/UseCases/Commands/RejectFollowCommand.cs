@@ -1,5 +1,5 @@
-﻿using Ardalis.Result;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 
@@ -9,7 +9,7 @@ internal sealed record RejectFollowCommand(FollowDto Data) : Command;
 
 internal class RejectFollowCommandHandler(IUserDatabaseContext db) : EFCommandHandler<RejectFollowCommand>(db)
 {
-	public override async Task<Result> Handle(RejectFollowCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(RejectFollowCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
@@ -19,11 +19,11 @@ internal class RejectFollowCommandHandler(IUserDatabaseContext db) : EFCommandHa
 			.FirstOrDefaultAsync(ct);
 
 		if (follow is null)
-			return Result.Invalid(new ValidationError("Follow request not found"));
+			return new(new Error("Follow request not found."));
 
 		db.Follows.Remove(follow);
 		await db.SaveChangesAsync(false, ct);
 
-		return Result.NoContent();
+		return new();
 	}
 }
