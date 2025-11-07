@@ -39,7 +39,7 @@ internal class UpdateProfileImageCommandHandler(IUserDatabaseContext db, IUserRe
 
 		await db.SaveChangesAsync(false, ct);
 
-		await uploadResult.Data.Cleanup();
+		await uploadResult.Data.Cleanup.ExecuteAsync();
 
 		await Task.WhenAll(activeMedia.Select(async _ =>
 		{

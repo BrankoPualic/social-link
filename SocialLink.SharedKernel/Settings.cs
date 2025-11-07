@@ -26,4 +26,8 @@ public static class Settings
 	public static string AzureStorageName => "devsocialmediastorage";
 
 	public static string GetBlobStorageUrl(string storageName, string path = "") => $"https://{storageName}.blob.core.windows.net/{path}";
+
+	// Files
+
+	public static readonly int MaxFileSizeInMB = 50;
 }

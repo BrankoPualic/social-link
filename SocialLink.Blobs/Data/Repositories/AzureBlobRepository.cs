@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
+using SocialLink.Blobs.Contracts;
 using SocialLink.Blobs.Domain;
 using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.Extensions;
@@ -37,18 +38,18 @@ internal class AzureBlobRepository : IAzureBlobRepository
 		return Settings.GetBlobStorageUrl(StorageName, $"{containerName}/{fileName}?{sasToken}");
 	}
 
-	public async Task<(Uri Uri, Func<Task> Cleanup)> UploadIntoSinglesDirectoryAsync(Stream fileStream, string containerName, string directory, string fileName)
+	public async Task<(Uri Uri, Cleanup Cleanup)> UploadIntoSinglesDirectoryAsync(Stream fileStream, string containerName, string directory, string fileName)
 	{
 		var client = GetClient(containerName);
 		if (!await client.ExistsAsync())
-			return (null, () => Task.CompletedTask);
+			return (null, new Cleanup());
 
 		var blobHttpHeader = new BlobHttpHeaders { ContentType = Path.GetExtension(fileName).ToMimeType() };
 		var fullPath = string.Concat(directory.TrimEnd('/'), "/", fileName.TrimStart('/'));
 		var blob = client.GetBlobClient(fullPath);
 		await blob.UploadAsync(fileStream, blobHttpHeader);
 
-		return (blob.Uri, () => CleanupSinglesDirectoryAsync(containerName, directory, fileName));
+		return (blob.Uri, new Cleanup(() => CleanupSinglesDirectoryAsync(containerName, directory, fileName)));
 	}
 
 	public async Task<byte[]> DownloadContentAsync(string containerName, string path)

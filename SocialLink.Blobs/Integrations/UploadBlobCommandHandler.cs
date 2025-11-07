@@ -13,7 +13,11 @@ internal class UploadBlobCommandHandler(IBlobService blobService) : MongoCommand
 		var file = req.Data.File;
 		var blobType = req.Data.BlobType;
 
-		var (blob, cleanup) = await blobService.UploadAsync(file, null, blobType);
+		var uploadResult = await blobService.UploadAsync(file, null, blobType);
+		if (!uploadResult.IsSuccess)
+			return new(uploadResult.Errors);
+
+		var (blob, cleanup) = uploadResult.Data;
 
 		return new(new UploadResult(blob.Id, cleanup));
 	}

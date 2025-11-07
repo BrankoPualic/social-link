@@ -47,7 +47,7 @@ internal class CreatePostCommandHandler(IPostDatabaseContext db, IMediator media
 		db.Posts.Add(model);
 		await db.SaveChangesAsync(true, ct);
 
-		await Task.WhenAll(uploadResult.Data.Select(_ => _.Cleanup()));
+		await Task.WhenAll(uploadResult.Data.Select(_ => _.Cleanup.ExecuteAsync()));
 
 		return new(model.Id);
 	}

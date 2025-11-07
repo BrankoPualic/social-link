@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using SocialLink.Blobs.Application.Interfaces;
+using SocialLink.Blobs.Contracts;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.Blobs.Domain;
 using SocialLink.SharedKernel;
@@ -8,7 +9,7 @@ using SocialLink.SharedKernel.Extensions;
 
 namespace SocialLink.Blobs.Application.Services;
 
-internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBlobRepository) : IBlobService
+internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBlobRepository, IFileValidationService fileValidationService) : IBlobService
 {
 	private static string GetContainerName() => "blobs";
 
@@ -39,8 +40,12 @@ internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBl
 		return new(new FileInformationDto(blob.Name, blob.Type, file, blob.Size));
 	}
 
-	public async Task<(Blob blob, Func<Task> Cleanup)> UploadAsync(FileInformationDto file, Blob blob, eBlobType blobType)
+	public async Task<ResponseWrapper<(Blob blob, Cleanup Cleanup)>> UploadAsync(FileInformationDto file, Blob blob, eBlobType blobType)
 	{
+		var validationResult = fileValidationService.Validate(file);
+		if (!validationResult.IsSuccess)
+			return new(validationResult.Errors);
+
 		var isNew = blob == null;
 
 		blob ??= new Blob { Id = Guid.NewGuid(), IsActive = true };
@@ -56,7 +61,7 @@ internal class BlobService(IBlobDatabaseContext db, IAzureBlobRepository azureBl
 		if (isNew)
 			await db.ExecuteWithAuditAsync(blob, isNew, _ => db.Blobs.InsertOneAsync(_));
 
-		return (blob, cleanup);
+		return new((blob, cleanup));
 	}
 
 	public async Task<ResponseWrapper<Guid>> DeleteAsync(Guid id)

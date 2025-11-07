@@ -1,4 +1,6 @@
-﻿namespace SocialLink.Blobs.Domain;
+﻿using SocialLink.Blobs.Contracts;
+
+namespace SocialLink.Blobs.Domain;
 
 internal interface IAzureBlobRepository
 {
@@ -10,5 +12,5 @@ internal interface IAzureBlobRepository
 
 	Task<string> GetBlobSasUri(string containerName, string fileName);
 
-	Task<(Uri Uri, Func<Task> Cleanup)> UploadIntoSinglesDirectoryAsync(Stream fileStream, string containerName, string directory, string fileName);
+	Task<(Uri Uri, Cleanup Cleanup)> UploadIntoSinglesDirectoryAsync(Stream fileStream, string containerName, string directory, string fileName);
 }

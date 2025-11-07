@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SocialLink.Blobs.Contracts;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.Common.Application;
@@ -31,7 +32,7 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 		model.Password = authManager.HashPassword(data.Password);
 		db.Users.Add(model);
 
-		Func<Task> cleanup = () => Task.CompletedTask;
+		Cleanup cleanup = null;
 		if (file is not null)
 		{
 			var uploadResult = await mediator.Send(new UploadBlobCommand(new UploadFileDto(file, eBlobType.ProfileImage)), ct);
@@ -47,7 +48,8 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 
 		await db.SaveChangesAsync(true, ct);
 
-		await cleanup();
+		if (cleanup is not null)
+			await cleanup.ExecuteAsync();
 
 		return new(new TokenDto { Content = authManager.GenerateJwtToken(model) });
 	}
