@@ -1,4 +1,6 @@
-﻿namespace SocialLink.Users.Domain;
+﻿using SocialLink.Users.Enumerators;
+
+namespace SocialLink.Users.Domain;
 
 internal interface IUserRepository
 {

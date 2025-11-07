@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
+using SocialLink.Common.Data;
 using SocialLink.Notifications.Domain;
-using SocialLink.SharedKernel;
 
 namespace SocialLink.Notifications;
 

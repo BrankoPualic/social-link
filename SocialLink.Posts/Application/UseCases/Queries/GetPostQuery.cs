@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SocialLink.Blobs.Contracts.Queries;
+using SocialLink.Common.Application;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Contracts;
 
 namespace SocialLink.Posts.Application.UseCases.Queries;

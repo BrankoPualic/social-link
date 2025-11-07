@@ -1,12 +1,11 @@
-﻿using FastEndpoints;
-using FluentValidation;
+﻿using FluentValidation;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
 using SocialLink.SharedKernel;
 
 namespace SocialLink.Posts.Controllers.PostValidators;
 
-internal class PostCreateDtoValidator : Validator<PostCreateDto>
+internal class PostCreateDtoValidator : AbstractValidator<PostCreateDto>
 {
 	public PostCreateDtoValidator()
 	{

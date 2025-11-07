@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialLink.SharedKernel;
+using SocialLink.Users.Enumerators;
 
 namespace SocialLink.Users.Controllers;
 

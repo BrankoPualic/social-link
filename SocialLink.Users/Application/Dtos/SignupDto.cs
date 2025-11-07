@@ -1,5 +1,7 @@
-﻿using SocialLink.SharedKernel;
+﻿using SocialLink.SharedKernel.Enumerators;
+using SocialLink.SharedKernel.Extensions;
 using SocialLink.Users.Domain;
+using SocialLink.Users.Enumerators;
 
 namespace SocialLink.Users.Application.Dtos;
 

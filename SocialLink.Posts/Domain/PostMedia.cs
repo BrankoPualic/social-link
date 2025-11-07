@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using SocialLink.Posts.Enumerators;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SocialLink.Posts.Domain;
 

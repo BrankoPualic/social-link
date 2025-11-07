@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.Common.Application;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
+using SocialLink.SharedKernel.Enumerators;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.Interfaces;
 using SocialLink.Users.Domain;
+using SocialLink.Users.Enumerators;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
 
@@ -32,7 +34,7 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 		Func<Task> cleanup = () => Task.CompletedTask;
 		if (file is not null)
 		{
-			var uploadResult = await mediator.Send(new UploadBlobCommand(new UploadFileDto(file, SharedKernel.eBlobType.ProfileImage)), ct);
+			var uploadResult = await mediator.Send(new UploadBlobCommand(new UploadFileDto(file, eBlobType.ProfileImage)), ct);
 			if (!uploadResult.IsSuccess)
 				return new(uploadResult.Errors);
 

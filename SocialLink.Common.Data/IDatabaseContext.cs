@@ -1,7 +1,8 @@
 ﻿using SocialLink.SharedKernel.Domain;
 
-namespace SocialLink.SharedKernel;
+namespace SocialLink.Common.Data;
 
+// TODO: Separate write and read contexts!!!
 public interface IDatabaseContextBase
 {
 	IIdentityUser CurrentUser { get; }

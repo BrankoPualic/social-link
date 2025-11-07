@@ -1,6 +1,7 @@
-﻿using Ardalis.Result;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Extensions;
+using SocialLink.Web.Exceptions;
 using System.Net;
 
 namespace SocialLink.Web.Middlewares;
@@ -25,10 +26,22 @@ public class ExceptionMiddleware(RequestDelegate next)
 		context.Response.ContentType = "application/json";
 		context.Response.StatusCode = ex switch
 		{
+			FluentValidationException => (int)HttpStatusCode.BadRequest,
 			_ => (int)HttpStatusCode.InternalServerError
 		};
 
-		var response = Result.CriticalError("Something went wrong. Please contact your system administrator.");
+		Error response = null;
+		if (ex is FluentValidationException exception)
+		{
+			foreach (var error in exception.Failures)
+			{
+				response = new(error.Key, error.Value.ToList());
+			}
+		}
+		else
+		{
+			response = new Error("", "Something went wrong. Please contact your system administrator.");
+		}
 
 		var json = response.SerializeJsonObject(formatting: Formatting.Indented);
 

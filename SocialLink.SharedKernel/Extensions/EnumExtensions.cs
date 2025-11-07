@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace SocialLink.SharedKernel;
+namespace SocialLink.SharedKernel.Extensions;
 
 public static class EnumExtensions
 {

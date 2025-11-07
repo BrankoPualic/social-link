@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using SocialLink.SharedKernel.Domain;
 
-namespace SocialLink.SharedKernel;
+namespace SocialLink.Common.Data;
 
 public static class MongoAuditExtensions
 {

@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using SocialLink.Blobs.Domain;
-using SocialLink.SharedKernel;
+using SocialLink.Common.Data;
+using SocialLink.SharedKernel.Domain;
 
 namespace SocialLink.Blobs.Data;
 

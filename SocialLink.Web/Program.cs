@@ -1,6 +1,3 @@
-using FastEndpoints;
-using FastEndpoints.Security;
-using FastEndpoints.Swagger;
 using FluentValidation;
 using MediatR;
 using MongoDB.Bson.Serialization;
@@ -10,6 +7,7 @@ using SocialLink.Blobs;
 using SocialLink.Notifications;
 using SocialLink.Posts;
 using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Domain;
 using SocialLink.Users;
 using SocialLink.Web.Behaviors;
 using SocialLink.Web.Middlewares;
@@ -36,11 +34,11 @@ builder.Services.AddCors();
 
 builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
 
-builder.Services
-	.AddAuthenticationJwtBearer(_ => _.SigningKey = builder.Configuration["Jwt:SecretKey"])
-	.AddAuthorization()
-	.AddFastEndpoints()
-	.SwaggerDocument();
+//builder.Services
+//	.AddAuthenticationJwtBearer(_ => _.SigningKey = builder.Configuration["Jwt:SecretKey"])
+//	.AddAuthorization()
+//	.AddFastEndpoints()
+//	.SwaggerDocument();
 
 builder.Services.AddScoped<IIdentityUser, IdentityUser>();
 
@@ -82,9 +80,7 @@ app.UseCors(builder => builder
 	.AllowAnyOrigin());
 
 app.UseAuthentication()
-	.UseAuthorization()
-	.UseFastEndpoints()
-	.UseSwaggerGen(); // once application runs goto /swagger
+	.UseAuthorization();
 
 app.Run();
 

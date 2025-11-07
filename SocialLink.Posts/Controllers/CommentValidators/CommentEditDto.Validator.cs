@@ -1,12 +1,11 @@
-﻿using FastEndpoints;
-using FluentValidation;
+﻿using FluentValidation;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
 using SocialLink.SharedKernel;
 
 namespace SocialLink.Posts.Controllers.CommentValidators;
 
-internal class CommentEditDtoValidator : Validator<CommentEditDto>
+internal class CommentEditDtoValidator : AbstractValidator<CommentEditDto>
 {
 	public CommentEditDtoValidator()
 	{

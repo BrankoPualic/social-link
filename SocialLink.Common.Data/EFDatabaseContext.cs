@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.Domain;
+using SocialLink.SharedKernel.Extensions;
 
-namespace SocialLink.SharedKernel.Data;
+namespace SocialLink.Common.Data;
 
 public class EFDatabaseContext : DbContext, IEFDatabaseContext
 {

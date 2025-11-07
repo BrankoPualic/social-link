@@ -1,4 +1,6 @@
-﻿namespace SocialLink.SharedKernel;
+﻿using SocialLink.SharedKernel.Extensions;
+
+namespace SocialLink.SharedKernel;
 
 public class LookupDto
 {

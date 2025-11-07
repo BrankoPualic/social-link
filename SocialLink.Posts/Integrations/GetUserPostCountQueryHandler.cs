@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.Common.Application;
 using SocialLink.Posts.Contracts;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Posts.Integrations;
 

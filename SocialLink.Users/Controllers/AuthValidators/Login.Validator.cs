@@ -1,12 +1,11 @@
-﻿using FastEndpoints;
-using FluentValidation;
+﻿using FluentValidation;
 using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Domain;
 
 namespace SocialLink.Users.Controllers.AuthValidators;
 
-internal class LoginValidator : Validator<LoginDto>
+internal class LoginValidator : AbstractValidator<LoginDto>
 {
 	public LoginValidator()
 	{

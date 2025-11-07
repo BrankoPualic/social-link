@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocialLink.Users.Domain;
+using SocialLink.Users.Enumerators;
 
 namespace SocialLink.Users.Data;
 

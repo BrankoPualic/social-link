@@ -1,8 +1,9 @@
 ﻿using MongoDB.Driver;
+using SocialLink.Common.Application;
+using SocialLink.Common.Data;
 using SocialLink.Notifications.Application.Dtos;
 using SocialLink.Notifications.Domain;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Notifications.Application.UseCases.Queries;
 internal sealed record GetNotificationsQuery(NotificationSearch Search) : Query<PagedResponse<NotificationDto>>;

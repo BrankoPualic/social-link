@@ -1,4 +1,4 @@
-﻿using SocialLink.SharedKernel;
+﻿using SocialLink.SharedKernel.Enumerators;
 
 namespace SocialLink.Blobs.Contracts.Dtos;
 

@@ -3,6 +3,7 @@ using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
 using SocialLink.Blobs.Domain;
 using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Extensions;
 
 namespace SocialLink.Blobs.Data.Repositories;
 

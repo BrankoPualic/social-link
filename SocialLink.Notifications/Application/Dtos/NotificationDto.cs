@@ -1,5 +1,5 @@
 ﻿using SocialLink.Notifications.Domain;
-using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Enumerators;
 using System.Linq.Expressions;
 
 namespace SocialLink.Notifications.Application.Dtos;

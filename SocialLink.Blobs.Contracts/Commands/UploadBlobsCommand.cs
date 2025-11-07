@@ -1,5 +1,5 @@
 ﻿using SocialLink.Blobs.Contracts.Dtos;
-using SocialLink.SharedKernel.UseCases;
+using SocialLink.Common.Application;
 
 namespace SocialLink.Blobs.Contracts.Commands;
 

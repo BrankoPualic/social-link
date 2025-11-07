@@ -1,6 +1,7 @@
 ﻿using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.Blobs.Domain;
 using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Enumerators;
 
 namespace SocialLink.Blobs.Application.Interfaces;
 

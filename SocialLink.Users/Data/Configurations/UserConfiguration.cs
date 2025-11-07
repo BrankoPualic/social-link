@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SocialLink.SharedKernel.Data;
+using SocialLink.Common.Data;
 using SocialLink.Users.Domain;
 
 namespace SocialLink.Users.Data.Configurations;

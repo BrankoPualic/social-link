@@ -1,8 +1,8 @@
 ﻿using SocialLink.Blobs.Application.Interfaces;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.Blobs.Contracts.Queries;
+using SocialLink.Common.Application;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Blobs.Integrations;
 

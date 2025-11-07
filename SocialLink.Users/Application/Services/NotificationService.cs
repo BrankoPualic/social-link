@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using SocialLink.Notifications.Contracts;
 using SocialLink.Notifications.Contracts.Details;
-using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Enumerators;
 using SocialLink.Users.Application.Interfaces;
 using SocialLink.Users.Domain;
 

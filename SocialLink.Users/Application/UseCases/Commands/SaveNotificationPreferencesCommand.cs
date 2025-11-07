@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.Common.Application;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Application.Dtos;
 
 namespace SocialLink.Users.Application.UseCases.Commands;

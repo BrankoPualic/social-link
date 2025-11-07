@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 using SocialLink.Blobs.Domain;
-using SocialLink.SharedKernel;
+using SocialLink.Common.Data;
 
 namespace SocialLink.Blobs;
 

@@ -1,4 +1,5 @@
 ﻿using SocialLink.Posts.Domain;
+using SocialLink.Posts.Enumerators;
 
 namespace SocialLink.Posts.Data;
 internal class PostRepository(IPostDatabaseContext db) : IPostRepository

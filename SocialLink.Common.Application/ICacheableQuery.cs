@@ -1,4 +1,4 @@
-﻿namespace SocialLink.SharedKernel;
+﻿namespace SocialLink.Common.Application;
 
 public interface ICacheableQuery
 {

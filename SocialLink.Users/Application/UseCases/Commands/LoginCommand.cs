@@ -1,5 +1,5 @@
-﻿using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
+﻿using SocialLink.Common.Application;
+using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.Interfaces;
 using SocialLink.Users.Domain;

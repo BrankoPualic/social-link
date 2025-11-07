@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace SocialLink.SharedKernel;
+namespace SocialLink.SharedKernel.Extensions;
 
 public static class JsonExtensions
 {

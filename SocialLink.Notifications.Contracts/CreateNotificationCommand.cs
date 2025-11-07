@@ -1,5 +1,5 @@
-﻿using SocialLink.Notifications.Contracts.Details;
-using SocialLink.SharedKernel.UseCases;
+﻿using SocialLink.Common.Application;
+using SocialLink.Notifications.Contracts.Details;
 
 namespace SocialLink.Notifications.Contracts;
 

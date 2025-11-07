@@ -1,6 +1,7 @@
 ﻿using Ardalis.GuardClauses;
-using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.Domain;
+using SocialLink.SharedKernel.Enumerators;
+using SocialLink.Users.Enumerators;
 
 namespace SocialLink.Users.Domain;
 

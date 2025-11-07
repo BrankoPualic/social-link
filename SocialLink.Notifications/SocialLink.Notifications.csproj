@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SocialLink.Common.Application\SocialLink.Common.Application.csproj" />
+    <ProjectReference Include="..\SocialLink.Common.Data\SocialLink.Common.Data.csproj" />
     <ProjectReference Include="..\SocialLink.Notifications.Contracts\SocialLink.Notifications.Contracts.csproj" />
     <ProjectReference Include="..\SocialLink.SharedKernel\SocialLink.SharedKernel.csproj" />
   </ItemGroup>

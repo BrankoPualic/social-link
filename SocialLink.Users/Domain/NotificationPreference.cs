@@ -1,5 +1,5 @@
-﻿using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.Domain;
+﻿using SocialLink.SharedKernel.Domain;
+using SocialLink.SharedKernel.Enumerators;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SocialLink.Users.Domain;

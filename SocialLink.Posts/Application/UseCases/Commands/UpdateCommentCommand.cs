@@ -1,6 +1,6 @@
-﻿using SocialLink.Posts.Application.Dtos;
+﻿using SocialLink.Common.Application;
+using SocialLink.Posts.Application.Dtos;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Posts.Application.UseCases.Commands;
 

@@ -1,5 +1,7 @@
-﻿using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
+﻿using SocialLink.Common.Application;
+using SocialLink.Common.Data;
+using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Enumerators;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Domain;
 using System.Linq.Expressions;

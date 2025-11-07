@@ -1,6 +1,5 @@
 ﻿using SocialLink.Blobs.Contracts.Dtos;
-using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
+using SocialLink.Common.Application;
 
 namespace SocialLink.Blobs.Contracts.Queries;
 public sealed record GetBlobQuery(Guid BlobId) : Query<BlobDto>, ICacheableQuery

@@ -1,24 +1,12 @@
-﻿using HeyRed.Mime;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using MongoDB.Driver;
-using SocialLink.SharedKernel.Domain;
+using SocialLink.SharedKernel;
 using System.Linq.Expressions;
 
-namespace SocialLink.SharedKernel;
-
+namespace SocialLink.Common.Data;
 public static class Extensions
 {
-	public static void GenerateIdIfNew(this IDomainModel<Guid> model)
-	{
-		if (model.IsNew)
-			model.Id = Guid.NewGuid();
-	}
-
-	public static string ToMimeType(this string value) => MimeTypesMap.GetMimeType(value);
-
-	public static string GetAzureFileRelativePath(this string file, string containerName) => file[(file.IndexOf(containerName) + containerName.Length + 1)..];
-
 	// Data migration extensions
 
 	public static void ExecuteScript(this MigrationBuilder builder, string module, string file)
@@ -30,7 +18,6 @@ public static class Extensions
 
 	// Data access extensions
 
-	// TODO: Investigate PagedResult<T> from Ardalis.Result library
 	public static async Task<PagedResponse<TResponse>> EFSearchAsync<TResponse, TProperty, TModel>(
 		this DbSet<TModel> dbSet,
 		PagedSearch search,
@@ -98,19 +85,5 @@ public static class Extensions
 		};
 	}
 
-	// Array
 
-	public static IEnumerable<T> NotNull<T>(this IEnumerable<T> source) => source?.Where(_ => _ != null);
-
-	public static IEnumerable<(T, int)> WithIndex<T>(this IEnumerable<T> source) => source?.Select((item, index) => (item, index));
-
-	public static List<TKey> SelectIds<T, TKey>(this IEnumerable<IEntity<TKey>> source)
-		where T : class
-		where TKey : struct
-		=> source?.Where(_ => _ != null).Select(_ => _.Id).Distinct().ToList();
-
-	public static List<TKey> SelectIds<T, TKey>(this IEnumerable<T> source, Func<T, TKey> selector)
-		where T : class
-		where TKey : struct
-		=> source?.Where(_ => _ != null).Select(selector).Distinct().ToList();
 }

@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Domain;
+using SocialLink.SharedKernel.Enumerators;
+using SocialLink.SharedKernel.Extensions;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Commands;
 using SocialLink.Users.Application.UseCases.Queries;

@@ -1,4 +1,4 @@
-﻿namespace SocialLink.SharedKernel;
+﻿namespace SocialLink.SharedKernel.Extensions;
 
 public static class StringExtensions
 {

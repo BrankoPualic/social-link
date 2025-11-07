@@ -1,10 +1,13 @@
 ﻿using MediatR;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.Common.Application;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
+using SocialLink.Posts.Enumerators;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
+using SocialLink.SharedKernel.Enumerators;
+using SocialLink.SharedKernel.Extensions;
 
 namespace SocialLink.Posts.Application.UseCases.Commands;
 internal sealed record CreatePostCommand(PostCreateDto Data, List<FileInformationDto> Files) : Command<Guid>;

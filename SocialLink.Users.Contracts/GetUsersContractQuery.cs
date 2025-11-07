@@ -1,5 +1,4 @@
-﻿using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
+﻿using SocialLink.Common.Application;
 
 namespace SocialLink.Users.Contracts;
 

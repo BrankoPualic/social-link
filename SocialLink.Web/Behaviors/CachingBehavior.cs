@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Caching.Memory;
-using SocialLink.SharedKernel;
+using SocialLink.Common.Application;
 
 namespace SocialLink.Web.Behaviors;
 

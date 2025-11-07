@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.Common.Application;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
+using SocialLink.SharedKernel.Enumerators;
 using SocialLink.Users.Domain;
+using SocialLink.Users.Enumerators;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
 

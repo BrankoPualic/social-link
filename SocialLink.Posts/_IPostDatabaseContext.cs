@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SocialLink.Common.Data;
 using SocialLink.Posts.Domain;
-using SocialLink.SharedKernel;
 
 namespace SocialLink.Posts;
 

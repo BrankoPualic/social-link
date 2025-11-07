@@ -1,4 +1,4 @@
-﻿using SocialLink.SharedKernel.UseCases;
+﻿using SocialLink.Common.Application;
 
 namespace SocialLink.Blobs.Contracts.Commands;
 

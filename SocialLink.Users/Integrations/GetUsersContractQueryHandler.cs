@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SocialLink.Blobs.Contracts.Queries;
+using SocialLink.Common.Application;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 using SocialLink.Users.Contracts;
 
 namespace SocialLink.Users.Integrations;

@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using SocialLink.Common.Data;
 using SocialLink.Notifications.Domain;
-using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Domain;
 
 namespace SocialLink.Notifications.Data;
 

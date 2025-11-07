@@ -1,5 +1,5 @@
 ﻿using SocialLink.Posts.Domain;
-using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Extensions;
 
 namespace SocialLink.Posts.Application.Dtos;
 

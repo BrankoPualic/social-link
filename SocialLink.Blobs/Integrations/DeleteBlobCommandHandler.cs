@@ -1,8 +1,9 @@
 ﻿using MongoDB.Driver;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Domain;
+using SocialLink.Common.Application;
+using SocialLink.Common.Data;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Blobs.Integrations;
 

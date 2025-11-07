@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using SocialLink.Common.Data;
+using SocialLink.SharedKernel;
 
-namespace SocialLink.SharedKernel.UseCases;
+namespace SocialLink.Common.Application;
 
 public record Command : IRequest<ResponseWrapper>;
 

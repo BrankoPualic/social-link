@@ -1,4 +1,6 @@
-﻿namespace SocialLink.SharedKernel;
+﻿using SocialLink.SharedKernel.Enumerators;
+
+namespace SocialLink.SharedKernel.Domain;
 
 public interface IIdentityUser
 {

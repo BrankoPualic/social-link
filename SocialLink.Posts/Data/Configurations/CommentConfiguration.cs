@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SocialLink.Common.Data;
 using SocialLink.Posts.Domain;
-using SocialLink.SharedKernel.Data;
 
 namespace SocialLink.Posts.Data.Configurations;
 

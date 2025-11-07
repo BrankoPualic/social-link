@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SocialLink.SharedKernel.Domain;
 
-namespace SocialLink.SharedKernel.Data;
+namespace SocialLink.Common.Data;
 
 public abstract class BaseDomainModelConfiguration<T, TKey> : IEntityTypeConfiguration<T>
 	where T : DomainModel<TKey>

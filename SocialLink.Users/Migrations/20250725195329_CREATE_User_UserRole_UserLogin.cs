@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using SocialLink.Common.Data;
 using SocialLink.Users.Data;
-using SocialLink.SharedKernel;
 
 #nullable disable
 

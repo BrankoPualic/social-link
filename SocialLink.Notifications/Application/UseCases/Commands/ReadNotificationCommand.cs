@@ -1,8 +1,8 @@
 ﻿using MongoDB.Driver;
+using SocialLink.Common.Application;
 using SocialLink.Notifications.Application.Dtos;
 using SocialLink.Notifications.Domain;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
 
 namespace SocialLink.Notifications.Application.UseCases.Commands;
 internal sealed record ReadNotificationCommand(NotificationDto Data) : Command;

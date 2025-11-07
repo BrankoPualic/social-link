@@ -1,6 +1,7 @@
-﻿using SocialLink.SharedKernel.Domain;
+﻿using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Domain;
 
-namespace SocialLink.SharedKernel;
+namespace SocialLink.Common.Data;
 
 public class MongoDatabaseContext : IMongoDatabaseContext
 {

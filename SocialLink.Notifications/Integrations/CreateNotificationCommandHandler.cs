@@ -1,7 +1,8 @@
-﻿using SocialLink.Notifications.Contracts;
+﻿using SocialLink.Common.Application;
+using SocialLink.Notifications.Contracts;
 using SocialLink.Notifications.Domain;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.UseCases;
+using SocialLink.SharedKernel.Extensions;
 
 namespace SocialLink.Notifications.Integrations;
 

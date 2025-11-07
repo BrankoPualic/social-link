@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SocialLink.Posts;
-
+namespace SocialLink.Posts.Enumerators;
 internal enum ePostMedia
 {
 	[Description("Unknown")]
