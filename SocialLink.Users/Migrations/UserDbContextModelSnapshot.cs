@@ -18,7 +18,7 @@ namespace SocialLink.Users.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("user")
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "9.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -188,6 +188,45 @@ namespace SocialLink.Users.Migrations
                     b.ToTable("UserMedia", "user");
                 });
 
+            modelBuilder.Entity("SocialLink.Users.Domain.UserRefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("LastChangedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("LastChangedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("TokenExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRefreshToken", "user");
+                });
+
             modelBuilder.Entity("SocialLink.Users.Domain.UserRole", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -253,6 +292,17 @@ namespace SocialLink.Users.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SocialLink.Users.Domain.UserRefreshToken", b =>
+                {
+                    b.HasOne("SocialLink.Users.Domain.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SocialLink.Users.Domain.UserRole", b =>
                 {
                     b.HasOne("SocialLink.Users.Domain.User", "User")
@@ -275,6 +325,8 @@ namespace SocialLink.Users.Migrations
                     b.Navigation("Media");
 
                     b.Navigation("NotificationPreferences");
+
+                    b.Navigation("RefreshTokens");
 
                     b.Navigation("Roles");
                 });

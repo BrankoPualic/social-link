@@ -43,6 +43,8 @@ internal class User : AuditedDomainModel<Guid>
 
 	public virtual ICollection<UserMedia> Media { get; set; } = [];
 
+	public virtual ICollection<UserRefreshToken> RefreshTokens { get; set; } = [];
+
 	public bool IsPublic => !IsPrivate;
 
 	public bool IsMuted(eNotificationType notificationType)

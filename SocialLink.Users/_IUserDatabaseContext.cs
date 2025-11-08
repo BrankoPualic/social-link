@@ -17,4 +17,6 @@ internal interface IUserDatabaseContext : IEFDatabaseContext
 	DbSet<NotificationPreference> NotificationPreferences { get; }
 
 	DbSet<UserMedia> Media { get; }
+
+	DbSet<UserRefreshToken> RefreshTokens { get; }
 }

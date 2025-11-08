@@ -39,5 +39,7 @@ internal sealed class UserDatabaseContext : EFDatabaseContext, IUserDatabaseCont
 
 	public DbSet<UserMedia> Media { get; set; }
 
+	public DbSet<UserRefreshToken> RefreshTokens { get; set; }
+
 	#endregion DbSets
 }
