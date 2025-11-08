@@ -12,6 +12,18 @@ internal class UserRepository(IUserDatabaseContext db) : IUserRepository
 		.Where(_ => _.Email == email)
 		.FirstOrDefaultAsync(ct);
 
+	public Task<UserRefreshToken> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct) =>
+		db.RefreshTokens
+		.Include(_ => _.User)
+		.Where(_ => _.Token == refreshToken)
+		.FirstOrDefaultAsync(ct);
+
+	public Task<UserRefreshToken> GetLatestRefreshTokenAsync(Guid userId, CancellationToken ct) =>
+		db.RefreshTokens
+		.Where(_ => _.UserId == userId)
+		.OrderByDescending(_ => _.CreatedOn)
+		.FirstOrDefaultAsync(ct);
+
 	public void CreateLoginLog(Guid userId) =>
 		db.Logins.Add(new()
 		{

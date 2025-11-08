@@ -36,6 +36,9 @@ builder.Configuration.AddAzureKeyVault(
 
 builder.Services.AddCors();
 
+builder.Services.AddHttpContextAccessor();
+
+// TODO: Maybe set each of these inside Settings and then override Get there to check key vault?
 var jwtSettings = new JwtSettings
 {
 	SigningKey = builder.Configuration.GetSection(nameof(JwtSettings.SigningKey)).Value,
@@ -62,13 +65,12 @@ builder.Services
 	.AddAuthentication(opt =>
 	{
 		opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-		opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 		opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		opt.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
 	})
-	.AddJwtBearer(jwt =>
+	.AddJwtBearer(options =>
 	{
-		jwt.SaveToken = true;
-		jwt.TokenValidationParameters = new TokenValidationParameters
+		options.TokenValidationParameters = new TokenValidationParameters
 		{
 			ValidateIssuerSigningKey = true,
 			IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SigningKey ?? throw new InvalidOperationException())),
@@ -79,8 +81,17 @@ builder.Services
 			ValidateLifetime = true,
 			ClockSkew = TimeSpan.FromSeconds(60)
 		};
-		jwt.Audience = jwtSettings.Audience;
-		jwt.ClaimsIssuer = jwtSettings.Issuer;
+		options.Audience = jwtSettings.Audience;
+		options.ClaimsIssuer = jwtSettings.Issuer;
+
+		options.Events = new JwtBearerEvents
+		{
+			OnMessageReceived = context =>
+			{
+				context.Token = context.Request.Cookies[Constants.ACCESS_TOKEN_COOKIE];
+				return Task.CompletedTask;
+			}
+		};
 	});
 
 builder.Services.AddAuthorization();
@@ -105,6 +116,8 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Services.AddValidatorsFromAssemblies(mediatRAssemblies.ToArray());
 
 var app = builder.Build();
+
+app.UseHttpsRedirection();
 
 app.UseCors(builder => builder
 	.WithOrigins("https://localhost:4200")

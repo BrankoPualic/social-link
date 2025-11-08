@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Commands;
 
@@ -18,7 +19,7 @@ internal class AuthController(IMediator mediator) : ControllerBase
 		var result = await mediator.Send(new LoginCommand(request), ct);
 
 		return result.IsSuccess
-			? Ok(result.Data)
+			? Ok()
 			: BadRequest(result.Errors);
 	}
 
@@ -43,7 +44,29 @@ internal class AuthController(IMediator mediator) : ControllerBase
 		var result = await mediator.Send(new SignupCommand(request, fileDtos.FirstOrDefault()), ct);
 
 		return result.IsSuccess
-			? Ok(result.Data)
+			? Ok()
 			: BadRequest(result.Errors);
+	}
+
+	[HttpPost]
+	[AllowAnonymous]
+	public async Task<IActionResult> RefreshToken(CancellationToken ct = default)
+	{
+		var refreshToken = HttpContext.Request.Cookies[Constants.REFRESH_TOKEN_COOKIE];
+
+		_ = await mediator.Send(new RefreshTokenCommand(refreshToken), ct);
+
+		return NoContent();
+	}
+
+	[HttpPost]
+	[Authorize]
+	public async Task<IActionResult> Logout(CancellationToken ct = default)
+	{
+		var refreshToken = HttpContext.Request.Cookies[Constants.REFRESH_TOKEN_COOKIE];
+
+		_ = await mediator.Send(new RefreshTokenRevokeCommand(refreshToken), ct);
+
+		return NoContent();
 	}
 }

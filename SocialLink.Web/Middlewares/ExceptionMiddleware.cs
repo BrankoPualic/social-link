@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.Extensions;
+using SocialLink.Users.Exceptions;
 using SocialLink.Web.Exceptions;
 using System.Net;
 
@@ -8,7 +9,7 @@ namespace SocialLink.Web.Middlewares;
 
 public class ExceptionMiddleware(RequestDelegate next)
 {
-	public async Task InvokeAsync(HttpContext context, ILogger<ExceptionMiddleware> logger)
+	public async Task InvokeAsync(HttpContext context, ILogger<ExceptionMiddleware> logger, CancellationToken ct)
 	{
 		try
 		{
@@ -16,35 +17,43 @@ public class ExceptionMiddleware(RequestDelegate next)
 		}
 		catch (Exception ex)
 		{
-			await HandleExceptionAsync(context, ex, logger);
+			await HandleExceptionAsync(context, ex, logger, ct);
 		}
 	}
 
-	private static Task HandleExceptionAsync(HttpContext context, Exception ex, ILogger<ExceptionMiddleware> logger)
+	private static Task HandleExceptionAsync(HttpContext context, Exception ex, ILogger<ExceptionMiddleware> logger, CancellationToken ct)
 	{
 		logger.LogError(ex, "{message}", ex.Message);
 		context.Response.ContentType = "application/json";
-		context.Response.StatusCode = ex switch
-		{
-			FluentValidationException => (int)HttpStatusCode.BadRequest,
-			_ => (int)HttpStatusCode.InternalServerError
-		};
 
-		Error response = null;
-		if (ex is FluentValidationException exception)
+		var (statusCode, errorResponse) = GetExceptionDetails(ex);
+
+		context.Response.StatusCode = (int)statusCode;
+
+		var json = errorResponse.SerializeJsonObject(formatting: Formatting.Indented);
+
+		return context.Response.WriteAsync(json, ct);
+	}
+
+	private static (HttpStatusCode statusCode, Error error) GetExceptionDetails(Exception exception)
+	{
+		Error HandleFluentValidationException(FluentValidationException e)
 		{
-			foreach (var error in exception.Failures)
+			Error errorResponse = new();
+			foreach (var error in e.Failures)
 			{
-				response = new(error.Key, error.Value.ToList());
+				errorResponse.Add(error.Key, error.Value.ToList());
 			}
+
+			return errorResponse;
 		}
-		else
+		;
+
+		return exception switch
 		{
-			response = new Error("", "Something went wrong. Please contact your system administrator.");
-		}
-
-		var json = response.SerializeJsonObject(formatting: Formatting.Indented);
-
-		return context.Response.WriteAsync(json);
+			RefreshTokenException => (HttpStatusCode.Unauthorized, new(exception.Message)),
+			FluentValidationException => (HttpStatusCode.BadRequest, HandleFluentValidationException(exception as FluentValidationException)),
+			_ => (HttpStatusCode.InternalServerError, new("Something went wrong. Please contact your system administrator."))
+		};
 	}
 }

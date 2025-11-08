@@ -6,6 +6,10 @@ internal interface IUserRepository
 {
 	Task<User> GetByEmailAsync(string email, CancellationToken ct);
 
+	Task<UserRefreshToken> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct);
+
+	Task<UserRefreshToken> GetLatestRefreshTokenAsync(Guid userId, CancellationToken ct);
+
 	void CreateLoginLog(Guid userId);
 
 	void CreateMedia(Guid userId, Guid blobId, eUserMedia type);

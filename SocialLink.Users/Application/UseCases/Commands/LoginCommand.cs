@@ -5,27 +5,40 @@ using SocialLink.Users.Application.Interfaces;
 using SocialLink.Users.Domain;
 
 namespace SocialLink.Users.Application.UseCases.Commands;
-internal sealed record LoginCommand(LoginDto Data) : Command<TokenDto>;
+internal sealed record LoginCommand(LoginDto Data) : Command;
 
-internal class LoginCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IAuthManager authManager) : EFCommandHandler<LoginCommand, TokenDto>(db)
+internal class LoginCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IAuthManager authManager, IAuthTokenProcessor authTokenProcessor) : EFCommandHandler<LoginCommand>(db)
 {
-	public override async Task<ResponseWrapper<TokenDto>> Handle(LoginCommand req, CancellationToken ct)
+	public override async Task<ResponseWrapper> Handle(LoginCommand req, CancellationToken ct)
 	{
 		var data = req.Data;
 
-		var model = await userRepository.GetByEmailAsync(data.Email, ct);
-		if (model is null)
-			return new(new Error(nameof(User), "User not found.")); // TODO: Maybe put errors inside one UserErrors class??
+		var user = await userRepository.GetByEmailAsync(data.Email, ct);
+		if (user is null)
+			return new(new Error(nameof(User), "User not found."));
 
-		bool passwordsMatch = authManager.VerifyPassword(data.Password, model.Password);
+		bool passwordsMatch = authManager.VerifyPassword(data.Password, user.Password);
 		if (!passwordsMatch)
 			return new(new Error(nameof(User), "User not found."));
 
 		// Log entry
-		userRepository.CreateLoginLog(model.Id);
+		userRepository.CreateLoginLog(user.Id);
+
+		// Generate Access and Refresh tokens
+		var userRefreshToken = await userRepository.GetLatestRefreshTokenAsync(user.Id, ct);
+
+		var (jwtToken, expiresAt) = authTokenProcessor.GenerateJwtToken(user);
+		var refreshToken = authTokenProcessor.GenerateRefreshToken();
+		var refreshTokenExpiresAt = DateTime.UtcNow.AddDays(Constants.REFRESH_TOKEN_DURATION_IN_DAYS);
+
+		userRefreshToken.Token = refreshToken;
+		userRefreshToken.TokenExpiresAt = refreshTokenExpiresAt;
 
 		await db.SaveChangesAsync(true, ct);
 
-		return new(new TokenDto { Content = authManager.GenerateJwtToken(model) });
+		authTokenProcessor.WriteTokenAsHttpOnlyCookie(Constants.ACCESS_TOKEN_COOKIE, jwtToken, expiresAt);
+		authTokenProcessor.WriteTokenAsHttpOnlyCookie(Constants.REFRESH_TOKEN_COOKIE, refreshToken, refreshTokenExpiresAt);
+
+		return new();
 	}
 }
