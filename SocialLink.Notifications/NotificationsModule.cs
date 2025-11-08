@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using SocialLink.Notifications.Application.ScheduledTasks;
@@ -27,7 +28,8 @@ public static class NotificationsModule
 		});
 		services.AddSingleton<IMongoHealthChecker, MongoHealthChecker>();
 
-		services.AddControllers();
+		services.AddControllers()
+			.PartManager.ApplicationParts.Add(new AssemblyPart(typeof(NotificationsModule).Assembly));
 
 		services.AddScoped<INotificationMongoContext, NotificationMongoContext>();
 

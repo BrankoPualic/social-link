@@ -9,6 +9,7 @@ using SocialLink.Posts;
 using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.Domain;
 using SocialLink.Users;
+using SocialLink.Web;
 using SocialLink.Web.Behaviors;
 using SocialLink.Web.Middlewares;
 using SocialLink.Web.Objects;
@@ -33,6 +34,15 @@ builder.Configuration.AddAzureKeyVault(
 builder.Services.AddCors();
 
 builder.Services.Configure<JwtSetting>(builder.Configuration.GetSection("Jwt"));
+
+builder.Services.AddControllers().ConfigureApplicationPartManager(manager =>
+{
+	// Clear all auto-detected controllers.
+	manager.ApplicationParts.Clear();
+
+	// Add feature provider to allow "internal" controller
+	manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
+});
 
 //builder.Services
 //	.AddAuthenticationJwtBearer(_ => _.SigningKey = builder.Configuration["Jwt:SecretKey"])
@@ -61,6 +71,12 @@ builder.Services.AddValidatorsFromAssemblies(mediatRAssemblies.ToArray());
 
 var app = builder.Build();
 
+app.UseCors(builder => builder
+	.WithOrigins("https://localhost:4200")
+	.AllowAnyHeader()
+	.AllowAnyMethod()
+	.AllowCredentials());
+
 app.UseMiddleware<ExceptionMiddleware>();
 
 // Check third party services connection
@@ -74,13 +90,10 @@ using (var scope = app.Services.CreateScope())
 
 BsonSerializer.RegisterSerializer(new GuidSerializer(MongoDB.Bson.GuidRepresentation.Standard));
 
-app.UseCors(builder => builder
-	.AllowAnyHeader()
-	.AllowAnyMethod()
-	.AllowAnyOrigin());
-
 app.UseAuthentication()
 	.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
 

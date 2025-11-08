@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using SocialLink.Blobs.Application.Interfaces;
@@ -29,7 +30,8 @@ public static class BlobsModule
 			return client;
 		});
 
-		services.AddControllers();
+		services.AddControllers()
+			.PartManager.ApplicationParts.Add(new AssemblyPart(typeof(BlobsModule).Assembly));
 
 		services.AddScoped<IBlobDatabaseContext, BlobDatabaseContext>();
 

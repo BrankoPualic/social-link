@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,8 @@ public static class UsersModule
 		services.AddDbContext<UserDatabaseContext>(options => options.UseSqlServer(connectionString, _ => _.CommandTimeout(600).EnableRetryOnFailure())
 			.LogTo(_ => Debug.WriteLine(_), LogLevel.Warning));
 
-		services.AddControllers();
+		services.AddControllers()
+			.PartManager.ApplicationParts.Add(new AssemblyPart(typeof(UsersModule).Assembly));
 
 		services.AddScoped<IUserDatabaseContext, UserDatabaseContext>();
 
