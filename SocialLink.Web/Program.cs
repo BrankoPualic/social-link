@@ -37,7 +37,6 @@ builder.Services.AddCors();
 
 builder.Services.AddHttpContextAccessor();
 
-// TODO: Maybe set each of these inside Settings and then override Get there to check key vault?
 var jwtSettings = new JwtSettings
 {
 	SigningKey = builder.Configuration.GetSection(nameof(JwtSettings.SigningKey)).Value,

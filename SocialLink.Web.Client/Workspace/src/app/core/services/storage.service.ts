@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class StorageService {
-  get = (key: string) => localStorage.getItem(key);
+  get = (key: string) => sessionStorage.getItem(key);
 
-  set = (key: string, value: string) => localStorage.setItem(key, value);
+  set = (key: string, value: string) => sessionStorage.setItem(key, value);
 
-  remove = (key: string) => localStorage.removeItem(key);
+  remove = (key: string) => sessionStorage.removeItem(key);
 }
