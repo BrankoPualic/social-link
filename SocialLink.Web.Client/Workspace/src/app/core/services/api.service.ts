@@ -5,8 +5,8 @@ import { Injectable } from "@angular/core";
   providedIn: 'root'
 })
 export class ApiService {
-  // TODO: Move to some kind of settings service. Maybe even fetch at runtime to storage
-  private _apiUrl = 'https://localhost:7175';
+  // TODO: Maybe move to some kind of Setting Service?
+  private _apiUrl = 'https://localhost:7175/api';
 
   constructor(private http: HttpClient) { }
 

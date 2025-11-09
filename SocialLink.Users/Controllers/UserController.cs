@@ -14,7 +14,7 @@ namespace SocialLink.Users.Controllers;
 [Authorize]
 internal class UserController(IMediator mediator) : ControllerBase
 {
-	[HttpGet]
+	[HttpGet("{userId}")]
 	public async Task<IActionResult> Get([FromRoute] Guid userId, CancellationToken ct = default)
 	{
 		var result = await mediator.Send(new GetUserQuery(userId), ct);

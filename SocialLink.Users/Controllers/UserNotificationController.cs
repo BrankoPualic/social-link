@@ -31,7 +31,7 @@ internal class UserNotificationController(IMediator mediator, IIdentityUser curr
 		return Ok(list);
 	}
 
-	[HttpGet]
+	[HttpGet("{userId}")]
 	public async Task<IActionResult> GetUserPreferences([FromRoute] Guid userId, CancellationToken ct = default)
 	{
 		var result = await mediator.Send(new GetNotificationPreferencesQuery(userId), ct);

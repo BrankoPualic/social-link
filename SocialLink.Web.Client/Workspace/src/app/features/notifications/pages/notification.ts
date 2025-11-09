@@ -52,7 +52,7 @@ export class Notification extends BaseComponentGeneric<NotificationModel> implem
   }
 
   read(): void {
-    this.apiService.post('/notifications/read', this.notification())
+    this.apiService.post('/Notification/Read', this.notification())
       .pipe(take(1))
       .subscribe({
         next: () => this.removed.emit(this.notification()!.id!)

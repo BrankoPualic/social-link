@@ -41,7 +41,7 @@ export class EditProfile extends BaseFormComponent<UserModel>{
 
   load(): void {
     this.loading = true;
-    this.apiService.get<UserModel>(`/users/profile/${this.userId}`)
+    this.apiService.get<UserModel>(`/User/Get/${this.userId}`)
       .pipe(
         take(1),
         finalize(() => this.loading = false)
@@ -72,7 +72,7 @@ export class EditProfile extends BaseFormComponent<UserModel>{
     this.loading = true;
     this.errorService.clean();
 
-    this.apiService.post('/users/update', this.form.value)
+    this.apiService.post('/User/Update', this.form.value)
       .pipe(
         take(1),
         finalize(() => this.loading = false)

@@ -57,7 +57,7 @@ export class CreatePost extends BaseFormComponent<PostCreateModel> implements IF
           userId: userId
         };
 
-        this.fileUploadService.uploadMultipart('/posts/create', this.files, data)
+        this.fileUploadService.uploadMultipart('/Post/Create', this.files, data)
           .pipe(
             take(1),
             finalize(() => this.loading = false)

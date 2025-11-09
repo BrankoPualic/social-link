@@ -11,7 +11,7 @@ namespace SocialLink.Blobs.Controllers;
 [Authorize]
 internal class BlobController(IMediator mediator) : ControllerBase
 {
-	[HttpGet]
+	[HttpGet("{blobId}")]
 	public async Task<IActionResult> GetBlob([FromRoute] Guid blobId, CancellationToken ct = default)
 	{
 		var result = await mediator.Send(new GetBlobQuery(blobId), ct);

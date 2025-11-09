@@ -31,7 +31,7 @@ export class Posts implements OnChanges {
   load(): void {
     this.postsLoading = true;
 
-    this.apiService.post<PagedResponse<PostModel>>('/posts', { userId: this.userId() })
+    this.apiService.post<PagedResponse<PostModel>>('/Post/GetList', { userId: this.userId() })
       .pipe(
         take(1),
         finalize(() => this.postsLoading = false)

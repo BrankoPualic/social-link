@@ -14,7 +14,7 @@ namespace SocialLink.Posts.Controllers;
 [Authorize]
 internal class PostController(IMediator mediator) : ControllerBase
 {
-	[HttpGet]
+	[HttpGet("{postId}")]
 	public async Task<IActionResult> Get([FromRoute] Guid postId, CancellationToken ct = default)
 	{
 		var result = await mediator.Send(new GetPostQuery(postId), ct);

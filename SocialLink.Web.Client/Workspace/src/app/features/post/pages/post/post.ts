@@ -46,7 +46,7 @@ export class Post extends BaseComponentGeneric<PostModel> {
   load(): void {
     this.loading = true;
 
-    this.apiService.get<PostModel>(`/posts/${this.postId}`)
+    this.apiService.get<PostModel>(`/Post/Get/${this.postId}`)
       .pipe(
         take(1),
         finalize(() => this.loading = false)
@@ -57,7 +57,7 @@ export class Post extends BaseComponentGeneric<PostModel> {
   }
 
   likePost(): void {
-    this.apiService.post('/posts/like', { postId: this.postId, userId: this.userId })
+    this.apiService.post('/Post/UpdateLikeStatus', { postId: this.postId, userId: this.userId })
       .pipe(
         take(1)
       )
@@ -70,7 +70,7 @@ export class Post extends BaseComponentGeneric<PostModel> {
   createComment(e: string) {
     if (!e) return;
 
-    this.apiService.post<string>('/posts/comments/create', {
+    this.apiService.post<string>('/Comment/Create', {
       userId: this.userId,
       postId: this.postId,
       message: e

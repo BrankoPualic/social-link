@@ -35,7 +35,7 @@ export class Comments implements OnChanges {
   load(): void {
     this.commentsLoading = true;
 
-    this.apiService.post<PagedResponse<CommentModel>>('/posts/comments', { postId: this.postId() })
+    this.apiService.post<PagedResponse<CommentModel>>('/Comment/Get', { postId: this.postId() })
       .pipe(
         take(1),
         finalize(() => this.commentsLoading = false)
@@ -47,7 +47,7 @@ export class Comments implements OnChanges {
 
   likeComment(commentId?: string): void {
     if (!commentId) return;
-    this.apiService.post('/posts/comments/like', { commentId: commentId, userId: this.authService.getUserId() })
+    this.apiService.post('/Comment/UpdateLikeStatus', { commentId: commentId, userId: this.authService.getUserId() })
       .pipe(
         take(1)
       )

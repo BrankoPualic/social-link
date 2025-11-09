@@ -48,7 +48,7 @@ export class NotificationList extends BaseComponent {
 
   load(): void {
     this.loading = true;
-    this.apiService.post<PagedResponse<NotificationModel>>('/notifications', this.searchOptions)
+    this.apiService.post<PagedResponse<NotificationModel>>('/Notification/Get', this.searchOptions)
       .pipe(
         take(1),
         finalize(() => this.loading = false)

@@ -6,7 +6,7 @@ import { Lookup } from "../models/lookup";
   providedIn: 'root'
 })
 export class LookupService {
-  private _apiUrl = 'https://localhost:7175';
+  private _apiUrl = 'https://localhost:7175/api';
 
   constructor(private http: HttpClient) { }
 

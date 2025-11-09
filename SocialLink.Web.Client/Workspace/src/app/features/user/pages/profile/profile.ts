@@ -50,7 +50,7 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
     this.loading = true;
 
     forkJoin({
-      user: this.apiService.get<UserModel>(`/users/profile/${this.userId}`),
+      user: this.apiService.get<UserModel>(`/User/Get/${this.userId}`),
       followStatus: this.isCurrentUser
         ? of(eFollowStatus.Unknown)
         : this.checkFollowStatus()
@@ -64,7 +64,7 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
   }
 
   follow(): void {
-    this.apiService.post('/users/follow', {
+    this.apiService.post('/Follow/Follow', {
       followerId: this.currentUserId,
       followingId: this.userId
     }).pipe(
@@ -76,7 +76,7 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
   }
 
   unfollow(): void {
-    this.apiService.post('/users/unfollow', {
+    this.apiService.post('/Follow/Unfollow', {
       followerId: this.currentUserId,
       followingId: this.userId
     }).pipe(
@@ -88,7 +88,7 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
   }
 
   private checkFollowStatus(): Observable<eFollowStatus> {
-    return this.apiService.post<eFollowStatus>('/users/checkFollowStatus', {
+    return this.apiService.post<eFollowStatus>('/Follow/CheckStatus', {
       followerId: this.currentUserId,
       followingId: this.userId
     });
@@ -104,7 +104,7 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
       return;
 
     this.loading = true;
-    this.fileUploadService.upload('/users/uploadProfileImage', input.files[0], { userId: this.currentUserId })
+    this.fileUploadService.upload('/User/UpdateProfileImage', input.files[0], { userId: this.currentUserId })
       .pipe(
         take(1),
         finalize(() => this.loading = false)

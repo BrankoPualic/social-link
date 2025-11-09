@@ -23,12 +23,12 @@ internal class NotificationService(IMediator mediator) : INotificationService
 			Actions = [
 					new () {
 						Label = "Accept",
-						Endpoint = "/users/acceptFollow",
+						Endpoint = "/Follow/Accept",
 						Method = eNotificationActionMethodType.Post
 					},
 					new () {
 						Label = "Reject",
-						Endpoint = "/users/rejectFollow",
+						Endpoint = "/Follow/Reject",
 						Method = eNotificationActionMethodType.Post
 					}
 				]
