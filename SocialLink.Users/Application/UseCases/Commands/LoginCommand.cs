@@ -25,7 +25,7 @@ internal class LoginCommandHandler(IUserDatabaseContext db, IUserRepository user
 		userRepository.CreateLoginLog(user.Id);
 
 		// Generate Access and Refresh tokens
-		var userRefreshToken = await userRepository.GetLatestRefreshTokenAsync(user.Id, ct);
+		var userRefreshToken = await userRepository.GetLatestRefreshTokenAsync(user.Id, ct) ?? new();
 
 		var (jwtToken, expiresAt) = authTokenProcessor.GenerateJwtToken(user);
 		var refreshToken = authTokenProcessor.GenerateRefreshToken();
@@ -33,6 +33,13 @@ internal class LoginCommandHandler(IUserDatabaseContext db, IUserRepository user
 
 		userRefreshToken.Token = refreshToken;
 		userRefreshToken.TokenExpiresAt = refreshTokenExpiresAt;
+
+		if (userRefreshToken.IsNew)
+		{
+			userRefreshToken.Id = Guid.NewGuid();
+			userRefreshToken.UserId = user.Id;
+			db.RefreshTokens.Add(userRefreshToken);
+		}
 
 		await db.SaveChangesAsync(true, ct);
 

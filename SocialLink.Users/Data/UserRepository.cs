@@ -15,6 +15,7 @@ internal class UserRepository(IUserDatabaseContext db) : IUserRepository
 	public Task<UserRefreshToken> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct) =>
 		db.RefreshTokens
 		.Include(_ => _.User)
+			.ThenInclude(_ => _.Roles)
 		.Where(_ => _.Token == refreshToken)
 		.FirstOrDefaultAsync(ct);
 

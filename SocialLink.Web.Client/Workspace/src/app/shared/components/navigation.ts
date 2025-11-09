@@ -1,6 +1,9 @@
 import { Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { AuthService } from "../../core/services/auth.service";
+import { EventBusService } from "../../core/services/event-bus.service";
+import { EventData } from "../../core/models/event-data.model";
+import { Constants } from "../constants";
 
 @Component({
   selector: 'app-navigation',
@@ -49,9 +52,12 @@ import { AuthService } from "../../core/services/auth.service";
 export class Navigation {
   userId?: string;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private eventBusService: EventBusService
+  ) {
     this.userId = this.authService.getUserId();
   }
 
-  logout = () => this.authService.logout();
+  logout = (): void => this.eventBusService.emit(new EventData(Constants.logoutEvent, null));
 }

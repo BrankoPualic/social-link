@@ -1,91 +1,69 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ApiService } from './api.service';
-import { map, take } from 'rxjs/operators';
-import { StorageService } from './storage.service';
+import { catchError, map, take, tap } from 'rxjs/operators';
 import { FileUploadService } from './file-upload.service';
 import { LoginModel } from '../../features/auth/models/login.model';
-import { Token } from '../../features/auth/models/token';
-import { Router } from '@angular/router';
 import { eSystemRole } from '../enumerators/system-role.enum';
+import { Observable, of } from 'rxjs';
+import { CurrentUserModel } from '../../features/auth/models/currentUser.model';
+import { Lookup } from '../models/lookup';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private _currentUser = signal<CurrentUserModel | null>(null);
+
   constructor(
     private apiService: ApiService,
-    private storageService: StorageService,
-    private fileUploadService: FileUploadService,
-    private router: Router
+    private fileUploadService: FileUploadService
   ) { }
 
   login(data: LoginModel) {
-    return this.apiService.post<Token>('/users/login', data)
-      .pipe(
-        take(1),
-        map(_ => this.setToken(_))
-      );
+    return this.apiService.post<void>('/Auth/Login', data).pipe(take(1));
   }
 
   signup(data: any, file?: File) {
-    return this.fileUploadService.uploadMultipart<any, Token>('/users/signup', file ? [file] : [], data)
-      .pipe(
-        take(1),
-        map(_ => this.setToken(_))
-      );
+    return this.fileUploadService.uploadMultipart<any, void>('/Auth/Signup', file ? [file] : [], data).pipe(take(1));
   }
 
   logout() {
-    this.storageService.remove('token');
-    this.router.navigateByUrl('/login');
+    return this.apiService.post<void>('/Auth/Logout', {}).pipe(take(1));
   }
 
-  getToken = () => this.storageService.get('token');
-
-  getUserId() {
-    const token = this.getToken();
-    if (!token)
-      return null;
-
-    return this.decodeToken(token).UserId;
+  refreshToken() {
+    return this.apiService.post<void>('/Auth/RefreshToken', {}).pipe(take(1));
   }
 
-  setToken(token: Token): void {
-    if (!token || !token.content)
-      return;
+  getCurrentUser() {
+    if (this._currentUser())
+      return of(this._currentUser());
 
-    this.storageService.set('token', token.content);
+    return this.apiService.get<CurrentUserModel>('/Auth/GetCurrentUser')
+      .pipe(
+        tap(user => this._currentUser.set(user))
+      );
   }
 
-  isLoggedIn(): boolean {
-    const token = this.getToken();
-    return !!token && this.isTokenValid(token);
-  };
+  getUserId = () => this._currentUser()?.id;
 
-  isTokenValid(token: string): boolean {
-    if (!token)
-      return false;
-
-    try {
-      const decodedToken = this.decodeToken(token);
-      const expirationTime = decodedToken.exp * 1000;
-      return expirationTime > Date.now();
+  isLoggedIn(): Observable<boolean> {
+    if (this._currentUser()) {
+      return of(true);
     }
-    catch (err) {
-      console.error('Error decoding token:', err);
-      return false;
-    }
+
+    return this.getCurrentUser().pipe(
+      map(user => !!user),
+      catchError(() => of(false))
+    );
   }
 
   hasAccess(role: eSystemRole): boolean {
-    const token = this.getToken();
-    if (!token)
+    if (!this._currentUser())
       return false;
 
-    const roles: string[] = this.decodeToken(token).Roles.split(',');
+    const roles: Lookup[] = this._currentUser()!.roles;
 
-    return !!roles.length && roles.includes(role.toString());
+    return !!roles.length && roles.some(_ => _.id == role);
   }
-
-  private decodeToken = (token: string) => token && JSON.parse(atob(token.split('.')[1]));
 }

@@ -54,6 +54,7 @@ internal class SignupCommandHandler(IUserDatabaseContext db, IUserRepository use
 		var userRefreshToken = new UserRefreshToken
 		{
 			Id = Guid.NewGuid(),
+			UserId = model.Id,
 			Token = refreshToken,
 			TokenExpiresAt = refreshTokenExpiresAt,
 		};

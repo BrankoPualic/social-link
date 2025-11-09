@@ -2,12 +2,12 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChang
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { provideToastr } from 'ngx-toastr';
-import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { authInterceptorProvider } from './core/interceptors/auth.interceptor';
+import { errorInterceptorProvider } from './core/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,9 +20,8 @@ export const appConfig: ApplicationConfig = {
       positionClass: 'toast-top-center',
       preventDuplicates: true
     }),
-    provideHttpClient(withFetch(), withInterceptors([
-      errorInterceptor,
-      jwtInterceptor
-    ])),
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    authInterceptorProvider,
+    errorInterceptorProvider,
   ]
 };

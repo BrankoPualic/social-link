@@ -1,13 +1,12 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 namespace SocialLink.Web.Extensions;
 
 public static class ClaimsExtensions
 {
-	public static Guid GetId(this IEnumerable<Claim> claims) => Guid.Parse(claims.GetClaim(JwtRegisteredClaimNames.Sub));
+	public static Guid GetId(this IEnumerable<Claim> claims) => Guid.Parse(claims.GetClaim(ClaimTypes.NameIdentifier));
 
-	public static string GetEmail(this IEnumerable<Claim> claims) => claims.GetClaim(JwtRegisteredClaimNames.Email);
+	public static string GetEmail(this IEnumerable<Claim> claims) => claims.GetClaim(ClaimTypes.Email);
 
 	public static string GetUsername(this IEnumerable<Claim> claims) => claims.GetClaim(ClaimTypes.Name);
 

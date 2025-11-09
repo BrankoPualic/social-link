@@ -5,6 +5,7 @@ using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Commands;
+using SocialLink.Users.Application.UseCases.Queries;
 
 namespace SocialLink.Users.Controllers;
 
@@ -12,6 +13,17 @@ namespace SocialLink.Users.Controllers;
 [Route("api/[controller]/[action]")]
 internal class AuthController(IMediator mediator) : ControllerBase
 {
+	[HttpGet]
+	[Authorize]
+	public async Task<IActionResult> GetCurrentUser(CancellationToken ct = default)
+	{
+		var result = await mediator.Send(new GetCurrentUserQuery(), ct);
+
+		return result.IsSuccess
+			? Ok(result.Data)
+			: BadRequest(result.Errors);
+	}
+
 	[HttpPost]
 	[AllowAnonymous]
 	public async Task<IActionResult> Login(LoginDto request, CancellationToken ct = default)
@@ -19,7 +31,7 @@ internal class AuthController(IMediator mediator) : ControllerBase
 		var result = await mediator.Send(new LoginCommand(request), ct);
 
 		return result.IsSuccess
-			? Ok()
+			? NoContent()
 			: BadRequest(result.Errors);
 	}
 
@@ -44,7 +56,7 @@ internal class AuthController(IMediator mediator) : ControllerBase
 		var result = await mediator.Send(new SignupCommand(request, fileDtos.FirstOrDefault()), ct);
 
 		return result.IsSuccess
-			? Ok()
+			? NoContent()
 			: BadRequest(result.Errors);
 	}
 
@@ -60,7 +72,7 @@ internal class AuthController(IMediator mediator) : ControllerBase
 	}
 
 	[HttpPost]
-	[Authorize]
+	[AllowAnonymous]
 	public async Task<IActionResult> Logout(CancellationToken ct = default)
 	{
 		var refreshToken = HttpContext.Request.Cookies[Constants.REFRESH_TOKEN_COOKIE];

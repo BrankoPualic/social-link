@@ -54,7 +54,7 @@
                   [label]="'Gender'"
                   [required]="true"
                   [validation]="'genderId'"
-                  [loadMethod]="lookupService.get('/users/genders')" />
+                  [loadMethod]="lookupService.get('/UserMasterData/GetGenders')" />
 
     <app-input-date [formControl]="$any(form.controls['dateOfBirth'])"
                     [label]="'Date of Birth'" />
@@ -84,7 +84,7 @@
     </div>
 
     <div class="col-12 mt-3 text-center">
-      Already have an account? <a class="text-decoration-none" [routerLink]="['/login']">Log in</a>
+      Already have an account? <a class="text-decoration-none" [routerLink]="['/auth/login']">Log in</a>
     </div>
   </form>
 </div>

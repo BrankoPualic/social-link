@@ -51,7 +51,7 @@ public class ExceptionMiddleware(RequestDelegate next)
 
 		return exception switch
 		{
-			RefreshTokenException => (HttpStatusCode.Unauthorized, new(exception.Message)),
+			RefreshTokenException => (HttpStatusCode.Forbidden, new(exception.Message)),
 			FluentValidationException => (HttpStatusCode.BadRequest, HandleFluentValidationException(exception as FluentValidationException)),
 			_ => (HttpStatusCode.InternalServerError, new("Something went wrong. Please contact your system administrator."))
 		};

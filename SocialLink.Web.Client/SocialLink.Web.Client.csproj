@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Workspace\public\" />
-    <Folder Include="Workspace\src\app\core\interceptors\" />
     <Folder Include="Workspace\src\app\core\guards\" />
     <Folder Include="Workspace\src\app\core\models\search\" />
     <Folder Include="Workspace\src\app\core\pipes\" />
