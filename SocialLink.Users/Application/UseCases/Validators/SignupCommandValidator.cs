@@ -1,27 +1,27 @@
 ﻿using FluentValidation;
 using SocialLink.SharedKernel;
-using SocialLink.Users.Application.Dtos;
+using SocialLink.Users.Application.UseCases.Commands;
 using SocialLink.Users.Domain;
 
-namespace SocialLink.Users.Controllers.AuthValidators;
+namespace SocialLink.Users.Application.UseCases.Validators;
 
-internal class SignupValidator : AbstractValidator<SignupDto>
+internal class SignupCommandValidator : AbstractValidator<SignupCommand>
 {
-	public SignupValidator()
+	public SignupCommandValidator()
 	{
-		RuleFor(_ => _.FirstName)
+		RuleFor(_ => _.Data.FirstName)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.FirstName)))
 			.MaximumLength(20)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.FirstName), 20));
 
-		RuleFor(_ => _.LastName)
+		RuleFor(_ => _.Data.LastName)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.LastName)))
 			.MaximumLength(50)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.LastName), 50));
 
-		RuleFor(_ => _.Username)
+		RuleFor(_ => _.Data.Username)
 			.Cascade(CascadeMode.Stop)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.Username)))
@@ -30,7 +30,7 @@ internal class SignupValidator : AbstractValidator<SignupDto>
 			.MaximumLength(20)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.Username), 20));
 
-		RuleFor(_ => _.Email)
+		RuleFor(_ => _.Data.Email)
 			.Cascade(CascadeMode.Stop)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.Email)))
@@ -39,7 +39,7 @@ internal class SignupValidator : AbstractValidator<SignupDto>
 			.MaximumLength(255)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.LastName), 255));
 
-		RuleFor(_ => _.Password)
+		RuleFor(_ => _.Data.Password)
 			.Cascade(CascadeMode.Stop)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.Password)))
@@ -56,20 +56,20 @@ internal class SignupValidator : AbstractValidator<SignupDto>
 			.Matches(@"(?=.*[@$!%*?&])")
 			.WithMessage("Password lacks 1 special character");
 
-		RuleFor(_ => _.RepeatPassword)
+		RuleFor(_ => _.Data.RepeatPassword)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required("Repeat Password"))
-			.Equal(_ => _.Password)
+			.Equal(_ => _.Data.Password)
 			.WithMessage("Repeat password doesn't match password");
 
-		RuleFor(_ => _.GenderId)
+		RuleFor(_ => _.Data.GenderId)
 			.Cascade(CascadeMode.Stop)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required("Gender"))
 			.IsInEnum()
 			.WithMessage(ResourcesValidation.InvalidValue("Gender"));
 
-		RuleFor(_ => _.Biography)
+		RuleFor(_ => _.Data.Biography)
 			.MaximumLength(150)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.Biography), 150));
 	}

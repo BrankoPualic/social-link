@@ -1,27 +1,26 @@
 ﻿using FluentValidation;
 using SocialLink.SharedKernel;
-using SocialLink.Users.Application.Dtos;
+using SocialLink.Users.Application.UseCases.Commands;
 using SocialLink.Users.Domain;
 
-namespace SocialLink.Users.Controllers.UserValidators;
-
-internal class UserDtoValidator : AbstractValidator<UserDto>
+namespace SocialLink.Users.Application.UseCases.Validators;
+internal class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {
-	public UserDtoValidator()
+	public UpdateUserCommandValidator()
 	{
-		RuleFor(_ => _.FirstName)
+		RuleFor(_ => _.Data.FirstName)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.FirstName)))
 			.MaximumLength(20)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.FirstName), 20));
 
-		RuleFor(_ => _.LastName)
+		RuleFor(_ => _.Data.LastName)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.LastName)))
 			.MaximumLength(50)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.LastName), 50));
 
-		RuleFor(_ => _.Username)
+		RuleFor(_ => _.Data.Username)
 			.Cascade(CascadeMode.Stop)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.Username)))
@@ -30,14 +29,14 @@ internal class UserDtoValidator : AbstractValidator<UserDto>
 			.MaximumLength(20)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.Username), 20));
 
-		RuleFor(_ => _.GenderId)
+		RuleFor(_ => _.Data.GenderId)
 			.Cascade(CascadeMode.Stop)
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required("Gender"))
 			.IsInEnum()
 			.WithMessage(ResourcesValidation.InvalidValue("Gender"));
 
-		RuleFor(_ => _.Biography)
+		RuleFor(_ => _.Data.Biography)
 			.MaximumLength(150)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(User.Biography), 150));
 	}

@@ -36,7 +36,7 @@
 
   <app-text-area [formControl]="$any(form.controls['description'])"
                  [label]="'Description'"
-                 [validation]="'description'"
+                 [validation]="'Description'"
                  [maxLength]="500" />
 
   <div class="mb-3 d-flex flex-column">
@@ -54,7 +54,7 @@
     </div>
   </div>
 
-  <div appValidation="post"></div>
+  <div appValidation="Post"></div>
 
   <div>
     <button class="btn btn-sm btn-primary py-2 px-4" (click)="submit()">Create</button>

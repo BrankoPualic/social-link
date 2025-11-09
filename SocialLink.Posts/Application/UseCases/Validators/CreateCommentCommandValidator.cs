@@ -1,25 +1,24 @@
 ﻿using FluentValidation;
-using SocialLink.Posts.Application.Dtos;
+using SocialLink.Posts.Application.UseCases.Commands;
 using SocialLink.Posts.Domain;
 using SocialLink.SharedKernel;
 
-namespace SocialLink.Posts.Controllers.CommentValidators;
-
-internal class CommentEditDtoValidator : AbstractValidator<CommentEditDto>
+namespace SocialLink.Posts.Application.UseCases.Validators;
+internal class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
 {
-	public CommentEditDtoValidator()
+	public CreateCommentCommandValidator()
 	{
-		RuleFor(_ => _.UserId)
+		RuleFor(_ => _.Data.UserId)
 			.NotNull()
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(Comment.UserId)));
 
-		RuleFor(_ => _.PostId)
+		RuleFor(_ => _.Data.PostId)
 			.NotNull()
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(Comment.PostId)));
 
-		RuleFor(_ => _.Message)
+		RuleFor(_ => _.Data.Message)
 			.MaximumLength(500)
 			.WithMessage(ResourcesValidation.MaximumLength(nameof(Comment.Message), 500));
 	}

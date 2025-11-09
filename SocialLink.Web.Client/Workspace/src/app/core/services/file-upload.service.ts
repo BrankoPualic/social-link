@@ -7,8 +7,8 @@ import { Observable, filter, map } from "rxjs";
   providedIn: 'root'
 })
 export class FileUploadService {
-  // TODO: Move to some kind of settings service. Maybe even fetch at runtime to storage
-  private _apiUrl = 'https://localhost:7175';
+  // TODO: Move to some kind of settings service?
+  private _apiUrl = 'https://localhost:7175/api';
   constructor(private http: HttpClient) { }
 
   upload<T>(url: string, file: File, params?: any): Observable<T> {

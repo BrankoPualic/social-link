@@ -7,15 +7,15 @@
     <app-input-text [formControl]="$any(form.controls['email'])"
                     [label]="'Email'"
                     [required]="true"
-                    [validation]="'email'" />
+                    [validation]="'Email'" />
 
     <app-input-text [formControl]="$any(form.controls['password'])"
                     [label]="'Password'"
                     [type]="'password'"
                     [required]="true"
-                    [validation]="'password'" />
+                    [validation]="'Password'" />
 
-    <div appValidation="user"></div>
+    <div appValidation="User"></div>
 
     <div class="form-btn-group">
       <button class="btn btn-sm align-self-center btn-primary col-3 py-2 mt-2" (click)="submit()">Log in</button>

@@ -21,39 +21,39 @@
     <app-input-text [formControl]="$any(form.controls['firstName'])"
                     [label]="'First Name'"
                     [required]="true"
-                    [validation]="'firstName'" />
+                    [validation]="'FirstName'" />
 
     <app-input-text [formControl]="$any(form.controls['lastName'])"
                     [label]="'Last Name'"
                     [required]="true"
-                    [validation]="'lastName'" />
+                    [validation]="'LastName'" />
 
     <app-input-text [formControl]="$any(form.controls['username'])"
                     [label]="'Username'"
                     [required]="true"
-                    [validation]="'username'" />
+                    [validation]="'Username'" />
 
     <app-input-text [formControl]="$any(form.controls['email'])"
                     [label]="'Email'"
                     [required]="true"
-                    [validation]="'email'" />
+                    [validation]="'Email'" />
 
     <app-input-text [formControl]="$any(form.controls['password'])"
                     [label]="'Password'"
                     [type]="'password'"
                     [required]="true"
-                    [validation]="'password'" />
+                    [validation]="'Password'" />
 
     <app-input-text [formControl]="$any(form.controls['repeatPassword'])"
                     [label]="'Repeat Password'"
                     [type]="'password'"
                     [required]="true"
-                    [validation]="'repeatPassword'" />
+                    [validation]="'RepeatPassword'" />
 
     <app-dropdown [formControl]="$any(form.controls['genderId'])"
                   [label]="'Gender'"
                   [required]="true"
-                  [validation]="'genderId'"
+                  [validation]="'GenderId'"
                   [loadMethod]="lookupService.get('/UserMasterData/GetGenders')" />
 
     <app-input-date [formControl]="$any(form.controls['dateOfBirth'])"
@@ -61,7 +61,7 @@
 
     <app-text-area [formControl]="$any(form.controls['biography'])"
                    [label]="'Biography'"
-                   [validation]="'biography'"
+                   [validation]="'Biography'"
                    [maxLength]="150" />
 
     <div class="mb-3 d-flex flex-column">

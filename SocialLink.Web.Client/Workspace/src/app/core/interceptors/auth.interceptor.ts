@@ -5,8 +5,6 @@ import { BehaviorSubject, Observable, catchError, filter, switchMap, take, throw
 import { EventBusService } from "../services/event-bus.service";
 import { EventData } from "../models/event-data.model";
 import { Constants } from "../../shared/constants";
-import { Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -14,10 +12,8 @@ export class AuthInterceptor implements HttpInterceptor {
   private _refreshTokenSubject = new BehaviorSubject<any>(null);
 
   constructor(
-    private router: Router,
     private authService: AuthService,
-    private eventBusService: EventBusService,
-    private toastrService: ToastrService
+    private eventBusService: EventBusService
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -27,8 +23,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError(error => {
-        console.log(error.error);
-
         if (
           error instanceof HttpErrorResponse &&
           !req.url.includes('auth') &&

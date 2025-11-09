@@ -18,11 +18,11 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError(error => {
-        console.log(error.error);
 
         if (error instanceof HttpErrorResponse) {
+        console.log(error.error);
           if (error.status === 404) {
-            this.router.navigateByUrl('/not-found');
+            this.router.navigateByUrl('/error/not-found');
           }
           else if (error.status === 500) {
             this.toastrService.error(error.error.errors.map((_: any) => `${_.value}\n`));

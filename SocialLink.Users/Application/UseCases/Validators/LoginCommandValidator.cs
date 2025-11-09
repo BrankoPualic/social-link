@@ -1,20 +1,20 @@
 ﻿using FluentValidation;
 using SocialLink.SharedKernel;
-using SocialLink.Users.Application.Dtos;
+using SocialLink.Users.Application.UseCases.Commands;
 using SocialLink.Users.Domain;
 
-namespace SocialLink.Users.Controllers.AuthValidators;
+namespace SocialLink.Users.Application.UseCases.Validators;
 
-internal class LoginValidator : AbstractValidator<LoginDto>
+internal class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
-	public LoginValidator()
+	public LoginCommandValidator()
 	{
-		RuleFor(_ => _.Email)
+		RuleFor(_ => _.Data.Email)
 			.NotNull()
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.Email)));
 
-		RuleFor(_ => _.Password)
+		RuleFor(_ => _.Data.Password)
 			.NotNull()
 			.NotEmpty()
 			.WithMessage(ResourcesValidation.Required(nameof(User.Password)));

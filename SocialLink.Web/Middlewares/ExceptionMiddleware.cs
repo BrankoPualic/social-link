@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.Extensions;
 using SocialLink.Users.Exceptions;
@@ -9,7 +10,7 @@ namespace SocialLink.Web.Middlewares;
 
 public class ExceptionMiddleware(RequestDelegate next)
 {
-	public async Task InvokeAsync(HttpContext context, ILogger<ExceptionMiddleware> logger, CancellationToken ct)
+	public async Task InvokeAsync(HttpContext context, ILogger<ExceptionMiddleware> logger)
 	{
 		try
 		{
@@ -17,11 +18,11 @@ public class ExceptionMiddleware(RequestDelegate next)
 		}
 		catch (Exception ex)
 		{
-			await HandleExceptionAsync(context, ex, logger, ct);
+			await HandleExceptionAsync(context, ex, logger);
 		}
 	}
 
-	private static Task HandleExceptionAsync(HttpContext context, Exception ex, ILogger<ExceptionMiddleware> logger, CancellationToken ct)
+	private static Task HandleExceptionAsync(HttpContext context, Exception ex, ILogger<ExceptionMiddleware> logger)
 	{
 		logger.LogError(ex, "{message}", ex.Message);
 		context.Response.ContentType = "application/json";
@@ -30,9 +31,12 @@ public class ExceptionMiddleware(RequestDelegate next)
 
 		context.Response.StatusCode = (int)statusCode;
 
-		var json = errorResponse.SerializeJsonObject(formatting: Formatting.Indented);
+		var json = errorResponse.SerializeJsonObject(
+			contractResolver: new CamelCasePropertyNamesContractResolver(),
+			formatting: Formatting.Indented
+		);
 
-		return context.Response.WriteAsync(json, ct);
+		return context.Response.WriteAsync(json);
 	}
 
 	private static (HttpStatusCode statusCode, Error error) GetExceptionDetails(Exception exception)

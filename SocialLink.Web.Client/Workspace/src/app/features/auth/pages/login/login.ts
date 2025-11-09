@@ -42,7 +42,7 @@ export class Login extends BaseFormComponent<LoginModel> {
         finalize(() => this.loading = false)
       ).subscribe({
         next: () => this.router.navigateByUrl('/'),
-        error: _ => this.errorService.add(_.error.errors)
+        error: _ => { this.errorService.add(_.error.errors); console.log(this.errorService.errors()) }
       });
   }
 }

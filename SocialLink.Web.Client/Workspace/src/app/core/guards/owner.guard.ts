@@ -11,6 +11,6 @@ export const ownerGuard: CanActivateFn = (route, state) => {
   if (currentUserId === userId)
     return true;
 
-  router.navigateByUrl('/unauthorized');
+  router.navigateByUrl('/error/unauthorized');
   return false;
 }

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SocialLink.Users.Application.Interfaces;
 using SocialLink.Users.Application.Services;
+using SocialLink.Users.Application.UseCases.Commands;
+using SocialLink.Users.Application.UseCases.Validators;
 using SocialLink.Users.Data;
 using SocialLink.Users.Domain;
 using System.Diagnostics;
@@ -30,6 +33,11 @@ public static class UsersModule
 		services.AddScoped<IAuthTokenProcessor, AuthTokenProcessor>();
 		services.AddScoped<IUserRepository, UserRepository>();
 		services.AddScoped<INotificationService, NotificationService>();
+
+		// Validators
+		services.AddTransient<IValidator<LoginCommand>, LoginCommandValidator>();
+		services.AddTransient<IValidator<SignupCommand>, SignupCommandValidator>();
+		services.AddTransient<IValidator<UpdateUserCommand>, UpdateUserCommandValidator>();
 
 		mediatRAssemblies.Add(typeof(UsersModule).Assembly);
 

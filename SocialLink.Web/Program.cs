@@ -1,4 +1,3 @@
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -111,9 +110,6 @@ builder.Services.AddBlobsModuleServices(builder.Configuration, logger, mediatRAs
 builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblies(mediatRAssemblies.ToArray()));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
-// Set up Validators
-builder.Services.AddValidatorsFromAssemblies(mediatRAssemblies.ToArray());
 
 var app = builder.Build();
 
