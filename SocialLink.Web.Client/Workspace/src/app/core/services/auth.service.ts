@@ -1,18 +1,20 @@
 import { Injectable, signal } from '@angular/core';
 import { ApiService } from './api.service';
-import { catchError, map, take, tap } from 'rxjs/operators';
+import { catchError, finalize, map, shareReplay, take, tap } from 'rxjs/operators';
 import { FileUploadService } from './file-upload.service';
 import { LoginModel } from '../../features/auth/models/login.model';
 import { eSystemRole } from '../enumerators/system-role.enum';
 import { Observable, of } from 'rxjs';
 import { CurrentUserModel } from '../../features/auth/models/currentUser.model';
 import { Lookup } from '../models/lookup';
+import { SingleFlight } from '../utils/single-flight';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private _currentUser = signal<CurrentUserModel | null>(null);
+  private _currentUserRequest$ = new SingleFlight<CurrentUserModel | null>();
 
   constructor(
     private apiService: ApiService,
@@ -39,10 +41,12 @@ export class AuthService {
     if (this._currentUser())
       return of(this._currentUser());
 
-    return this.apiService.get<CurrentUserModel>('/Auth/GetCurrentUser')
-      .pipe(
-        tap(user => this._currentUser.set(user))
-      );
+    return this._currentUserRequest$.run(() =>
+      this.apiService.get<CurrentUserModel>('/Auth/GetCurrentUser').pipe(
+        tap(user => this._currentUser.set(user)),
+        catchError(() => of(null))
+      )
+    );
   }
 
   getUserId = () => this._currentUser()?.id;

@@ -48,7 +48,7 @@
   </div>
 
   <div>
-    <button class="btn btn-sm align-self-center btn-outline-primary py-2 px-4 ms-2 float-end" type="button" (click)="cancel()">Cancel</button>
+    <button class="btn btn-sm align-self-center btn-outline-primary py-2 px-4 ms-2 float-end" type="button" [routerLink]="['/profile', userId]">Cancel</button>
     <button class="btn btn-sm align-self-center btn-primary py-2 px-4 float-end" type="button" (click)="submit()">Save</button>
   </div>
 </form>

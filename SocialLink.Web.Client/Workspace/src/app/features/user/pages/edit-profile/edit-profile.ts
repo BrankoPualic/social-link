@@ -12,13 +12,13 @@ import { ErrorService } from '../../../../core/services/error.service';
 import { ApiService } from '../../../../core/services/api.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { finalize, take } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { InputDate } from '../../../../shared/components/forms/input-date';
 import { Functions } from '../../../../shared/functions';
 
 @Component({
   selector: 'app-edit-profile',
-  imports: [Navigation, ReactiveFormsModule, InputText, Dropdown, TextArea, InputDate],
+  imports: [Navigation, ReactiveFormsModule, InputText, Dropdown, TextArea, InputDate, RouterLink],
   templateUrl: './edit-profile.html',
   styleUrl: './edit-profile.scss'
 })
@@ -80,9 +80,5 @@ export class EditProfile extends BaseFormComponent<UserModel>{
       next: () => this.router.navigateByUrl(`/profile/${this.userId}`),
       error: _ => this.errorService.add(_.error.errors)
     })
-  }
-
-  cancel() {
-    this.router.navigateByUrl(`/profile/${this.userId}`);
   }
 }

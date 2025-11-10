@@ -42,7 +42,7 @@ internal class UserController(IMediator mediator) : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> UpdateProfileImage(Guid userId, CancellationToken ct = default)
+	public async Task<IActionResult> UpdateProfileImage([FromForm] Guid userId, CancellationToken ct = default)
 	{
 		if (HttpContext.Request.Form.Files.Count is 0)
 		{

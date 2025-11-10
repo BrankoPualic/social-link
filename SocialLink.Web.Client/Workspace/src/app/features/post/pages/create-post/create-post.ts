@@ -9,7 +9,7 @@ import { ErrorService } from '../../../../core/services/error.service';
 import { FileUploadService } from '../../../../core/services/file-upload.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { finalize, take } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DialogService } from '../../../../core/services/dialog.service';
 import { TextArea } from '../../../../shared/components/forms/text-area';
@@ -17,13 +17,14 @@ import { ValidationDirective } from '../../../../shared/directives/validation.di
 
 @Component({
   selector: 'app-create-post',
-  imports: [Navigation, ReactiveFormsModule, TextArea, ValidationDirective],
+  imports: [Navigation, ReactiveFormsModule, TextArea, ValidationDirective, RouterLink],
   templateUrl: './create-post.html',
   styleUrls: ['./create-post.scss']
 })
 export class CreatePost extends BaseFormComponent<PostCreateModel> implements IFileUploadForm {
   files: File[] = [];
   previews: string[] = [];
+  userId?: string;
 
   constructor(
     loaderService: PageLoaderService,
@@ -36,6 +37,8 @@ export class CreatePost extends BaseFormComponent<PostCreateModel> implements IF
     private router: Router
   ) {
     super(loaderService, fb);
+
+    this.userId = this.authService.getUserId();
   }
 
   override initializeForm(): void {
@@ -51,10 +54,9 @@ export class CreatePost extends BaseFormComponent<PostCreateModel> implements IF
         this.loading = true;
         this.errorService.clean();
 
-        const userId = this.authService.getUserId();
         const data: PostCreateModel = {
           ...this.form.value,
-          userId: userId
+          userId: this.userId
         };
 
         this.fileUploadService.uploadMultipart('/Post/Create', this.files, data)
@@ -65,7 +67,7 @@ export class CreatePost extends BaseFormComponent<PostCreateModel> implements IF
           .subscribe({
             next: (postId) => {
               this.toastr.success('You\'ve successfully created post.');
-              this.router.navigateByUrl(`/profile/${userId}`);
+              this.router.navigateByUrl(`/profile/${this.userId}`);
             },
             error: _ => this.errorService.add(_.error.errors)
           });

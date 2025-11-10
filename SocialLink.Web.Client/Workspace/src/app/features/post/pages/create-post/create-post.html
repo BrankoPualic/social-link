@@ -21,7 +21,7 @@
     <div class="col-12 col-md-9 p-1 preview-container">
       @if (previews.length === 0)
       {
-        <span class="small">No file uploaded</span>
+      <span class="small">No file uploaded</span>
       }
       @for(preview of previews; track $index)
       {
@@ -54,10 +54,11 @@
     </div>
   </div>
 
-  <div appValidation="Post"></div>
+  <div appValidation="Post" class="mb-3"></div>
 
   <div>
-    <button class="btn btn-sm btn-primary py-2 px-4" (click)="submit()">Create</button>
+    <button class="btn btn-sm btn-outline-primary ms-1 py-2 px-4 float-end" [routerLink]="['/profile', userId]">Cancel</button>
+    <button class="btn btn-sm btn-primary py-2 px-4 float-end" (click)="submit()">Create</button>
   </div>
 
 </form>

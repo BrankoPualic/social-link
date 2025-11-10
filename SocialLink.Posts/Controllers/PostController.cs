@@ -37,7 +37,7 @@ internal class PostController(IMediator mediator) : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> Create(PostCreateDto request, CancellationToken ct = default)
+	public async Task<IActionResult> Create([FromForm] PostCreateDto request, CancellationToken ct = default)
 	{
 		var files = HttpContext.Request.Form.Files;
 
