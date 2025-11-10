@@ -14,5 +14,11 @@ export const userRoutes: Route[] = [
     title: "Edit Profile",
     loadComponent: () => import("./pages/edit-profile/edit-profile").then(_ => _.EditProfile),
     canActivate: [authGuard, ownerGuard]
+  },
+  {
+    path: "profile/:id/myNotifications",
+    title: "My Notifications",
+    loadComponent: () => import("./pages/user-notification/user-notification").then(_ => _.UserNotification),
+    canActivate: [authGuard, ownerGuard]
   }
 ];

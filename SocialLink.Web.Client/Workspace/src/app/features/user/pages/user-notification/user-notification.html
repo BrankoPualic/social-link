@@ -1,0 +1,38 @@
+<app-navigation />
+
+<form [formGroup]="form" class="container-fluid p-4">
+  <h5>My Notifications</h5>
+
+  @if (preferences)
+  {
+    <div formArrayName="preferences" class="mt-3">
+      <table class="table">
+        <thead>
+        <th style="font-weight: 600">Notification</th>
+        <th class="float-end" style="font-weight: 600">Is Muted</th>
+        </thead>
+
+        <tbody>
+          @for (notification of preferences.controls; track $index)
+          {
+          <tr [formGroupName]="$index">
+            <td class="px-0">{{ notification.value.name }}</td>
+            <td class="px-0">
+              <div class="form-check form-switch float-end">
+                <input class="form-check-input" type="checkbox" id="isMuted" formControlName="isMuted" style="cursor: pointer" />
+              </div>
+
+            </td>
+          </tr>
+          }
+        </tbody>
+
+      </table>
+    </div>
+
+    <div>
+      <button class="btn btn-sm align-self-center btn-outline-primary py-2 px-4 ms-2 float-end" type="button" [routerLink]="['/profile', userId]">Cancel</button>
+      <button class="btn btn-sm align-self-center btn-primary py-2 px-4 float-end" type="button" (click)="submit()">Save</button>
+    </div>
+  }
+</form>

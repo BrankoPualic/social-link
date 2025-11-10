@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocialLink.Common.Application;
 using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Enumerators;
+using SocialLink.SharedKernel.Extensions;
 using SocialLink.Users.Application.Dtos;
 
 namespace SocialLink.Users.Application.UseCases.Queries;
@@ -13,12 +15,28 @@ internal class GetNotificationPreferencesQueryHandler(IUserDatabaseContext db) :
 	{
 		var userId = req.UserId;
 
-		var result = (await db.NotificationPreferences
+		var existingPreferences = (await db.NotificationPreferences
 			.Where(_ => _.UserId == userId)
 			.ToListAsync(ct))
 			.Select(NotificationPreferenceDto.InMemoryProjection)
 			.ToList();
 
-		return new(result);
+		var allPreferences = Enum.GetValues<eNotificationType>()
+			.Where(_ => _ is not eNotificationType.NotSet)
+			.Select(e =>
+			{
+				var overridden = existingPreferences.FirstOrDefault(_ => _.NotificationTypeId == e);
+				return new NotificationPreferenceDto
+				{
+					Id = overridden?.Id ?? Guid.Empty,
+					UserId = overridden?.UserId ?? userId,
+					NotificationTypeId = e,
+					Name = e.GetDescription(),
+					IsMuted = overridden?.IsMuted ?? false,
+				};
+			})
+			.ToList();
+
+		return new(allPreferences);
 	}
 }

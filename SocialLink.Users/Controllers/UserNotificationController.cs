@@ -15,6 +15,7 @@ namespace SocialLink.Users.Controllers;
 [Authorize]
 internal class UserNotificationController(IMediator mediator, IIdentityUser currentUser) : ControllerBase
 {
+	// TODO: Investigate what is this endpoint for? I cannot remember why I created it.
 	[HttpGet]
 	public IActionResult GetList()
 	{

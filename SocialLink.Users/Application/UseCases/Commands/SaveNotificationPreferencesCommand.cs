@@ -12,7 +12,7 @@ internal class SaveNotificationPreferencesCommandHandler(IUserDatabaseContext db
 	public override async Task<ResponseWrapper> Handle(SaveNotificationPreferencesCommand req, CancellationToken ct)
 	{
 		var preferences = req.Preferences;
-		if (preferences.Count == 0)
+		if (preferences.Count is 0)
 			return new();
 
 		var preferenceIds = preferences.Select(_ => _.Id).ToList();
@@ -31,7 +31,10 @@ internal class SaveNotificationPreferencesCommandHandler(IUserDatabaseContext db
 			preference.ToModel(model);
 
 			if (model.IsNew)
+			{
+				model.Id = Guid.NewGuid();
 				db.NotificationPreferences.Add(model);
+			}
 		}
 
 		await db.SaveChangesAsync(false, ct);

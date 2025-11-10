@@ -27,8 +27,6 @@ internal class NotificationPreferenceDto
 
 	public void ToModel(NotificationPreference model)
 	{
-		model.GenerateIdIfNew();
-
 		model.UserId = UserId;
 		model.NotificationTypeId = NotificationTypeId;
 		model.IsMuted = IsMuted;
