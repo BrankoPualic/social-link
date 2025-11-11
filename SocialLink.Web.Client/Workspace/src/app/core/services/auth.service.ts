@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { ApiService } from './api.service';
-import { catchError, finalize, map, shareReplay, take, tap } from 'rxjs/operators';
+import { catchError, map, take, tap } from 'rxjs/operators';
 import { FileUploadService } from './file-upload.service';
 import { LoginModel } from '../../features/auth/models/login.model';
 import { eSystemRole } from '../enumerators/system-role.enum';
@@ -8,6 +8,9 @@ import { Observable, of } from 'rxjs';
 import { CurrentUserModel } from '../../features/auth/models/currentUser.model';
 import { Lookup } from '../models/lookup';
 import { SingleFlight } from '../utils/single-flight';
+import { EventBusService } from './event-bus.service';
+import { EventData } from '../models/event-data.model';
+import { Constants } from '../../shared/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +21,8 @@ export class AuthService {
 
   constructor(
     private apiService: ApiService,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private eventBusService: EventBusService
   ) { }
 
   login(data: LoginModel) {
@@ -43,7 +47,10 @@ export class AuthService {
 
     return this._currentUserRequest$.run(() =>
       this.apiService.get<CurrentUserModel>('/Auth/GetCurrentUser').pipe(
-        tap(user => this._currentUser.set(user)),
+        tap(user => {
+          this._currentUser.set(user);
+          this.eventBusService.emit(new EventData(Constants.startHubConnections, null));
+        }),
         catchError(() => of(null))
       )
     );
