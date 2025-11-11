@@ -27,6 +27,7 @@
     <ProjectReference Include="..\SocialLink.Blobs\SocialLink.Blobs.csproj" />
     <ProjectReference Include="..\SocialLink.Common.Application\SocialLink.Common.Application.csproj" />
     <ProjectReference Include="..\SocialLink.Common.Data\SocialLink.Common.Data.csproj" />
+    <ProjectReference Include="..\SocialLink.Messaging\SocialLink.Messaging.csproj" />
     <ProjectReference Include="..\SocialLink.Notifications\SocialLink.Notifications.csproj" />
     <ProjectReference Include="..\SocialLink.Posts\SocialLink.Posts.csproj" />
     <ProjectReference Include="..\SocialLink.SharedKernel\SocialLink.SharedKernel.csproj" />

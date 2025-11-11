@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Serilog;
 using SocialLink.Blobs;
+using SocialLink.Messaging;
 using SocialLink.Notifications;
 using SocialLink.Posts;
 using SocialLink.SharedKernel;
@@ -104,6 +105,7 @@ builder.Services.AddUsersModuleServices(builder.Configuration, logger, mediatRAs
 builder.Services.AddNotificationsModuleServices(builder.Configuration, logger, mediatRAssemblies);
 builder.Services.AddPostsModuleServices(builder.Configuration, logger, mediatRAssemblies);
 builder.Services.AddBlobsModuleServices(builder.Configuration, logger, mediatRAssemblies);
+builder.Services.AddMessagingModuleServices(builder.Configuration, logger, mediatRAssemblies);
 
 // Set up MediatR
 builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblies(mediatRAssemblies.ToArray()));
