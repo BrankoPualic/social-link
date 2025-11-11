@@ -6,6 +6,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using Serilog;
 using SocialLink.Blobs;
 using SocialLink.Messaging;
+using SocialLink.Messaging.Hubs.Presence;
 using SocialLink.Notifications;
 using SocialLink.Posts;
 using SocialLink.SharedKernel;
@@ -139,6 +140,8 @@ app.UseAuthentication()
 	.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<PresenceHub>("hubs/presence");
 
 app.Run();
 

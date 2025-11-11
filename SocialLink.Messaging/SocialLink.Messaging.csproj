@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="13.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
@@ -20,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SocialLink.Common.Data\SocialLink.Common.Data.csproj" />
     <ProjectReference Include="..\SocialLink.SharedKernel\SocialLink.SharedKernel.csproj" />
+    <ProjectReference Include="..\SocialLink.Users.Contracts\SocialLink.Users.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

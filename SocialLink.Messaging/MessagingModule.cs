@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using SocialLink.Messaging.Data;
+using SocialLink.Messaging.Hubs.Presence;
 using System.Diagnostics;
 using System.Reflection;
 using ILogger = Serilog.ILogger;
@@ -14,6 +15,8 @@ public static class MessagingModule
 {
 	public static IServiceCollection AddMessagingModuleServices(this IServiceCollection services, IConfiguration config, ILogger logger, List<Assembly> mediatRAssemblies)
 	{
+		services.AddSignalR();
+
 		// MongoDb
 		string mongoConnectionString = config["MongoDbConnectionString"];
 		services.AddSingleton<IMongoClient>(_ =>
@@ -34,6 +37,8 @@ public static class MessagingModule
 
 		services.AddScoped<IEFMessagingDatabaseContext, EFMessagingDatabaseContext>();
 		services.AddScoped<IMongoMessagingDatabaseContext, MongoMessagingDatabaseContext>();
+
+		services.AddSingleton<IPresenceTracker, PresenceTracker>();
 
 		mediatRAssemblies.Add(typeof(MessagingModule).Assembly);
 
