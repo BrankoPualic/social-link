@@ -38,11 +38,8 @@
         Profile is private
       </label>
 
-      <div class="form-check col-1 col-md-9 ps-0 ps-md-4">
-        <input class="form-check-input float-end float-md-start"
-               type="checkbox"
-               id="privacy"
-               [formControl]="$any(form.controls['isPrivate'])" />
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="privacy" formControlName="isPrivate" style="cursor: pointer" />
       </div>
     </div>
   </div>

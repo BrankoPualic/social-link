@@ -15,6 +15,7 @@ import { finalize, take } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { InputDate } from '../../../../shared/components/forms/input-date';
 import { Functions } from '../../../../shared/functions';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-profile',
@@ -31,7 +32,8 @@ export class EditProfile extends BaseFormComponent<UserModel>{
     private errorService: ErrorService,
     private apiService: ApiService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService
   ) {
     super(loaderService, fb);
 
@@ -77,7 +79,10 @@ export class EditProfile extends BaseFormComponent<UserModel>{
         take(1),
         finalize(() => this.loading = false)
     ).subscribe({
-      next: () => this.router.navigateByUrl(`/profile/${this.userId}`),
+      next: () => {
+        this.toastrService.success('Profile updated');
+        this.router.navigateByUrl(`/profile/${this.userId}`)
+      },
       error: _ => this.errorService.add(_.error.errors)
     })
   }

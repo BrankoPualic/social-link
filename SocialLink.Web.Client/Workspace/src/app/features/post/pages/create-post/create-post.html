@@ -45,11 +45,8 @@
         Allow Comments
       </label>
 
-      <div class="form-check col-1 col-md-9 ps-0 ps-md-4">
-        <input class="form-check-input float-end float-md-start"
-               type="checkbox"
-               id="allowComments"
-               [formControl]="$any(form.controls['allowComments'])" />
+      <div class="form-check form-switch float-end">
+        <input class="form-check-input" type="checkbox" id="allowComments" formControlName="allowComments" style="cursor: pointer" />
       </div>
     </div>
   </div>
