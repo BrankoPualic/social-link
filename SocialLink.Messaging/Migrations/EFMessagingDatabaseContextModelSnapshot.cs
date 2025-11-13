@@ -70,7 +70,7 @@ namespace SocialLink.Messaging.Migrations
                     b.Property<DateTime>("LastChangedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("LastReadMessageId")
+                    b.Property<Guid?>("LastReadMessageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ChatGroupId", "UserId");

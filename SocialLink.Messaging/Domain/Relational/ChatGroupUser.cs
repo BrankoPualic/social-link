@@ -8,7 +8,7 @@ internal class ChatGroupUser
 
 	public Guid UserId { get; set; }
 
-	public Guid LastReadMessageId { get; set; }
+	public Guid? LastReadMessageId { get; set; }
 
 	public bool IsMuted { get; set; }
 
