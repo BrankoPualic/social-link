@@ -3,6 +3,8 @@
 public class PresenceTracker : IPresenceTracker
 {
 	private static readonly Dictionary<string, HashSet<string>> _onlineUsers = new();
+	private static readonly Dictionary<string, string> _connectionUserAgents = new();
+
 
 	public Task<bool> UserConnectedAsync(string userId, string connectionId)
 	{
@@ -50,6 +52,22 @@ public class PresenceTracker : IPresenceTracker
 		{
 			var online = _onlineUsers.Keys.Intersect(userIds).ToList();
 			return Task.FromResult<IReadOnlyCollection<string>>(online);
+		}
+	}
+
+	public void AddClientInfo(string connectionId, string clientInfo)
+	{
+		lock (_connectionUserAgents)
+		{
+			_connectionUserAgents[connectionId] = clientInfo;
+		}
+	}
+
+	public void RemoveClientInfo(string connectionId)
+	{
+		lock (_connectionUserAgents)
+		{
+			_connectionUserAgents.Remove(connectionId);
 		}
 	}
 }

@@ -7,4 +7,8 @@ public interface IPresenceTracker
 	Task<bool> UserDisconnectedAsync(string userId, string connectionId);
 
 	Task<IReadOnlyCollection<string>> GetOnlineUsersAsync(IEnumerable<string> userIds);
+
+	void AddClientInfo(string connectionId, string clientInfo);
+
+	void RemoveClientInfo(string connectionId);
 }

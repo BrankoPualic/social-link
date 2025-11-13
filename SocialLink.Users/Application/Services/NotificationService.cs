@@ -7,6 +7,8 @@ using SocialLink.Users.Domain;
 
 namespace SocialLink.Users.Application.Services;
 
+// TODO: !!! Change mediator.Send -> mediator.Publish
+// It will allow us to subscribe from any number of modules and handle them individually
 internal class NotificationService(IMediator mediator) : INotificationService
 {
 	public async Task SendFollowRequestAsync(User follower, User following, CancellationToken ct)

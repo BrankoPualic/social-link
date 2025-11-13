@@ -54,6 +54,10 @@ public sealed class PresenceHub(IPresenceTracker presenceTracker, IMediator medi
 			await Clients.Users(followersAsString).UserIsOffline(userId);
 		}
 
+		presenceTracker.RemoveClientInfo(Context.ConnectionId);
+
 		await base.OnDisconnectedAsync(exception);
 	}
+
+	public void RegisterClientInfo(string clientInfo) => presenceTracker.AddClientInfo(Context.ConnectionId, clientInfo);
 }

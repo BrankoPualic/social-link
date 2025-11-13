@@ -1,6 +1,7 @@
 import { Injectable, signal } from "@angular/core";
-import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { ToastrService } from "ngx-toastr";
+import { UAParser } from 'ua-parser-js';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,19 @@ export class PresenceService {
   createHubConnection() {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl(this._hubUrl + '/presence', {
-        withCredentials: true
+        withCredentials: true,
+        logger: LogLevel.Information
       })
       .withAutomaticReconnect()
       .build();
 
-    this._hubConnection.start().catch(_ => console.error(_));
+    this._hubConnection.start()
+      .then(() => {
+        const parser = new UAParser();
+        this._hubConnection?.invoke('RegisterClientInfo', JSON.stringify(parser.getResult()))
+          .catch(_ => console.error(_));
+      })
+      .catch(_ => console.error(_));
 
     this._hubConnection.onreconnecting(() => {
         this.toastrService.info('You are offline.');
