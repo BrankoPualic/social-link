@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using SocialLink.Messaging.Application.UseCases.Commands;
 using SocialLink.Messaging.Data;
 using SocialLink.Messaging.Hubs.Presence;
 using System.Diagnostics;
@@ -35,10 +38,15 @@ public static class MessagingModule
 		services.AddDbContext<EFMessagingDatabaseContext>(options => options.UseSqlServer(efConnectionString, _ => _.CommandTimeout(600).EnableRetryOnFailure())
 			.LogTo(_ => Debug.WriteLine(_), LogLevel.Warning));
 
+		services.AddControllers()
+			.PartManager.ApplicationParts.Add(new AssemblyPart(typeof(MessagingModule).Assembly));
+
 		services.AddScoped<IEFMessagingDatabaseContext, EFMessagingDatabaseContext>();
 		services.AddScoped<IMongoMessagingDatabaseContext, MongoMessagingDatabaseContext>();
 
 		services.AddSingleton<IPresenceTracker, PresenceTracker>();
+
+		services.AddTransient<IValidator<CreateMessageCommand>, CreateMessageCommandValidator>();
 
 		mediatRAssemblies.Add(typeof(MessagingModule).Assembly);
 

@@ -1,6 +1,6 @@
 ﻿using SocialLink.SharedKernel.Domain;
 using SocialLink.SharedKernel.Enumerators;
-using SocialLink.Web.Extensions;
+using SocialLink.SharedKernel.Extensions;
 
 namespace SocialLink.Web.Objects;
 

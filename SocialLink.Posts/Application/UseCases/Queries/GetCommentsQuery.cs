@@ -35,7 +35,7 @@ internal class GetCommentsQueryHandler(IPostDatabaseContext db, IMediator mediat
 			ct
 		);
 
-		if (result.TotalCount == 0)
+		if (result.TotalCount is 0)
 			return new();
 
 		var userIds = result.Items.SelectIds(_ => _.UserId);

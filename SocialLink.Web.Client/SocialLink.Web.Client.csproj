@@ -14,6 +14,7 @@
     <Folder Include="Workspace\src\app\core\pipes\" />
     <Folder Include="Workspace\src\app\features\auth\pages\" />
     <Folder Include="Workspace\src\app\features\errors\pages\" />
+    <Folder Include="Workspace\src\app\features\messaging\models\" />
     <Folder Include="Workspace\src\app\features\messaging\services\" />
     <Folder Include="Workspace\src\app\features\notifications\pages\" />
     <Folder Include="Workspace\src\app\features\post\components\" />

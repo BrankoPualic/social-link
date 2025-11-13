@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace SocialLink.Web.Extensions;
-
+namespace SocialLink.SharedKernel.Extensions;
 public static class ClaimsExtensions
 {
 	public static Guid GetId(this IEnumerable<Claim> claims) => Guid.Parse(claims.GetClaim(ClaimTypes.NameIdentifier));
