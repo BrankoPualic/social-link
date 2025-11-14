@@ -34,7 +34,7 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 			ct
 		);
 
-		if (result.TotalCount == 0)
+		if (result.TotalCount is 0)
 			return new();
 
 		var postIds = result.Items.SelectIds(_ => _.Id);

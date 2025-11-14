@@ -26,6 +26,9 @@ internal class GetUsersQueryHandler(IUserDatabaseContext db) : EFQueryHandler<Ge
 		if (!string.IsNullOrWhiteSpace(search.Keyword))
 			filters.Add(_ => _.Username.Contains(search.Keyword));
 
+		if (search.Following)
+			filters.Add(_ => _.Following.Any(_ => _.FollowerId == CurrentUser.Id));
+
 		var result = await db.Users.EFSearchAsync(
 			search,
 			_ => _.Username,

@@ -25,10 +25,20 @@ internal class UserController(IMediator mediator) : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> GetList(UserSearch request, CancellationToken ct = default)
+	public async Task<IActionResult> Search(UserSearch search, CancellationToken ct = default)
 	{
-		var result = await mediator.Send(new GetUsersQuery(request), ct);
+		var result = await mediator.Send(new GetUsersQuery(search), ct);
 		return Ok(result.Data);
+	}
+
+	[HttpPost]
+	public async Task<IActionResult> SearchContracts(UserSearch search, CancellationToken ct = default)
+	{
+		var result = await mediator.Send(new SearchUserContractsQuery(search), ct);
+
+		return result.IsSuccess
+			? Ok(result.Data)
+			: BadRequest(result.Errors);
 	}
 
 	[HttpPost]
