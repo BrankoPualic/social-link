@@ -1,0 +1,8 @@
+<div style="position: relative;">
+  <span class="fa-solid fa-magnifying-glass position-center small lightgray" style="left: calc(1.5 * 0.75rem)"></span>
+  <input type="text"
+         [placeholder]="placeholder()"
+         [class]="'form-control search-input ' + inputClass()"
+         (input)="search($event)"
+         style="" />
+</div>
