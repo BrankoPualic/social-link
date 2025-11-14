@@ -1,0 +1,22 @@
+@import '../../../../assets/styles/variables.scss';
+
+.navigation {
+  box-shadow: $box-shadow2;
+
+  .logo {
+    cursor: pointer;
+
+    img {
+      width: 12.5rem
+    }
+  }
+
+  ul li {
+    cursor: pointer;
+    font-weight: 500;
+
+    &.active {
+      color: $primary;
+    }
+  }
+}

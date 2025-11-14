@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BaseFormComponent } from '../../../../shared/base/base-form';
 import { UserModel } from '../../models/user.model';
-import { Navigation } from '../../../../shared/components/navigation';
+import { Navigation } from '../../../../shared/components/navigation/navigation';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Dropdown } from '../../../../shared/components/forms/dropdown';
 import { InputText } from '../../../../shared/components/forms/input-text';

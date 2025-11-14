@@ -5,7 +5,7 @@ import { PostModel } from '../../models/post.model';
 import { PageLoaderService } from '../../../../core/services/page-loader.service';
 import { finalize, take } from 'rxjs';
 import { ApiService } from '../../../../core/services/api.service';
-import { Navigation } from '../../../../shared/components/navigation';
+import { Navigation } from '../../../../shared/components/navigation/navigation';
 import { CommonModule } from '@angular/common';
 import { Functions } from '../../../../shared/functions';
 import { AuthService } from '../../../../core/services/auth.service';

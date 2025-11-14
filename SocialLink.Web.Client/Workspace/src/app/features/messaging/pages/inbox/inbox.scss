@@ -1,0 +1,23 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.main {
+  height: calc(100dvh - 56px);
+
+  .inbox {
+    border-right: 1px solid lightgray;
+
+    .image {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 1px solid lightgray;
+
+        img {
+            object-fit: contain;
+            height: 100%;
+            width: 100%;
+            border-radius: 50%;
+        }
+    }
+  }
+}

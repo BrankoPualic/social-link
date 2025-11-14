@@ -6,7 +6,7 @@ import { PagedResponse } from "../../../core/models/paged-response";
 import { NotificationModel } from "../models/notification.model";
 import { NotificationSearch } from "../../../core/models/search/notification-search";
 import { finalize, take } from "rxjs";
-import { Navigation } from "../../../shared/components/navigation";
+import { Navigation } from "../../../shared/components/navigation/navigation";
 import { AuthService } from "../../../core/services/auth.service";
 import { Notification } from "./notification";
 

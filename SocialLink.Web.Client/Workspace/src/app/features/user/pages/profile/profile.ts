@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Navigation } from '../../../../shared/components/navigation';
+import { Navigation } from '../../../../shared/components/navigation/navigation';
 import { ApiService } from '../../../../core/services/api.service';
 import { BaseComponentGeneric } from '../../../../shared/base/base';
 import { UserModel } from '../../models/user.model';

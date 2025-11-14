@@ -67,3 +67,23 @@
 .pointer {
     cursor: pointer;
 }
+
+.lightgray {
+    color: lightgray;
+}
+
+.image {
+  position: relative;
+
+  &.is-online::after {
+    content: '';
+    position: absolute;
+    bottom: 5%;
+    right: 0;
+    width: 12.5px;
+    height: 12.5px;
+    background-color: green;
+    border-radius: 50%;
+    border: 1px solid $white;
+  }
+}

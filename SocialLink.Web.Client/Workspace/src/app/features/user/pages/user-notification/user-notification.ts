@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Navigation } from '../../../../shared/components/navigation';
+import { Navigation } from '../../../../shared/components/navigation/navigation';
 import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { BaseFormComponent } from '../../../../shared/base/base-form';
 import { UserNotificationModel } from '../../models/user-notification.model';

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Navigation } from '../../../../shared/components/navigation';
+import { Navigation } from '../../../../shared/components/navigation/navigation';
 import { BaseFormComponent } from '../../../../shared/base/base-form';
 import { PostCreateModel } from '../../models/post-create.model';
 import { IFileUploadForm } from '../../../../shared/interfaces/file-upload-form.interface';
