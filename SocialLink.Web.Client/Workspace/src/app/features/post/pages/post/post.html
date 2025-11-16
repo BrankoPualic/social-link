@@ -36,7 +36,7 @@
 
   <div class="col-12 col-md-6 d-flex flex-column p-2 h-100">
     <div class="overflow-auto flex-grow-1">
-      <div [innerHtml]="formatString(post?.description)" class="border-bottom pb-2"></div>
+      <div [innerHtml]="post?.description | formatText" class="border-bottom pb-2"></div>
       <div class="py-2 border-bottom d-flex flex-column">
         <span>
           <app-heart-icon [status]="post?.isLiked" (click)="likePost()" />
@@ -60,7 +60,7 @@
 
     @if (post?.allowComments)
     {
-    <app-message-box (submit)="createComment($event)" />
+    <app-message-input (submit)="createComment($event)" [placeholder]="'Type a comment'"/>
     }
   </div>
 </div>

@@ -18,7 +18,7 @@
       {
       <div class="d-flex align-items-center pointer mb-2" [routerLink]="['/inbox', conversation.id]">
         <div class="image" [class.is-online]="presenceService.onlineUsersSignal().includes(conversation.user?.id!)">
-          <img [src]="getImage(conversation.user?.profileImage)" alt="Conversation image" />
+          <img [src]="sharedService.getImage(conversation.user?.profileImage)" alt="Conversation image" />
         </div>
 
         <div class="d-flex flex-column ms-2 flex-grow-1" style="width: calc(100% - 45px - 0.5rem)">
@@ -48,7 +48,7 @@
       {
       <div class="d-flex align-items-center pointer mb-2" (click)="openConversation(user?.id!)">
         <div class="image" [class.is-online]="presenceService.onlineUsersSignal().includes(user.id!)">
-          <img [src]="getImage(user?.profileImage)" alt="User image" />
+          <img [src]="sharedService.getImage(user?.profileImage)" alt="User image" />
         </div>
 
         <div class="ms-2">

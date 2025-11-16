@@ -1,21 +1,22 @@
+import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BaseComponentGeneric } from '../../../../shared/base/base';
-import { PostModel } from '../../models/post.model';
-import { PageLoaderService } from '../../../../core/services/page-loader.service';
 import { finalize, take } from 'rxjs';
 import { ApiService } from '../../../../core/services/api.service';
-import { Navigation } from '../../../../shared/components/navigation/navigation';
-import { CommonModule } from '@angular/common';
-import { Functions } from '../../../../shared/functions';
 import { AuthService } from '../../../../core/services/auth.service';
+import { PageLoaderService } from '../../../../core/services/page-loader.service';
+import { SharedService } from '../../../../core/services/shared.service';
+import { BaseComponentGeneric } from '../../../../shared/base/base';
 import { HeartIcon } from '../../../../shared/components/heart-icon';
-import { MessageBox } from '../../../../shared/components/message-box';
+import { MessageInput } from '../../../../shared/components/message-input/message-input';
+import { Navigation } from '../../../../shared/components/navigation/navigation';
 import { Comments } from '../../../comment/components/comments/comments';
+import { PostModel } from '../../models/post.model';
+import { FormatTextPipe } from '../../../../core/pipes/format-text.pipe';
 
 @Component({
   selector: 'app-post',
-  imports: [Navigation, CommonModule, HeartIcon, MessageBox, Comments],
+  imports: [Navigation, CommonModule, HeartIcon, MessageInput, Comments, FormatTextPipe],
   templateUrl: './post.html',
   styleUrl: './post.scss'
 })
@@ -31,6 +32,7 @@ export class Post extends BaseComponentGeneric<PostModel> {
     loaderService: PageLoaderService,
     private authService: AuthService,
     private apiService: ApiService,
+    public sharedService: SharedService,
     private route: ActivatedRoute
   ) {
     super(loaderService);
@@ -86,6 +88,4 @@ export class Post extends BaseComponentGeneric<PostModel> {
 
   previousMedia = () => this.activeCarouselMedia--;
   nextMedia = () => this.activeCarouselMedia++;
-
-  formatString = (value: string | undefined) => !!value && Functions.formatString(value);
 }

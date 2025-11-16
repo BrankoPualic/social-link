@@ -5,11 +5,11 @@
   {
   <div class="d-flex flex-column">
     <div class="pointer" [routerLink]="['/profile', comment?.user?.id]">
-      <img [src]="comment?.user?.profileImage" alt="" class="rounded-circle border" width="35" height="35" style="object-fit: contain;"/>
+      <img [src]="sharedService.getImage(comment?.user?.profileImage)" alt="User image" class="rounded-circle border" width="35" height="35" style="object-fit: contain;"/>
       <span class="ms-2">{{ comment?.user?.username }}</span>
     </div>
 
-    <div [innerHtml]="formatString(comment?.message)" class="py-2"></div>
+    <div [innerHtml]="comment?.message | formatText" class="py-2"></div>
 
     <div class="d-flex flex-row justify-content-between small border-bottom pb-2">
       <div>{{ comment?.createdOn | date: 'short' }}</div>

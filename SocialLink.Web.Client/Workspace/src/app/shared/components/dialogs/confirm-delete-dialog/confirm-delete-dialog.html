@@ -3,7 +3,7 @@
 
     <div class="dialog-header">{{ title() }}</div>
 
-    <div class="dialog-body" [innerHtml]="formatString(message())"></div>
+    <div class="dialog-body" [innerHtml]="message() | formatText"></div>
 
     <div class="dialog-footer">
       <div class="dialog-actions">

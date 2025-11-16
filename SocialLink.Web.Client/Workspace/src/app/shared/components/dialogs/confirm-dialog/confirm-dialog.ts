@@ -1,10 +1,10 @@
 import { Component, input, output } from '@angular/core';
-import { Functions } from '../../../functions';
+import { FormatTextPipe } from '../../../../core/pipes/format-text.pipe';
 import { IConfirmable } from '../../../interfaces/confirmable.interface';
 
 @Component({
   selector: 'app-confirm-dialog',
-  imports: [],
+  imports: [FormatTextPipe],
   templateUrl: './confirm-dialog.html'
 })
 export class ConfirmDialog implements IConfirmable {
@@ -15,6 +15,4 @@ export class ConfirmDialog implements IConfirmable {
 
   confirm = () => this.result.emit(true);
   cancel = () => this.result.emit(false);
-
-  formatString = (value: string) => Functions.formatString(value);
 }

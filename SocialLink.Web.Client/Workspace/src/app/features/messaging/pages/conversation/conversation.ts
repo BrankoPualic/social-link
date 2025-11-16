@@ -1,19 +1,20 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnDestroy, effect, viewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subject, debounceTime, take } from 'rxjs';
 import { ApiService } from '../../../../core/services/api.service';
 import { AuthService } from '../../../../core/services/auth.service';
+import { SharedService } from '../../../../core/services/shared.service';
 import { MessageInput } from '../../../../shared/components/message-input/message-input';
 import { ConversationModel } from '../../models/conversation.model';
 import { MessageModel } from '../../models/message.model';
 import { MessageService } from '../../services/message.service';
-import { Functions } from '../../../../shared/functions';
-import { DatePipe } from '@angular/common';
 import { PresenceService } from '../../services/presence.service';
+import { FormatTextPipe } from '../../../../core/pipes/format-text.pipe';
 
 @Component({
   selector: 'app-conversation',
-  imports: [RouterLink, MessageInput, DatePipe],
+  imports: [RouterLink, MessageInput, DatePipe, FormatTextPipe],
   templateUrl: './conversation.html',
   styleUrl: './conversation.scss'
 })
@@ -30,6 +31,7 @@ export class Conversation implements OnDestroy {
     private authServuce: AuthService,
     public messageService: MessageService,
     public presenceService: PresenceService,
+    public sharedService: SharedService,
     private route: ActivatedRoute
   ) {
     this.route.paramMap.subscribe(params => {
@@ -79,13 +81,6 @@ export class Conversation implements OnDestroy {
     })
   }
 
-  getImage(url?: string): string {
-    // TODO: Create separate shared service or a global function to handle this default state
-    // Also see reference inside profile.ts
-    // Create custom unisex profile avatar image. See linkedin for reference.
-    return url || './assets/images/man.png';
-  }
-
   createMessage(message?: string): void {
     if (!message)
       return;
@@ -100,8 +95,6 @@ export class Conversation implements OnDestroy {
   }
 
   fromCurrentUser = (userId?: string) => userId === this.currentUserId;
-
-  formatString = (value: string | undefined) => !!value && Functions.formatString(value);
 
   isMultiline = (content?: string) => !!content && content.includes('\n');
 

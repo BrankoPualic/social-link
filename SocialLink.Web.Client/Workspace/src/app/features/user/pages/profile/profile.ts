@@ -13,10 +13,12 @@ import { eFollowStatus } from '../../../../core/enumerators/follow-status.enum';
 import { IFileUploadForm } from '../../../../shared/interfaces/file-upload-form.interface';
 import { FileUploadService } from '../../../../core/services/file-upload.service';
 import { Posts } from '../../../post/components/posts/posts';
+import { SharedService } from '../../../../core/services/shared.service';
+import { FormatTextPipe } from '../../../../core/pipes/format-text.pipe';
 
 @Component({
   selector: 'app-profile',
-  imports: [Navigation, CommonModule, RouterLink, Posts],
+  imports: [Navigation, CommonModule, RouterLink, Posts, FormatTextPipe],
   templateUrl: './profile.html',
   styleUrl: './profile.scss'
 })
@@ -33,6 +35,7 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
     private authService: AuthService,
     private apiService: ApiService,
     private fileUploadService: FileUploadService,
+    public sharedService: SharedService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -93,10 +96,6 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
       followerId: this.currentUserId,
       followingId: this.userId
     });
-  }
-
-  getProfileImage(): string {
-    return this.user?.profileImage?.url || `./assets/images/${this.user?.genderId === eGender.Male ? `man.png` : `woman.png`}`;
   }
 
   onFileChange(e: Event): void {

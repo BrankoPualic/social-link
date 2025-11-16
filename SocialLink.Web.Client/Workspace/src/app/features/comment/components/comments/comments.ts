@@ -1,18 +1,19 @@
-import { Component, OnChanges, SimpleChanges, input } from '@angular/core';
-import { CommentModel } from '../../models/comment.model';
-import { ApiService } from '../../../../core/services/api.service';
-import { PagedResponse } from '../../../../core/models/paged-response';
-import { finalize, take } from 'rxjs';
-import { PageLoaderComponent } from '../../../../shared/components/page-loader';
-import { HeartIcon } from '../../../../shared/components/heart-icon';
-import { Functions } from '../../../../shared/functions';
 import { DatePipe } from '@angular/common';
+import { Component, OnChanges, SimpleChanges, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { finalize, take } from 'rxjs';
+import { PagedResponse } from '../../../../core/models/paged-response';
+import { ApiService } from '../../../../core/services/api.service';
 import { AuthService } from '../../../../core/services/auth.service';
+import { SharedService } from '../../../../core/services/shared.service';
+import { HeartIcon } from '../../../../shared/components/heart-icon';
+import { PageLoaderComponent } from '../../../../shared/components/page-loader';
+import { CommentModel } from '../../models/comment.model';
+import { FormatTextPipe } from '../../../../core/pipes/format-text.pipe';
 
 @Component({
   selector: 'app-comments',
-  imports: [PageLoaderComponent, HeartIcon, DatePipe, RouterLink],
+  imports: [PageLoaderComponent, HeartIcon, DatePipe, RouterLink, FormatTextPipe],
   templateUrl: './comments.html',
   styleUrl: './comments.scss'
 })
@@ -23,7 +24,8 @@ export class Comments implements OnChanges {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    public sharedService: SharedService
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -56,6 +58,4 @@ export class Comments implements OnChanges {
         error: _ => console.error(_.error.errors)
       });
   }
-
-  formatString = (value: string | undefined) => !!value && Functions.formatString(value);
 }

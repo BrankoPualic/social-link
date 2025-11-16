@@ -12,6 +12,7 @@ import { PresenceService } from '../../services/presence.service';
 import { BaseComponent } from '../../../../shared/base/base';
 import { PageLoaderService } from '../../../../core/services/page-loader.service';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { SharedService } from '../../../../core/services/shared.service';
 
 @Component({
   selector: 'app-inbox',
@@ -30,6 +31,7 @@ export class Inbox extends BaseComponent implements OnInit {
     private apiService: ApiService,
     private authService: AuthService,
     public presenceService: PresenceService,
+    public sharedService: SharedService,
     private router: Router
   ) {
     super(loaderService);
@@ -60,13 +62,6 @@ export class Inbox extends BaseComponent implements OnInit {
     ).subscribe({
       next: response => this.users = response
     });
-  }
-
-  getImage(url?: string): string {
-    // TODO: Create separate shared service or a global function to handle this default state
-    // Also see reference inside profile.ts
-    // Create custom unisex profile avatar image. See linkedin for reference.
-    return url || './assets/images/man.png';
   }
 
   openConversation(userId: string): void {

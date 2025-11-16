@@ -3,7 +3,7 @@
 <div class="container-fluid p-4">
   <div class="d-flex flex-lg-row flex-column">
     <div class="profile-image border rounded">
-      <img class="rounded img-fluid" [src]="getProfileImage()" alt="Profile image" />
+      <img class="rounded img-fluid" [src]="sharedService.getImage(user?.profileImage?.url, user?.genderId)" alt="Profile image" />
     </div>
 
     <div class="col-9 ms-lg-4">
@@ -29,7 +29,7 @@
       </div>
       <div class="row">
         <span class="col-lg-2 col-12 fw-semibold">Biography:</span>
-        <span class="col-lg-10 col-12">{{ user?.biography }}</span>
+        <span class="col-lg-10 col-12" [innerHtml]="user?.biography | formatText"></span>
       </div>
     </div>
   </div>
