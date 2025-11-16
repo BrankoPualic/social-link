@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLink.Blobs.Contracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLink.Web.Client", "SocialLink.Web.Client\SocialLink.Web.Client.csproj", "{84791DCF-884A-438F-8A3F-8D15C22F69B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLink.Posts.Contracts", "SocialLink.Post.Contract\SocialLink.Posts.Contracts.csproj", "{5123E94F-ABEB-48A8-90DB-FA390923FD01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLink.Posts.Contracts", "SocialLink.Posts.Contract\SocialLink.Posts.Contracts.csproj", "{5123E94F-ABEB-48A8-90DB-FA390923FD01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialLink.Common.Application", "SocialLink.Common.Application\SocialLink.Common.Application.csproj", "{A89AFFDA-0C7C-4099-8CDE-18B1D67FBDA7}"
 EndProject

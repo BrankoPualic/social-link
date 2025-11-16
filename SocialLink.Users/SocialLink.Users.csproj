@@ -15,7 +15,7 @@
     <ProjectReference Include="..\SocialLink.Common.Application\SocialLink.Common.Application.csproj" />
     <ProjectReference Include="..\SocialLink.Common.Data\SocialLink.Common.Data.csproj" />
     <ProjectReference Include="..\SocialLink.Notifications.Contracts\SocialLink.Notifications.Contracts.csproj" />
-    <ProjectReference Include="..\SocialLink.Post.Contract\SocialLink.Posts.Contracts.csproj" />
+    <ProjectReference Include="..\SocialLink.Posts.Contract\SocialLink.Posts.Contracts.csproj" />
     <ProjectReference Include="..\SocialLink.SharedKernel\SocialLink.SharedKernel.csproj" />
     <ProjectReference Include="..\SocialLink.Users.Contracts\SocialLink.Users.Contracts.csproj" />
   </ItemGroup>
