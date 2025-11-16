@@ -35,6 +35,9 @@ namespace SocialLink.Messaging.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool?>("IsGroup")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("LastChangedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -47,6 +50,10 @@ namespace SocialLink.Messaging.Migrations
                     b.Property<string>("LastMessagePreview")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
