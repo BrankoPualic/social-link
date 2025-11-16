@@ -19,7 +19,7 @@ export class MessageService {
   messagesSignal = this._messages.asReadonly();
 
   private _typingUser = signal<string | null>(null);
-  typeingUserSignal = this._typingUser.asReadonly();
+  typingUserSignal = this._typingUser.asReadonly();
 
   constructor(
     private apiService: ApiService,

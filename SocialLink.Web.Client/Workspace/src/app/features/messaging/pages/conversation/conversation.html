@@ -5,7 +5,7 @@
         <img [src]="getImage(conversation?.user?.profileImage)" alt="User image" />
       </div>
       <div class="ms-2 d-flex flex-column">
-      <span>{{ conversation?.user?.username }}</span>
+        <span>{{ conversation?.user?.username }}</span>
         @if (presenceService.onlineUsersSignal().includes(conversation?.user?.id!))
         {
         <span class="green smaller">Online</span>
@@ -14,50 +14,58 @@
     </div>
   </div>
 
-  <div class="body flex-grow-1 p-3 overflow-auto" #messagesContainer>
-    @for (message of messageService.messagesSignal()?.items; track $index)
-    {
-    @if (displayDate(message, $index))
-    {
-    <div class="text-center lightgray smaller mb-1">
-      {{ message.createdOn | date: 'mediumDate'}}
-    </div>
-    }
-
-    <div class="d-flex mb-1"
-         [class.justify-content-end]="!fromCurrentUser(message.userId)"
-         [class.consecutive-image-space]="!fromCurrentUser(message.userId) && !displayImage(message, $index)"
-         [class.mb-4]="displayTime(message, $index)">
-      <div class="message-box position-relative">
-        <div class="message px-2 py-1"
-             [class.is-mine]="fromCurrentUser(message.userId)"
-             [class.is-others]="!fromCurrentUser(message.userId)"
-             [class.rounded-3]="isMultiline(message.content)"
-             [class.rounded-4]="!isMultiline(message.content)"
-             [innerHtml]="formatString(message.content)"></div>
-
-        <span class="lightgray smaller position-absolute" style="right: 0.5rem">
-          @if (isEdited(message))
-          {
-          Edited
-          }
-          @if (displayTime(message, $index))
-          {
-          {{ message.lastChangedOn | date: 'shortTime'}}
-          }
-        </span>
-      </div>
-      @if (!fromCurrentUser(message.userId) && displayImage(message, $index))
+  <div class="body flex-grow-1 p-3 overflow-auto d-flex flex-column justify-content-between" #messagesContainer>
+    <div>
+      @for (message of messageService.messagesSignal()?.items; track $index)
       {
-      <div class="image ms-2 pointer mt-auto" [routerLink]="['/profile', message.userId]">
-        <img [src]="getImage(message.user?.profileImage)" alt="User image" />
+      @if (displayDate(message, $index))
+      {
+      <div class="text-center lightgray smaller mb-1">
+        {{ message.createdOn | date: 'mediumDate'}}
       </div>
       }
+
+      <div class="d-flex mb-1"
+           [class.justify-content-end]="!fromCurrentUser(message.userId)"
+           [class.consecutive-image-space]="!fromCurrentUser(message.userId) && !displayImage(message, $index)"
+           [class.mb-4]="displayTime(message, $index)">
+        <div class="message-box position-relative">
+          <div class="message px-2 py-1"
+               [class.is-mine]="fromCurrentUser(message.userId)"
+               [class.is-others]="!fromCurrentUser(message.userId)"
+               [class.rounded-3]="isMultiline(message.content)"
+               [class.rounded-4]="!isMultiline(message.content)"
+               [innerHtml]="formatString(message.content)"></div>
+
+          <span class="lightgray smaller position-absolute" style="right: 0.5rem">
+            @if (isEdited(message))
+            {
+            Edited
+            }
+            @if (displayTime(message, $index))
+            {
+            {{ message.lastChangedOn | date: 'shortTime'}}
+            }
+          </span>
+        </div>
+        @if (!fromCurrentUser(message.userId) && displayImage(message, $index))
+        {
+        <div class="image ms-2 pointer mt-auto" [routerLink]="['/profile', message.userId]">
+          <img [src]="getImage(message.user?.profileImage)" alt="User image" />
+        </div>
+        }
+      </div>
+      }
+    </div>
+    @if (messageService.typingUserSignal(); as typingUser)
+    {
+    <div class="typing-indicator">
+      <span class="typing-text"><strong>{{ typingUser }}</strong> is typing...</span>
     </div>
     }
   </div>
 
   <div class="footer p-3">
-    <app-message-input (submit)="createMessage($event)" [placeholder]="'Type a message'" />
+    <app-message-input (submit)="createMessage($event)" [placeholder]="'Type a message'" (input)="startTyping($event)" />
   </div>
 </div>

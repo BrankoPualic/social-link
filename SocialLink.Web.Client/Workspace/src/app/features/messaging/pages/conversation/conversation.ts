@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, effect, viewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { take } from 'rxjs';
+import { Subject, debounceTime, take } from 'rxjs';
 import { ApiService } from '../../../../core/services/api.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { MessageInput } from '../../../../shared/components/message-input/message-input';
@@ -22,6 +22,8 @@ export class Conversation implements OnDestroy {
   conversationId?: string;
   conversation?: ConversationModel;
   currentUserId?: string;
+
+  private _typingSubject = new Subject<string>();
 
   constructor(
     private apiService: ApiService,
@@ -51,7 +53,18 @@ export class Conversation implements OnDestroy {
           this.scrollToBottom();
         }, 0);
       }
-    })
+    });
+
+    effect(() => {
+      this.messageService.typingUserSignal();
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 0);
+    });
+
+    this._typingSubject.pipe(
+      debounceTime(1500)
+    ).subscribe(() => this.messageService.stopTyping(this.conversationId!));
   }
 
   ngOnDestroy(): void {
@@ -125,6 +138,14 @@ export class Conversation implements OnDestroy {
       (createdOn.getHours() != lastChangedOn.getHours()) ||
       (createdOn.getMinutes() != lastChangedOn.getMinutes()) ||
       (createdOn.getSeconds() != lastChangedOn.getSeconds());
+  }
+
+  startTyping(e: Event): void {
+    if (!e)
+      return;
+
+    this._typingSubject.next(this.conversationId!);
+    this.messageService.startTyping(this.conversationId!);
   }
 
   private scrollToBottom(): void {
