@@ -4,13 +4,13 @@
   height: calc(100dvh - 56px);
 
   .inbox {
-    border-right: 1px solid lightgray;
+    border-right: 1px solid $smoke-white;
 
     .image {
         width: 45px;
         height: 45px;
         border-radius: 50%;
-        border: 1px solid lightgray;
+        border: 1px solid $smoke-white;
 
         img {
             object-fit: contain;

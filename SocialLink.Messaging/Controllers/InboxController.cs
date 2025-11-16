@@ -23,6 +23,16 @@ internal class InboxController(IMediator mediator) : ControllerBase
 			: BadRequest(result.Errors);
 	}
 
+	[HttpGet("{chatGroupId}")]
+	public async Task<IActionResult> GetConversation([FromRoute] Guid chatGroupId, CancellationToken ct = default)
+	{
+		var result = await mediator.Send(new GetConversationQuery(chatGroupId), ct);
+
+		return result.IsSuccess
+			? Ok(result.Data)
+			: BadRequest(result.Errors);
+	}
+
 	[HttpPost]
 	public async Task<IActionResult> CreateConversation(ConversationCreateDto data, CancellationToken ct = default)
 	{

@@ -49,10 +49,12 @@ internal class GetMessagesQueryHandler(IMongoMessagingDatabaseContext db, IMedia
 
 		await mediator.Send(new ReadMessageCommand(new ReadMessageDto
 		{
-			LastMessageId = result.Items.First().Id,
+			LastMessageId = result.Items.Last().Id,
 			ChatGroupId = search.ChatGroupId,
 			UserId = db.CurrentUser.Id,
 		}), ct);
+
+		result.Items = result.Items.OrderBy(_ => _.CreatedOn).ToList();
 
 		return new(result);
 	}

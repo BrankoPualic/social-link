@@ -7,11 +7,12 @@ export const messagingRoutes: Route[] = [
     title: "Inbox",
     loadComponent: () => import("./pages/inbox/inbox").then(_ => _.Inbox),
     canActivate: [authGuard],
-  },
-  {
-    path: "inbox/:id",
-    title: "Conversation",
-    loadComponent: () => import("./pages/conversation/conversation").then(_ => _.Conversation),
-    canActivate: [authGuard]
+    children: [
+      {
+        path: ":id",
+        title: "Conversation",
+        loadComponent: () => import("./pages/conversation/conversation").then(_ => _.Conversation),
+      }
+    ]
   }
 ];

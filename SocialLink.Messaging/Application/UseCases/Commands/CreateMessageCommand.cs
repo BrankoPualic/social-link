@@ -5,6 +5,7 @@ using SocialLink.Messaging.Application.Dtos;
 using SocialLink.Messaging.Domain.Document;
 using SocialLink.Messaging.Events;
 using SocialLink.SharedKernel;
+using SocialLink.Users.Contracts;
 
 namespace SocialLink.Messaging.Application.UseCases.Commands;
 
@@ -14,12 +15,19 @@ internal class CreateMessageCommandHandler(IMongoMessagingDatabaseContext db, IM
 {
 	public override async Task<ResponseWrapper<Guid>> Handle(CreateMessageCommand req, CancellationToken ct)
 	{
+		var userResult = await mediator.Send(new GetUserContractQuery(req.Data.UserId), ct);
+		if (!userResult.IsSuccess)
+			return new(userResult.Errors);
+
 		var model = new Message();
 		req.Data.ToModel(model);
+		model.CreatedOn = DateTime.UtcNow;
+		model.LastChangedOn = DateTime.UtcNow;
 
 		model.Id = Guid.NewGuid();
 		await db.Messages.InsertOneAsync(model, options: null, cancellationToken: ct);
 
+		req.Data.CreatedOn = model.CreatedOn;
 		await mediator.Send(new UpdateChatGroupLastMessageCommand(req.Data), ct);
 
 		await mediator.Publish(new CreateMessageEvent(new Hubs.Message.MessageResponse
@@ -30,7 +38,7 @@ internal class CreateMessageCommandHandler(IMongoMessagingDatabaseContext db, IM
 			Content = model.Content,
 			CreatedOn = model.CreatedOn,
 			LastChangedOn = model.LastChangedOn,
-			User = req.Data.User
+			User = userResult.Data
 		}), ct);
 
 		return new(model.Id);

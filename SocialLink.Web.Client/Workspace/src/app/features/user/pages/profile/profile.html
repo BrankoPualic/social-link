@@ -61,7 +61,7 @@
     @else if (followStatus == eFollowStatus.Active)
     {
     <button class="btn btn-outline-primary px-3" (click)="unfollow()">Unfollow</button>
-    <button class="btn btn-outline-primary px-3 ms-1">Message</button>
+    <button class="btn btn-outline-primary px-3 ms-1" (click)="openConversation()">Message</button>
     }
     @else
     {

@@ -3,7 +3,7 @@ import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { PagedResponse } from "../../../core/models/paged-response";
 import { MessageModel } from "../models/message.model";
 import { ApiService } from "../../../core/services/api.service";
-import { finalize, take } from "rxjs";
+import { Observable, finalize, take, tap } from "rxjs";
 import { PageLoaderService } from "../../../core/services/page-loader.service";
 import { AuthService } from "../../../core/services/auth.service";
 
@@ -70,15 +70,13 @@ export class MessageService {
     this._hubConnection?.invoke('StoppedTyping', chatGroupId).catch(_ => console.error(_));
   }
 
-  getMessages(chatGroupId: string) {
+  getMessages(chatGroupId: string): Observable<PagedResponse<MessageModel>> {
     this.loaderService.show();
-    this.apiService.post<PagedResponse<MessageModel>>('/Message/Get', { chatGroupId: chatGroupId }).pipe(
+    return this.apiService.post<PagedResponse<MessageModel>>('/Message/Get', { pageSize: 30, chatGroupId: chatGroupId }).pipe(
       take(1),
-      finalize(() => this.loaderService.hide())
-    ).subscribe({
-      next: response => this._messages.set(response),
-      error: _ => console.error(_)
-    })
+      finalize(() => this.loaderService.hide()),
+      tap((response) => this._messages.set(response))
+    );
   };
 
   createMessage(data: MessageModel) {

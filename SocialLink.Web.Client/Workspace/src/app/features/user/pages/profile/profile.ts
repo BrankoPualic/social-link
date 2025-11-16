@@ -8,7 +8,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { Observable, finalize, forkJoin, of, switchMap, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { eGender } from '../../../../core/enumerators/gender.enum';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { eFollowStatus } from '../../../../core/enumerators/follow-status.enum';
 import { IFileUploadForm } from '../../../../shared/interfaces/file-upload-form.interface';
 import { FileUploadService } from '../../../../core/services/file-upload.service';
@@ -33,7 +33,8 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
     private authService: AuthService,
     private apiService: ApiService,
     private fileUploadService: FileUploadService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     super(loaderService);
 
@@ -112,5 +113,15 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
         next: () => this.load(),
         //TODO: Handle errors after implementing toast show error message
       });
+  }
+
+  openConversation(): void {
+    this.loading = true;
+    this.apiService.post<string>('/Inbox/CreateConversation', { users: [this.userId, this.currentUserId] }).pipe(
+      take(1),
+      finalize(() => this.loading = false)
+    ).subscribe({
+      next: conversationId => this.router.navigateByUrl(`/inbox/${conversationId}`)
+    });
   }
 }

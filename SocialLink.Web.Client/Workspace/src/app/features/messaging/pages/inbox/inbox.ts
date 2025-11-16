@@ -11,11 +11,11 @@ import { ConversationModel } from '../../models/conversation.model';
 import { PresenceService } from '../../services/presence.service';
 import { BaseComponent } from '../../../../shared/base/base';
 import { PageLoaderService } from '../../../../core/services/page-loader.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-inbox',
-  imports: [Navigation, Search, TimeAgoPipe, RouterLink],
+  imports: [Navigation, Search, TimeAgoPipe, RouterLink, RouterOutlet],
   templateUrl: './inbox.html',
   styleUrl: './inbox.scss'
 })
@@ -69,7 +69,7 @@ export class Inbox extends BaseComponent implements OnInit {
     return url || './assets/images/man.png';
   }
 
-  enterConversation(userId: string): void {
+  openConversation(userId: string): void {
     this.loading = true;
     this.apiService.post<string>('/Inbox/CreateConversation', { users: [userId, this.currentUserId] }).pipe(
       take(1),

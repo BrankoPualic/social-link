@@ -1,14 +1,27 @@
+@import 'assets/styles/variables.scss';
+@import 'app/features/auth/auth.styles.scss';
+@import 'app/shared/components/dialogs/dialog.styles.scss';
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
   list-style-type: none;
-}
 
-@import 'assets/styles/variables.scss';
-@import 'app/features/auth/auth.styles.scss';
-@import 'app/shared/components/dialogs/dialog.styles.scss';
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    //display: hidden;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $lightgray;
+    border-radius: 50px;
+  }
+}
 
 .validation-feedback {
   width: 100%;
@@ -65,11 +78,15 @@
 }
 
 .pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .lightgray {
-    color: lightgray;
+  color: $lightgray;
+}
+
+.smaller {
+  font-size: 0.8rem;
 }
 
 .image {
@@ -82,8 +99,12 @@
     right: 0;
     width: 12.5px;
     height: 12.5px;
-    background-color: green;
+    background-color: $green;
     border-radius: 50%;
     border: 1px solid $white;
   }
+}
+
+.green {
+    color: $green;
 }

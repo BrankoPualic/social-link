@@ -46,9 +46,9 @@
       {
       @for (user of users.items; track $index)
       {
-      <div class="d-flex align-items-center pointer mb-2" (click)="enterConversation(user?.id!)">
+      <div class="d-flex align-items-center pointer mb-2" (click)="openConversation(user?.id!)">
         <div class="image" [class.is-online]="presenceService.onlineUsersSignal().includes(user.id!)">
-          <img [src]="getImage(user?.profileImage)" alt="User image"/>
+          <img [src]="getImage(user?.profileImage)" alt="User image" />
         </div>
 
         <div class="ms-2">
@@ -67,6 +67,7 @@
     </div>
   </div>
 
-  <div id="chatGroup">
+  <div class="flex-grow-1">
+    <router-outlet />
   </div>
 </div>

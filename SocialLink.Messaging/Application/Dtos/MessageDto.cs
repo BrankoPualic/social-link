@@ -14,9 +14,9 @@ internal class MessageDto
 
 	public string Content { get; set; }
 
-	public DateTime CreatedOn { get; set; }
+	public DateTime? CreatedOn { get; set; }
 
-	public DateTime LastChangedOn { get; set; }
+	public DateTime? LastChangedOn { get; set; }
 
 	public UserContractDto User { get; set; }
 
@@ -35,7 +35,5 @@ internal class MessageDto
 		model.ChatGroupId = ChatGroupId;
 		model.UserId = UserId;
 		model.Content = Content.Trim();
-		model.CreatedOn = CreatedOn;
-		model.LastChangedOn = LastChangedOn;
 	}
 }
