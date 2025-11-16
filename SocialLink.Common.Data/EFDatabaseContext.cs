@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialLink.SharedKernel;
 using SocialLink.SharedKernel.Domain;
 using SocialLink.SharedKernel.Extensions;
@@ -16,6 +17,21 @@ public class EFDatabaseContext : DbContext, IEFDatabaseContext
 	public bool HasChanges() => ChangeTracker.HasChanges();
 
 	public void ClearChanges() => ChangeTracker.Clear();
+
+	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+	{
+		configurationBuilder.Properties<DateTime>()
+			.HaveConversion<UtcDateTimeConverter>();
+	}
+
+	private class UtcDateTimeConverter : ValueConverter<DateTime, DateTime>
+	{
+		public UtcDateTimeConverter()
+			: base(
+				_ => DateTime.SpecifyKind(_, DateTimeKind.Utc),
+				_ => DateTime.SpecifyKind(_, DateTimeKind.Utc))
+		{ }
+	}
 
 	public new int SaveChanges(bool audit = true)
 	{
