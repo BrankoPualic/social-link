@@ -60,6 +60,32 @@ namespace SocialLink.Messaging.Migrations
                     b.ToTable("ChatGroup", "messaging");
                 });
 
+            modelBuilder.Entity("SocialLink.Messaging.Domain.Relational.ChatGroupMedia", b =>
+                {
+                    b.Property<Guid>("ChatGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ChatGroupId", "BlobId");
+
+                    b.HasIndex("ChatGroupId", "Type", "IsActive");
+
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("ChatGroupId", "Type", "IsActive"), new[] { "BlobId" });
+
+                    b.ToTable("ChatGroupMedia", "messaging");
+                });
+
             modelBuilder.Entity("SocialLink.Messaging.Domain.Relational.ChatGroupUser", b =>
                 {
                     b.Property<Guid>("ChatGroupId")
@@ -87,6 +113,17 @@ namespace SocialLink.Messaging.Migrations
                     b.ToTable("ChatGroupUser", "messaging");
                 });
 
+            modelBuilder.Entity("SocialLink.Messaging.Domain.Relational.ChatGroupMedia", b =>
+                {
+                    b.HasOne("SocialLink.Messaging.Domain.Relational.ChatGroup", "ChatGroup")
+                        .WithMany("Media")
+                        .HasForeignKey("ChatGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ChatGroup");
+                });
+
             modelBuilder.Entity("SocialLink.Messaging.Domain.Relational.ChatGroupUser", b =>
                 {
                     b.HasOne("SocialLink.Messaging.Domain.Relational.ChatGroup", "ChatGroup")
@@ -100,6 +137,8 @@ namespace SocialLink.Messaging.Migrations
 
             modelBuilder.Entity("SocialLink.Messaging.Domain.Relational.ChatGroup", b =>
                 {
+                    b.Navigation("Media");
+
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

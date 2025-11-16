@@ -13,4 +13,6 @@ internal class ChatGroup : AuditedDomainModel<Guid>
 	public string Name { get; set; }
 
 	public virtual ICollection<ChatGroupUser> Users { get; set; } = [];
+
+	public virtual ICollection<ChatGroupMedia> Media { get; set; } = [];
 }

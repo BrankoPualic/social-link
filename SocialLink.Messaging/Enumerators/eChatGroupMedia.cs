@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel;
 
-namespace SocialLink.Posts.Enumerators;
+namespace SocialLink.Messaging.Enumerators;
 
 /// <summary>
-/// Denormalized media type for this post media, mirroring the blob's type.
+/// Denormalized media type for this chat group media, mirroring the blob's type.
 /// Used to simplify querying and filtering in modules without accessing the Blob entity directly.
 /// When creating a blob, its type is provided, and this property maps to that type.
 /// </summary>
-internal enum ePostMedia
+internal enum eChatGroupMedia
 {
 	[Description("Unknown")]
 	Unknown = 0,
 
-	[Description("Post Image")]
-	PostImage = 200,
+	[Description("Chat Group Avatar")]
+	ChatGroupAvatar = 300
 }

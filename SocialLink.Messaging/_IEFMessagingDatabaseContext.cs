@@ -9,4 +9,6 @@ internal interface IEFMessagingDatabaseContext : IEFDatabaseContext
 	DbSet<ChatGroup> ChatGroups { get; }
 
 	DbSet<ChatGroupUser> ChatGroupUsers { get; }
+
+	DbSet<ChatGroupMedia> Media { get; }
 }

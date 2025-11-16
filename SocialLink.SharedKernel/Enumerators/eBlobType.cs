@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace SocialLink.SharedKernel.Enumerators;
+
 public enum eBlobType
 {
 	[Description("Unknown")]
@@ -11,4 +12,7 @@ public enum eBlobType
 
 	[Description("Post Image")]
 	PostImage = 200,
+
+	[Description("Chat Group Avatar")]
+	ChatGroupAvatar = 300
 }

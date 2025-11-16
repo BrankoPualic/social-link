@@ -31,5 +31,7 @@ internal sealed class EFMessagingDatabaseContext : EFDatabaseContext, IEFMessagi
 
 	public DbSet<ChatGroupUser> ChatGroupUsers { get; set; }
 
+	public DbSet<ChatGroupMedia> Media { get; set; }
+
 	#endregion DbSets
 }
