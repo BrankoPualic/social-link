@@ -72,7 +72,7 @@ export class MessageService {
 
   getMessages(chatGroupId: string) {
     this.loaderService.show();
-    this.apiService.get<PagedResponse<MessageModel>>('/Message/Get', { chatGroupId: chatGroupId }).pipe(
+    this.apiService.post<PagedResponse<MessageModel>>('/Message/Get', { chatGroupId: chatGroupId }).pipe(
       take(1),
       finalize(() => this.loaderService.hide())
     ).subscribe({
@@ -81,7 +81,7 @@ export class MessageService {
     })
   };
 
-  sendMessage(data: MessageModel) {
+  createMessage(data: MessageModel) {
     this.apiService.post<string>('/Message/Create', data).pipe(
       take(1)
     ).subscribe({

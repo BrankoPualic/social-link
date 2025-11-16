@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { ApiService } from './api.service';
-import { catchError, map, take, tap } from 'rxjs/operators';
+import { catchError, finalize, map, take, tap } from 'rxjs/operators';
 import { FileUploadService } from './file-upload.service';
 import { LoginModel } from '../../features/auth/models/login.model';
 import { eSystemRole } from '../enumerators/system-role.enum';
@@ -11,6 +11,7 @@ import { SingleFlight } from '../utils/single-flight';
 import { EventBusService } from './event-bus.service';
 import { EventData } from '../models/event-data.model';
 import { Constants } from '../../shared/constants';
+import { PageLoaderService } from './page-loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,8 @@ export class AuthService {
   constructor(
     private apiService: ApiService,
     private fileUploadService: FileUploadService,
-    private eventBusService: EventBusService
+    private eventBusService: EventBusService,
+    private loaderService: PageLoaderService
   ) { }
 
   login(data: LoginModel) {
@@ -45,12 +47,14 @@ export class AuthService {
     if (this._currentUser())
       return of(this._currentUser());
 
+    this.loaderService.show();
     return this._currentUserRequest$.run(() =>
       this.apiService.get<CurrentUserModel>('/Auth/GetCurrentUser').pipe(
         tap(user => {
           this._currentUser.set(user);
           this.eventBusService.emit(new EventData(Constants.startHubConnections, null));
         }),
+        finalize(() => this.loaderService.hide()),
         catchError(() => of(null))
       )
     );

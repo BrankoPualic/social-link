@@ -1,0 +1,39 @@
+@import '../../../../assets/styles/variables.scss';
+
+textarea {
+  resize: none;
+  width: 100%;
+  margin-right: 3rem;
+  border-radius: 50px;
+  box-shadow: $box-shadow2;
+  border: none;
+
+  &::-webkit-input-placeholder {
+    color: $lightgray;
+  }
+
+  &::-moz-placeholder {
+    color: $lightgray;
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    //display: hidden;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $lightgray;
+    border-radius: 50px;
+  }
+}
+
+button {
+  right: 0;
+  bottom: 0;
+  padding: 0 !important;
+  height: 38px;
+  width: 38px;
+}
