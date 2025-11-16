@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using SocialLink.Messaging.Application.UseCases.Commands;
 using SocialLink.Messaging.Data;
+using SocialLink.Messaging.Domain;
 using SocialLink.Messaging.Hubs.Presence;
 using System.Diagnostics;
 using System.Reflection;
@@ -43,6 +44,8 @@ public static class MessagingModule
 
 		services.AddScoped<IEFMessagingDatabaseContext, EFMessagingDatabaseContext>();
 		services.AddScoped<IMongoMessagingDatabaseContext, MongoMessagingDatabaseContext>();
+
+		services.AddScoped<IChatGroupRepository, ChatGroupRepository>();
 
 		services.AddSingleton<IPresenceTracker, PresenceTracker>();
 

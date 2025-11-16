@@ -17,14 +17,12 @@ internal class CreateConversationCommandHandler(IEFMessagingDatabaseContext db) 
 		if (data is null || data.Users.Count is 0)
 			return new(new Error(nameof(ChatGroup), "No user provided."));
 
-		// TODO: When we add groups just check dto flag for IsGroup
-		// 1 on 1 conversations
 		var existingChatGroupId = await db.ChatGroups
-			.Where(_ => _.Users.Count == 2)
-			.Where(_ => _.Users.Any(_ => _.UserId == data.Users[0]))
-			.Where(_ => _.Users.Any(_ => _.UserId == data.Users[1]))
-			.Select(_ => _.Id)
-			.FirstOrDefaultAsync(ct);
+				.Where(_ => _.Users.Count == 2)
+				.Where(_ => _.Users.Any(_ => _.UserId == data.Users[0]))
+				.Where(_ => _.Users.Any(_ => _.UserId == data.Users[1]))
+				.Select(_ => _.Id)
+				.FirstOrDefaultAsync(ct);
 
 		if (existingChatGroupId != Guid.Empty)
 			return new(existingChatGroupId);
