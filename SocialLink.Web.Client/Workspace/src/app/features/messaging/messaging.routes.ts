@@ -14,5 +14,11 @@ export const messagingRoutes: Route[] = [
         loadComponent: () => import("./pages/conversation/conversation").then(_ => _.Conversation),
       }
     ]
+  },
+  {
+    path: "create-group",
+    title: "Create Group",
+    loadComponent: () => import("./pages/create-group/create-group").then(_ => _.CreateGroup),
+    canActivate: [authGuard]
   }
 ];

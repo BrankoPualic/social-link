@@ -20,11 +20,14 @@ internal class CreateGroupConversationCommandHandler(IEFMessagingDatabaseContext
 		var data = req.Data;
 		var file = req.File;
 
-		if (data is null || data.Users.Count is 0)
-			return new(new Error(nameof(ChatGroup), "No user provided."));
+		if (data is null || data.Users.Count < 2)
+			return new(new Error(nameof(ChatGroup), ResourcesValidation.Required("Member")));
+
+		if (string.IsNullOrWhiteSpace(data.Name))
+			return new(new Error(nameof(ChatGroup.Name), ResourcesValidation.Required(nameof(ChatGroup.Name))));
 
 		if (file is null)
-			return new(new Error(nameof(ChatGroup), "No image provided."));
+			return new(new Error("Image", ResourcesValidation.Required("Image")));
 
 		var uploadResult = await mediator.Send(new UploadBlobCommand(new UploadFileDto(file, eBlobType.ChatGroupAvatar)), ct);
 		if (!uploadResult.IsSuccess)

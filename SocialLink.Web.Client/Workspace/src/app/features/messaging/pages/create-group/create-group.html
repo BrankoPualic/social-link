@@ -1,0 +1,77 @@
+<app-navigation />
+
+<div class="container-fluid p-4 main">
+  <div class="d-flex flex-md-row flex-column">
+    <div class="col-12 col-md-6 pe-md-4">
+      <h5>General Information</h5>
+      <label class="form-label">Image</label>
+      <div appValidation="Image">
+        <div class="group-image mb-2">
+          @if (file)
+          {
+          <img [src]="preview" (click)="groupImage.click()" />
+          }
+          @else
+          {
+          <div class="d-flex align-items-center justify-content-center h-100 pointer" (click)="groupImage.click()">
+            <i class="fa-solid fa-plus fs-5 lightgray"></i>
+          </div>
+          }
+          <input type="file" class="d-none" #groupImage (change)="onFileChange($event)" />
+        </div>
+      </div>
+
+      <div appValidation="Name">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" [(ngModel)]="name" />
+      </div>
+
+      <div appValidation="ChatGroup"></div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <h5>Members</h5>
+      <app-search (onSearch)="onSearch($event)" />
+      <div class="box mt-2 rounded-4 overflow-auto">
+        @if (!searching)
+        {
+        @for (member of members; track $index)
+        {
+        <div class="d-flex align-items-center p-2">
+          <div class="image me-2">
+            <img [src]="sharedService.getImage(member?.profileImage)" alt="User image" />
+          </div>
+          <div class="flex-grow-1" [class.fw-bold]="currentUserId === member.id">{{ member?.username }} @if (currentUserId === member.id) { <span class="smaller lightgray ms-1">Admin</span> }</div>
+          @if (currentUserId !== member.id)
+          {
+          <div>
+            <i class="fa-solid fa-xmark pointer" (click)="remove(member.id!)"></i>
+          </div>
+          }
+        </div>
+        }
+        }
+        @else
+        {
+        @for (user of users?.items!; track $index)
+        {
+        <div class="d-flex align-items-center p-2">
+          <div class="image me-2">
+            <img [src]="sharedService.getImage(user?.profileImage)" alt="User image" />
+          </div>
+          <div class="flex-grow-1">{{ user?.username }}</div>
+          <div>
+            <i class="fa-solid fa-plus pointer" (click)="add(user)"></i>
+          </div>
+        </div>
+        }
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="my-3">
+    <button class="btn btn-sm btn-outline-primary ms-1 py-2 px-4 float-end" [routerLink]="['/inbox']">Cancel</button>
+    <button class="btn btn-sm btn-primary py-2 px-4 float-end" (click)="create()">Create</button>
+  </div>
+</div>

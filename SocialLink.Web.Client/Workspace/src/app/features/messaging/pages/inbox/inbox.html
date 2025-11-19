@@ -6,7 +6,7 @@
 
     <div class="d-flex align-items-center my-2">
       <app-search (onSearch)="onSearch($event)" class="flex-grow-1" />
-      <i class="fa-regular fa-pen-to-square ms-2 text-black-50 pointer" style="font-size: 1.3rem;"></i>
+      <i class="fa-regular fa-pen-to-square ms-2 text-black-50 pointer" style="font-size: 1.3rem;" [routerLink]="['/create-group']"></i>
     </div>
 
     <div class="col-12">
@@ -42,7 +42,7 @@
       }
       @else
       {
-      @if (!!users && users?.items!.length > 0)
+      @if (!!users && users?.items!.length! > 0)
       {
       @for (user of users.items; track $index)
       {

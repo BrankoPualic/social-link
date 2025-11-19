@@ -113,7 +113,7 @@ internal class FileValidationService : IFileValidationService
 		if (!isValidSignature)
 			return new(new Error(ErrorPrefix, $"{fileName} | File's signature does not match the expected signature for '{ext}'"));
 
-		var maxSize = Math.Round(Settings.MaxFileSizeInMB / 1024.0d / 1024.0d, 1);
+		var maxSize = Math.Round(Settings.MaxFileSizeInMB * 1024.0d * 1024.0d, 1);
 
 		if (buffer.Length > maxSize)
 			return new(new Error(ErrorPrefix, $"{fileName} | File exceeds the allowed size limit of {maxSize} MB"));

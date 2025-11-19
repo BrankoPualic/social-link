@@ -63,6 +63,9 @@ export class Functions {
         if (value instanceof Date) {
           formData.append(fullKey, value.toISOString());
         }
+        else if (Array.isArray(value)) {
+          value.forEach((_, index) => formData.append(`${key}[${index}]`, _));
+        }
         else if (typeof value === 'object' && value != null) {
           this.appendFormData(formData, value, fullKey);
         }
