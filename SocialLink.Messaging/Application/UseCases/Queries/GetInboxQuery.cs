@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SocialLink.Blobs.Contracts.Queries;
 using SocialLink.Common.Application;
 using SocialLink.Common.Data;
 using SocialLink.Messaging.Application.Dtos;
@@ -36,7 +37,7 @@ internal class GetInboxQueryHandler(IEFMessagingDatabaseContext db, IMediator me
 		if (result.TotalCount is 0)
 			return new();
 
-		var chatGroupIds = result.Items.SelectIds(_ => _.Id);
+		var chatGroupIds = result.Items.Where(_ => _.IsGroup != true).SelectIds(_ => _.Id);
 
 		var chatGroupUserIdsMap = await db.ChatGroupUsers
 			.Where(_ => chatGroupIds.Contains(_.ChatGroupId))
@@ -51,11 +52,26 @@ internal class GetInboxQueryHandler(IEFMessagingDatabaseContext db, IMediator me
 
 		var usersMap = usersResult.Data.ToDictionary(_ => _.Id);
 
+		var groupChatIds = result.Items.Where(_ => _.IsGroup == true).SelectIds(_ => _.Id);
+		var groupMediaMap = await db.Media
+			.Where(_ => groupChatIds.Contains(_.ChatGroupId))
+			.Where(_ => _.IsActive == true)
+			.ToDictionaryAsync(_ => _.ChatGroupId, _ => _.BlobId, ct);
+
+		var blobsResult = await mediator.Send(new GetBlobsQuery(groupMediaMap.Values.ToList()), ct);
+		if (!blobsResult.IsSuccess)
+			return new(blobsResult.Errors);
+
 		foreach (var chatGroup in result.Items)
 		{
 			if (chatGroupUserIdsMap.TryGetValue(chatGroup.Id, out var userId))
 			{
 				chatGroup.User = usersMap.GetValueOrDefault(userId);
+			}
+
+			if (groupMediaMap.TryGetValue(chatGroup.Id, out var blobId))
+			{
+				chatGroup.GroupImageUrl = blobsResult.Data.FirstOrDefault(_ => _.Id == blobId).Url;
 			}
 		}
 

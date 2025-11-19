@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SocialLink.Blobs.Contracts.Queries;
 using SocialLink.Common.Application;
 using SocialLink.Messaging.Application.Dtos;
 using SocialLink.Messaging.Domain.Relational;
@@ -17,22 +18,46 @@ internal class GetConversationQueryHandler(IEFMessagingDatabaseContext db, IMedi
 		var model = await db.ChatGroupUsers
 			.Where(_ => _.ChatGroupId == req.GroupChatId)
 			.Where(_ => _.UserId != CurrentUser.Id)
-			.Select(_ => new { _.ChatGroup, _.UserId })
+			.Select(_ => new
+			{
+				_.ChatGroup,
+				_.UserId,
+				BlobId = _.ChatGroup.Media
+									.Where(_ => _.IsActive == true)
+									.Select(_ => _.BlobId)
+									.FirstOrDefault()
+			})
 			.FirstOrDefaultAsync(ct);
 
 		if (model is null || model.ChatGroup is null)
 			return new(new Error(nameof(ChatGroup), "Conversation not found."));
 
-		var userResult = await mediator.Send(new GetUserContractQuery(model.UserId), ct);
-		if (!userResult.IsSuccess)
-			return new(userResult.Errors);
-
-		return new(new ConversationDto
+		ConversationDto result = new()
 		{
 			Id = model.ChatGroup.Id,
 			LastMessageOn = model.ChatGroup.LastMessageOn,
 			LastMessagePreview = model.ChatGroup.LastMessagePreview,
-			User = userResult.Data
-		});
+		};
+
+		if (model.ChatGroup.IsGroup != true)
+		{
+			var userResult = await mediator.Send(new GetUserContractQuery(model.UserId), ct);
+			if (!userResult.IsSuccess)
+				return new(userResult.Errors);
+
+			result.User = userResult.Data;
+		}
+		else
+		{
+			var blobResult = await mediator.Send(new GetBlobQuery(model.BlobId), ct);
+			if (!blobResult.IsSuccess)
+				return new(blobResult.Errors);
+
+			result.Name = model.ChatGroup.Name;
+			result.IsGroup = true;
+			result.GroupImageUrl = blobResult.Data.Url;
+		}
+
+		return new(result);
 	}
 }
