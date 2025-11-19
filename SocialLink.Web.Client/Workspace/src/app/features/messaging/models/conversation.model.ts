@@ -5,4 +5,7 @@ export class ConversationModel {
   lastMessageOn?: Date | string;
   lastMessagePreview?: string;
   user?: UserLightModel;
+  name?: string;
+  isGroup?: boolean;
+  groupImageUrl?: string;
 }

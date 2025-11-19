@@ -1,12 +1,12 @@
 <div class="main d-flex flex-column">
   <div class="header d-flex align-items-center justify-content-between py-2 px-3">
-    <div class="d-flex align-items-center pointer" [routerLink]="['/profile', conversation?.user?.id]">
+    <div class="d-flex align-items-center pointer" (click)="!conversation?.isGroup && goToProfile(conversation?.user?.id)">
       <div class="image">
-        <img [src]="sharedService.getImage(conversation?.user?.profileImage)" alt="User image" />
+        <img [src]="sharedService.getImage(conversation?.isGroup ? conversation?.groupImageUrl : conversation?.user?.profileImage)" alt="Converastion image" />
       </div>
       <div class="ms-2 d-flex flex-column">
-        <span>{{ conversation?.user?.username }}</span>
-        @if (presenceService.onlineUsersSignal().includes(conversation?.user?.id!))
+        <span>{{ conversation?.isGroup ? conversation?.name : conversation?.user?.username }}</span>
+        @if (!conversation?.isGroup && presenceService.onlineUsersSignal().includes(conversation?.user?.id!))
         {
         <span class="green smaller">Online</span>
         }
@@ -26,9 +26,15 @@
       }
 
       <div class="d-flex mb-1"
-           [class.justify-content-end]="!fromCurrentUser(message.userId)"
+           [class.justify-content-end]="fromCurrentUser(message.userId)"
            [class.consecutive-image-space]="!fromCurrentUser(message.userId) && !displayImage(message, $index)"
            [class.mb-4]="displayTime(message, $index)">
+        @if (!fromCurrentUser(message.userId) && displayImage(message, $index))
+        {
+        <div class="image me-2 pointer mt-auto" [routerLink]="['/profile', message.userId]">
+          <img [src]="sharedService.getImage(message.user?.profileImage)" alt="User image" />
+        </div>
+        }
         <div class="message-box position-relative">
           <div class="message px-2 py-1"
                [class.is-mine]="fromCurrentUser(message.userId)"
@@ -48,16 +54,10 @@
             }
           </span>
         </div>
-        @if (!fromCurrentUser(message.userId) && displayImage(message, $index))
-        {
-        <div class="image ms-2 pointer mt-auto" [routerLink]="['/profile', message.userId]">
-          <img [src]="sharedService.getImage(message.user?.profileImage)" alt="User image" />
-        </div>
-        }
       </div>
       }
     </div>
-    @if (messageService.typingUserSignal(); as typingUser)
+    @if (isSomeoneTyping() | async; as typingUser)
     {
     <div class="typing-indicator">
       <span class="typing-text"><strong>{{ typingUser }}</strong> is typing...</span>

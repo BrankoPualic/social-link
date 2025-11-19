@@ -1,7 +1,7 @@
-import { DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, ElementRef, OnDestroy, effect, viewChild } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Subject, debounceTime, take } from 'rxjs';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Observable, Subject, debounceTime, map, take } from 'rxjs';
 import { ApiService } from '../../../../core/services/api.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { SharedService } from '../../../../core/services/shared.service';
@@ -14,7 +14,7 @@ import { FormatTextPipe } from '../../../../core/pipes/format-text.pipe';
 
 @Component({
   selector: 'app-conversation',
-  imports: [RouterLink, MessageInput, DatePipe, FormatTextPipe],
+  imports: [RouterLink, MessageInput, DatePipe, FormatTextPipe, AsyncPipe],
   templateUrl: './conversation.html',
   styleUrl: './conversation.scss'
 })
@@ -32,7 +32,8 @@ export class Conversation implements OnDestroy {
     public messageService: MessageService,
     public presenceService: PresenceService,
     public sharedService: SharedService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.route.paramMap.subscribe(params => {
       this.conversationId = params.get('id')!;
@@ -139,6 +140,19 @@ export class Conversation implements OnDestroy {
 
     this._typingSubject.next(this.conversationId!);
     this.messageService.startTyping(this.conversationId!);
+  }
+
+  goToProfile = (userId?: string) => !!userId && this.router.navigateByUrl(`/profile/${userId}`);
+
+  isSomeoneTyping(): Observable<string | null> {
+    return this.authServuce.getCurrentUser().pipe(
+      map(currentUser => {
+        if (this.messageService.typingUserSignal() != currentUser?.username)
+          return this.messageService.typingUserSignal();
+
+        return null;
+      })
+    );
   }
 
   private scrollToBottom(): void {
