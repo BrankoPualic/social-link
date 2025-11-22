@@ -1,4 +1,5 @@
-﻿using SocialLink.Users.Contracts;
+﻿using SocialLink.Messaging.Enumerators;
+using SocialLink.Users.Contracts;
 
 namespace SocialLink.Messaging.Hubs.Message;
 
@@ -9,6 +10,8 @@ public class MessageResponse
 	public Guid ChatGroupId { get; set; }
 
 	public Guid UserId { get; set; }
+
+	public eMessageType? Type { get; set; }
 
 	public string Content { get; set; }
 

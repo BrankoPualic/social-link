@@ -50,6 +50,7 @@ public static class MessagingModule
 		services.AddSingleton<IPresenceTracker, PresenceTracker>();
 
 		services.AddTransient<IValidator<CreateMessageCommand>, CreateMessageCommandValidator>();
+		services.AddTransient<IValidator<CreateAudioMessageCommand>, CreateAudioMessageCommandValidator>();
 
 		mediatRAssemblies.Add(typeof(MessagingModule).Assembly);
 
