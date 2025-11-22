@@ -58,7 +58,29 @@ internal class FileValidationService : IFileValidationService
 		]),
 
 		( [".webp"], [
-			(0, "RIFF"u8.ToArray())
+			(0, "WEBP"u8.ToArray())
+		]),
+
+		// Audio
+
+		( [".wav"], [
+			(0, "RIF"u8.ToArray())
+		]),
+
+		( [".mp3"], [
+			(0, "ID3"u8.ToArray()),
+			(0, [ 0xFF, 0xF2 ]),
+			(0, [ 0xFF, 0xF3 ]),
+			(0, [ 0xFF, 0xFA ]),
+			(0, [ 0xFF, 0xFB ])
+		]),
+
+		( [".webm"], [
+			(0, [ 0x1A, 0x45, 0xDF, 0xA3 ])
+		]),
+
+		( [".ogg"], [
+			(0, [ 0x4F, 0x67, 0x67, 0x53 ])
 		]),
 
 		// Video

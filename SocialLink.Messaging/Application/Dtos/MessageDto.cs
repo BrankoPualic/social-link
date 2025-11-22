@@ -1,4 +1,5 @@
 ﻿using SocialLink.Messaging.Domain.Document;
+using SocialLink.Messaging.Enumerators;
 using SocialLink.Users.Contracts;
 using System.Linq.Expressions;
 
@@ -11,6 +12,8 @@ internal class MessageDto
 	public Guid ChatGroupId { get; set; }
 
 	public Guid UserId { get; set; }
+
+	public eMessageType? Type { get; set; }
 
 	public string Content { get; set; }
 
@@ -25,6 +28,7 @@ internal class MessageDto
 		Id = _.Id,
 		ChatGroupId = _.ChatGroupId,
 		UserId = _.UserId,
+		Type = _.Type,
 		Content = _.Content,
 		CreatedOn = _.CreatedOn,
 		LastChangedOn = _.LastChangedOn,
