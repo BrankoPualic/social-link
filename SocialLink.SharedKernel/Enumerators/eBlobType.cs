@@ -14,5 +14,8 @@ public enum eBlobType
 	PostImage = 200,
 
 	[Description("Chat Group Avatar")]
-	ChatGroupAvatar = 300
+	ChatGroupAvatar = 300,
+
+	[Description("Audio Message")]
+	AudioMessage = 400
 }

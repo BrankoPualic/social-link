@@ -1,0 +1,25 @@
+<div class="d-flex mb-1 align-items-center"
+     [class.justify-content-end]="fromCurrentUser(message()?.userId)"
+     [class.consecutive-image-space]="!fromCurrentUser(message()?.userId) && !displayImage(message()!, index()!)"
+     [class.mb-4]="displayTime(message()!, index()!)">
+  @if (!fromCurrentUser(message()!.userId) && displayImage(message()!, index()!))
+  {
+  <div class="image me-2 pointer" [routerLink]="['/profile', message()?.userId]">
+    <img [src]="sharedService.getImage(message()?.user?.profileImage)" alt="User image" />
+  </div>
+  }
+  <div class="message-box position-relative">
+    <ng-template #container />
+
+    <span class="lightgray smaller position-absolute" style="right: 0.5rem">
+      @if (isEdited(message()!))
+      {
+      Edited
+      }
+      @if (displayTime(message()!, index()!))
+      {
+      {{ message()?.lastChangedOn | date: 'shortTime'}}
+      }
+    </span>
+  </div>
+</div>

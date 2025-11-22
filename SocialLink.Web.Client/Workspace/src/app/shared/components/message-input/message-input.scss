@@ -2,8 +2,8 @@
 
 textarea {
   resize: none;
-  width: 100%;
-  margin-right: 3rem;
+  //width: 90%;
+  //margin-right: 0.5rem;
   border-radius: 50px;
   box-shadow: $box-shadow2;
   border: none;
@@ -36,4 +36,5 @@ button {
   padding: 0 !important;
   height: 38px;
   width: 38px;
+  border: 2px solid $white;
 }

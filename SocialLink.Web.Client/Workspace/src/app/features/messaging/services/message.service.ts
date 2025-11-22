@@ -6,6 +6,7 @@ import { ApiService } from "../../../core/services/api.service";
 import { Observable, finalize, take, tap } from "rxjs";
 import { PageLoaderService } from "../../../core/services/page-loader.service";
 import { AuthService } from "../../../core/services/auth.service";
+import { FileUploadService } from "../../../core/services/file-upload.service";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,8 @@ export class MessageService {
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
-    private loaderService: PageLoaderService
+    private loaderService: PageLoaderService,
+    private fileUploadService: FileUploadService
   ) { }
 
   createHubConnection(chatGroupId: string) {
@@ -59,6 +61,7 @@ export class MessageService {
   }
 
   stopHubConnection() {
+    this._messages.set(null);
     this._hubConnection?.stop().catch(_ => console.error(_));
   }
 
@@ -81,6 +84,15 @@ export class MessageService {
 
   createMessage(data: MessageModel) {
     this.apiService.post<string>('/Message/Create', data).pipe(
+      take(1)
+    ).subscribe({
+      next: messageId => { },
+      error: _ => console.error(_)
+    });
+  }
+
+  createAudioMessage(audio: File, chatGroupId: string) {
+    this.fileUploadService.uploadMultipart('/Message/CreateAudioMessage', [audio], { chatGroupId: chatGroupId }).pipe(
       take(1)
     ).subscribe({
       next: messageId => { },

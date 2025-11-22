@@ -12,7 +12,7 @@ namespace SocialLink.Blobs.Controllers;
 internal class BlobController(IMediator mediator) : ControllerBase
 {
 	[HttpGet("{blobId}")]
-	public async Task<IActionResult> GetBlob([FromRoute] Guid blobId, CancellationToken ct = default)
+	public async Task<IActionResult> Get([FromRoute] Guid blobId, CancellationToken ct = default)
 	{
 		var result = await mediator.Send(new GetBlobQuery(blobId), ct);
 
@@ -22,7 +22,7 @@ internal class BlobController(IMediator mediator) : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> GetBlobs(List<Guid> blobIds, CancellationToken ct = default)
+	public async Task<IActionResult> GetList(List<Guid> blobIds, CancellationToken ct = default)
 	{
 		var result = await mediator.Send(new GetBlobsQuery(blobIds), ct);
 

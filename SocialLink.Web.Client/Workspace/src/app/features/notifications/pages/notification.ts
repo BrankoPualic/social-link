@@ -39,8 +39,7 @@ export class Notification extends BaseComponentGeneric<NotificationModel> implem
   }
 
   ngOnInit(): void {
-    if (!this.notification())
-      return;
+    if (!this.notification()) return;
 
     const component = NotificationComponentMap[this.notification()?.typeId!];
     if (component) {
