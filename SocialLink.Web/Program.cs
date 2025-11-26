@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
@@ -62,6 +63,17 @@ builder.Services.AddControllers().ConfigureApplicationPartManager(manager =>
 	manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
 });
 
+builder.Services.AddResponseCompression(options =>
+{
+	options.EnableForHttps = true;
+	options.Providers.Add<GzipCompressionProvider>();
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+	options.Level = System.IO.Compression.CompressionLevel.Fastest;
+});
+
 builder.Services
 	.AddAuthentication(opt =>
 	{
@@ -117,6 +129,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseResponseCompression();
 
 app.UseCors(builder => builder
 	.WithOrigins("https://localhost:4200")
