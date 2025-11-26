@@ -1,4 +1,4 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, input, viewChild } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, OnChanges, SimpleChanges, input, viewChild } from '@angular/core';
 
 @Component({
   selector: 'app-audio-player',
@@ -6,22 +6,27 @@ import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, input, vi
   template: `<div #container></div>`,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AudioPlayer implements AfterViewInit {
+export class AudioPlayer implements OnChanges {
+  audioBlob = input<Blob>();
   audioSrc = input('');
-  myMessage = input(false);
+  isFromCurrentUser = input(false);
   container = viewChild<ElementRef<HTMLDivElement>>('container');
 
-  ngAfterViewInit() {
-    const primaryColor = this.myMessage() ? '#fff' : '#ff677e';
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['audioSrc']?.currentValue && !changes['audioBlob']?.currentValue) return;
+
+    const primaryColor = this.isFromCurrentUser() ? '#fff' : '#ff677e';
+
+    const src = !!this.audioBlob() ? URL.createObjectURL(this.audioBlob()!) : this.audioSrc();
 
     const template = `<wave-audio-path-player
-      src="${this.audioSrc()}"
+      src="${src}"
       wave-width="200"
       wave-height="40"
       color="${primaryColor}"
       wave-progress-color="${primaryColor}"
-      wave-slider="${this.myMessage() ? primaryColor : '#373233'}"
-      class="my-audio ${this.myMessage() ? 'is-mine' : ''}"></wave-audio-path-player>`;
+      wave-slider="${this.isFromCurrentUser() ? primaryColor : '#373233'}"
+      class="my-audio ${this.isFromCurrentUser() ? 'is-mine' : ''}"></wave-audio-path-player>`;
 
     this.container()!.nativeElement.innerHTML = template;
   }
