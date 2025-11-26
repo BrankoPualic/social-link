@@ -1,0 +1,13 @@
+<button type="button"
+        class="btn btn-sm btn-outline-primary ms-2 rounded-circle record-btn"
+        [class.recording]="isRecording"
+        (mousedown)="startRecording()"
+        (mouseup)="stopRecording()"
+        (mouseleave)="stopRecording()">
+  <i class="fa-solid fa-microphone"></i>
+  <svg class="progress-ring" viewBox="0 0 100 100">
+    <circle class="progress-bg" cx="50" cy="50" r="45" />
+    <circle class="progress" cx="50" cy="50" r="45"
+            [style.strokeDashoffset]="progressOffset" />
+  </svg>
+</button>

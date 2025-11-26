@@ -22,6 +22,7 @@
     <Folder Include="Workspace\src\app\features\post\pages\" />
     <Folder Include="Workspace\src\app\shared\base\" />
     <Folder Include="Workspace\src\app\shared\components\forms\" />
+    <Folder Include="Workspace\src\app\shared\components\voice-recorder-button\" />
     <Folder Include="Workspace\src\app\shared\directives\" />
     <Folder Include="Workspace\src\app\shared\interfaces\" />
     <Folder Include="Workspace\src\assets\styles\" />
