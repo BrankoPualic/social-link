@@ -36,12 +36,7 @@
         </div>
         }
         <div class="message-box position-relative">
-          <div class="message px-2 py-1"
-               [class.is-mine]="fromCurrentUser(message.userId)"
-               [class.is-others]="!fromCurrentUser(message.userId)"
-               [class.rounded-3]="isMultiline(message.content)"
-               [class.rounded-4]="!isMultiline(message.content)"
-               [innerHtml]="message.content | formatText"></div>
+          <app-message [message]="message"/>
 
           <span class="lightgray smaller position-absolute" style="right: 0.5rem">
             @if (isEdited(message))
@@ -65,7 +60,28 @@
     }
   </div>
 
-  <div class="footer p-3">
-    <app-message-input (submit)="createMessage($event)" [placeholder]="'Type a message'" (input)="startTyping($event)" />
+  @if (isAudioRecorded)
+  {
+  <div class="recorded-audio-wrapper d-flex align-items-center">
+    <app-audio-player [audioBlob]="audioBlob" [isFromCurrentUser]="true" class="flex-grow-1" />
+    <button class="btn btn-sm btn-outline-primary rounded-circle"
+            type="button"
+            (click)="createAudioMessage()">
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    <button class="btn btn-sm btn-outline-primary rounded-circle"
+            type="button"
+            (click)="cancelAudioMessage()">
+      <i class="fa-solid fa-xmark" (click)="cancelAudioMessage()"></i>
+    </button>
+  </div>
+  }
+
+  <div class="footer p-3 d-flex align-items-center">
+    <app-message-input (submit)="createMessage($event)"
+                       [placeholder]="'Type a message'"
+                       (input)="startTyping($event)"
+                       class="flex-grow-1" />
+    <app-voice-recorder-button (audioEmitter)="onAudioRecorded($event)" />
   </div>
 </div>

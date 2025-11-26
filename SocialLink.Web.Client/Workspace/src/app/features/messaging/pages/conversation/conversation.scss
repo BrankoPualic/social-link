@@ -42,17 +42,6 @@
 
     .message-box {
       max-width: 75%;
-
-      .message {
-        &.is-mine {
-          background-color: $primary;
-          color: $white;
-        }
-
-        &.is-others {
-          background-color: $smoke-white;
-        }
-      }
     }
 
     .typing-indicator {
@@ -69,6 +58,17 @@
         animation: pulse-opacity 1.5s infinite;
         font-size: 14px;
       }
+    }
+  }
+
+  .recorded-audio-wrapper {
+    padding: 1rem 1rem 0;
+    background-color: $smoke-white;
+
+    button {
+      height: 38px;
+      width: 38px;
+      margin-left: 0.5rem;
     }
   }
 

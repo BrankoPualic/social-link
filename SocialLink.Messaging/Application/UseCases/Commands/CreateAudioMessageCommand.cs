@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Newtonsoft.Json.Serialization;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.Common.Application;
@@ -33,7 +34,7 @@ internal class CreateAudioMessageCommandHandler(IMongoMessagingDatabaseContext d
 			ChatGroupId = req.ChatGroupId,
 			UserId = db.CurrentUser.Id,
 			Type = eMessageType.Audio,
-			Content = new { BlobId = blobResult.Data.BlobId }.SerializeJsonObject(),
+			Content = new { BlobId = blobResult.Data.BlobId }.SerializeJsonObject(contractResolver: new CamelCasePropertyNamesContractResolver()),
 			CreatedOn = DateTime.UtcNow,
 			LastChangedOn = DateTime.UtcNow,
 		};

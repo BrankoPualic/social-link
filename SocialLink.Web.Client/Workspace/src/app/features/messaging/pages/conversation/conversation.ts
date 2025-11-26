@@ -1,7 +1,8 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, ElementRef, OnDestroy, effect, viewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnDestroy, ViewContainerRef, effect, viewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable, Subject, debounceTime, map, take } from 'rxjs';
+import { FormatTextPipe } from '../../../../core/pipes/format-text.pipe';
 import { ApiService } from '../../../../core/services/api.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { SharedService } from '../../../../core/services/shared.service';
@@ -10,21 +11,26 @@ import { ConversationModel } from '../../models/conversation.model';
 import { MessageModel } from '../../models/message.model';
 import { MessageService } from '../../services/message.service';
 import { PresenceService } from '../../services/presence.service';
-import { FormatTextPipe } from '../../../../core/pipes/format-text.pipe';
+import { VoiceRecorderButton } from '../../../../shared/components/voice-recorder-button/voice-recorder-button';
+import { AudioPlayer } from '../../../../shared/components/audio-player';
+import { Message } from '../../components/message.component';
 
 @Component({
   selector: 'app-conversation',
-  imports: [RouterLink, MessageInput, DatePipe, FormatTextPipe, AsyncPipe],
+  imports: [RouterLink, MessageInput, DatePipe, FormatTextPipe, AsyncPipe, VoiceRecorderButton, AudioPlayer, Message],
   templateUrl: './conversation.html',
   styleUrl: './conversation.scss'
 })
-export class Conversation implements OnDestroy {
+export class Conversation implements OnDestroy, AfterViewChecked {
   messagesContainer = viewChild<ElementRef>('messagesContainer');
   conversationId?: string;
   conversation?: ConversationModel;
   currentUserId?: string;
 
   private _typingSubject = new Subject<string>();
+
+  isAudioRecorded = false;
+  audioBlob?: Blob;
 
   constructor(
     private apiService: ApiService,
@@ -50,24 +56,15 @@ export class Conversation implements OnDestroy {
 
     this.currentUserId = this.authServuce.getUserId();
 
-    effect(() => {
-      if (this.messageService.messagesSignal()) {
-        setTimeout(() => {
-          this.scrollToBottom();
-        }, 0);
-      }
-    });
-
-    effect(() => {
-      this.messageService.typingUserSignal();
-      setTimeout(() => {
-        this.scrollToBottom();
-      }, 0);
-    });
-
     this._typingSubject.pipe(
       debounceTime(1500)
     ).subscribe(() => this.messageService.stopTyping(this.conversationId!));
+  }
+
+  ngAfterViewChecked(): void {
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 0);
   }
 
   ngOnDestroy(): void {
@@ -83,8 +80,7 @@ export class Conversation implements OnDestroy {
   }
 
   createMessage(message?: string): void {
-    if (!message)
-      return;
+    if (!message) return;
 
     const data: MessageModel = {
       chatGroupId: this.conversationId,
@@ -135,8 +131,7 @@ export class Conversation implements OnDestroy {
   }
 
   startTyping(e: Event): void {
-    if (!e)
-      return;
+    if (!e) return;
 
     this._typingSubject.next(this.conversationId!);
     this.messageService.startTyping(this.conversationId!);
@@ -153,6 +148,29 @@ export class Conversation implements OnDestroy {
         return null;
       })
     );
+  }
+
+  onAudioRecorded(blob: Blob) {
+    this.audioBlob = blob;
+    this.isAudioRecorded = true;
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 0);
+  }
+
+  createAudioMessage() {
+    if (!this.audioBlob) return;
+
+    const file = new File([this.audioBlob], `${new Date().getTime().toString()}.webm`, { type: 'audio/webm' });
+
+    this.isAudioRecorded = false;
+    this.audioBlob = undefined;
+    this.messageService.createAudioMessage(file, this.conversationId!);
+  }
+
+  cancelAudioMessage() {
+    this.isAudioRecorded = false;
+    this.audioBlob = undefined;
   }
 
   private scrollToBottom(): void {

@@ -16,9 +16,17 @@ internal class UpdateChatGroupLastMessageCommandHandler(IEFMessagingDatabaseCont
 			return new();
 
 		model.LastMessageOn = req.Data.CreatedOn;
-		model.LastMessagePreview = req.Data.Content.Length > 97
-			? req.Data.Content[..97] + "..."
-			: req.Data.Content;
+
+		if (req.Data.Type == Enumerators.eMessageType.Audio)
+		{
+			model.LastMessagePreview = "Voice message";
+		}
+		else
+		{
+			model.LastMessagePreview = req.Data.Content.Length > 97
+				? req.Data.Content[..97] + "..."
+				: req.Data.Content;
+		}
 
 		await db.SaveChangesAsync(true, ct);
 

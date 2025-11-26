@@ -7,7 +7,7 @@ export class AudioService {
   record() {
     return new Promise<{ start: () => void, stop: () => Promise<{ audioBlob: Blob, audioUrl: string, play: () => void }> }>(async resolve => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
+      const mediaRecorder = new MediaRecorder(stream, { audioBitsPerSecond: 32000 });
       const audioChunks: BlobPart[] = [];
 
       mediaRecorder.addEventListener('dataavailable', event => audioChunks.push(event.data));
