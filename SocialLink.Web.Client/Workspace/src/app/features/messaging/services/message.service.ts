@@ -61,6 +61,7 @@ export class MessageService {
   }
 
   stopHubConnection() {
+    this._messages.set(null);
     this._hubConnection?.stop().catch(_ => console.error(_));
   }
 

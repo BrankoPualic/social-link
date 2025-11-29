@@ -5,6 +5,9 @@ import { ApiService } from "../../../core/services/api.service";
 import { AuthService } from "../../../core/services/auth.service";
 import { BlobModel } from "../../../core/models/blob.model";
 import { take } from "rxjs";
+import { EventBusService } from "../../../core/services/event-bus.service";
+import { EventData } from "../../../core/models/event-data.model";
+import { Constants } from "../../../shared/constants";
 
 @Component({
   selector: 'app-audio-message',
@@ -18,7 +21,9 @@ export class AudioMessage extends BaseMessageBoxComponent<{ blobId?: string }> i
 
   constructor(
     authService: AuthService,
-    private apiService: ApiService) {
+    private apiService: ApiService,
+    private eventBusService: EventBusService
+  ) {
     super(authService);
   }
 
@@ -27,6 +32,9 @@ export class AudioMessage extends BaseMessageBoxComponent<{ blobId?: string }> i
 
     this.apiService.get<BlobModel>(`/Blob/Get/${this.data?.blobId}`).pipe(
       take(1)
-    ).subscribe(response => { this.audioSrc.set(response.url!) });
+    ).subscribe(response => {
+      this.audioSrc.set(response.url!);
+      this.eventBusService.emit(new EventData(Constants.audioMessageLoaded, null));
+    });
   }
 }
