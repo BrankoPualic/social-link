@@ -14,18 +14,20 @@ import { Users } from '../../../user/components/users/users';
 import { UserLightModel } from '../../../user/models/user-light.model';
 import { ConversationModel } from '../../models/conversation.model';
 import { PresenceService } from '../../services/presence.service';
+import { PageLoaderComponent } from '../../../../shared/components/page-loader';
 
 @Component({
   selector: 'app-inbox',
-  imports: [Navigation, Search, TimeAgoPipe, RouterLink, RouterOutlet, Users],
+  imports: [Navigation, Search, TimeAgoPipe, RouterLink, RouterOutlet, Users, PageLoaderComponent],
   templateUrl: './inbox.html',
   styleUrl: './inbox.scss'
 })
 export class Inbox extends BaseComponent implements OnInit {
   conversations?: PagedResponse<ConversationModel>;
-  //users?: PagedResponse<UserLightModel>;
   searching = false;
   currentUserId?: string;
+
+  inboxLoading = false;
 
   keyword = signal('');
 
@@ -43,8 +45,10 @@ export class Inbox extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.inboxLoading = true;
     this.apiService.post<PagedResponse<ConversationModel>>('/Inbox/Get', { userId: this.currentUserId }).pipe(
-      take(1)
+      take(1),
+      finalize(() => this.inboxLoading = false)
     ).subscribe({
       next: response => this.conversations = response,
       error: _ => console.error(_)

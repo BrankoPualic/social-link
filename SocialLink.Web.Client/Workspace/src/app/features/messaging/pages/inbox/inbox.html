@@ -1,7 +1,10 @@
 <app-navigation />
 
 <div class="main d-flex">
-  <div class="inbox col-12 col-lg-3 col-md-4 d-flex flex-column p-2 overflow-auto">
+
+  <div class="inbox col-12 col-lg-3 col-md-4 d-flex flex-column p-2 overflow-auto position-relative h-100">
+    <app-page-loader [containerLoader]="inboxLoading" />
+
     <!-- Maybe display running conversation people online activity -->
 
     <div class="d-flex align-items-center my-2">
@@ -33,7 +36,7 @@
       </div>
       }
       }
-      @else
+      @else if (!inboxLoading)
       {
       <div class="text-center">
         You don't have any active conversations.

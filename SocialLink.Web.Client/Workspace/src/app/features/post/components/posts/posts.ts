@@ -1,11 +1,11 @@
-import { Component, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
-import { PostModel } from '../../models/post.model';
-import { ApiService } from '../../../../core/services/api.service';
+import { Component, OnInit, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { finalize, take } from 'rxjs';
 import { PagedResponse } from '../../../../core/models/paged-response';
-import { PageLoaderComponent } from '../../../../shared/components/page-loader';
-import { RouterLink } from '@angular/router';
+import { ApiService } from '../../../../core/services/api.service';
 import { HeartIcon } from '../../../../shared/components/heart-icon';
+import { PageLoaderComponent } from '../../../../shared/components/page-loader';
+import { PostModel } from '../../models/post.model';
 
 @Component({
   selector: 'app-posts',
