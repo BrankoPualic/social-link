@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using SocialLink.Messaging.Application.ScheduledTasks;
 using SocialLink.Messaging.Application.UseCases.Commands;
 using SocialLink.Messaging.Data;
 using SocialLink.Messaging.Domain;
@@ -51,6 +52,8 @@ public static class MessagingModule
 
 		services.AddTransient<IValidator<CreateMessageCommand>, CreateMessageCommandValidator>();
 		services.AddTransient<IValidator<CreateAudioMessageCommand>, CreateAudioMessageCommandValidator>();
+
+		services.AddHostedService<EmptyChatGroupsCleanupScheduledTask>();
 
 		mediatRAssemblies.Add(typeof(MessagingModule).Assembly);
 
