@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SocialLink.Common.Application;
 using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
@@ -7,7 +8,7 @@ namespace SocialLink.Users.Application.UseCases.Commands;
 
 internal sealed record UnfollowCommand(FollowDto Data) : Command;
 
-internal class UnfollowCommandHandler(IUserDatabaseContext db) : EFCommandHandler<UnfollowCommand>(db)
+internal class UnfollowCommandHandler(IUserDatabaseContext db, IMemoryCache cache) : EFCommandHandler<UnfollowCommand>(db)
 {
 	public override async Task<ResponseWrapper> Handle(UnfollowCommand req, CancellationToken ct)
 	{
@@ -23,6 +24,9 @@ internal class UnfollowCommandHandler(IUserDatabaseContext db) : EFCommandHandle
 
 		db.Follows.Remove(follow);
 		await db.SaveChangesAsync(false, ct);
+
+		cache.Remove($"user:{data.FollowerId}");
+		cache.Remove($"user:{data.FollowingId}");
 
 		return new();
 	}

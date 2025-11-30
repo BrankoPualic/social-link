@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SocialLink.Blobs.Contracts.Commands;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.Common.Application;
@@ -12,7 +13,7 @@ namespace SocialLink.Users.Application.UseCases.Commands;
 
 internal sealed record UpdateProfileImageCommand(Guid UserId, FileInformationDto File) : Command;
 
-internal class UpdateProfileImageCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IMediator mediator) : EFCommandHandler<UpdateProfileImageCommand>(db)
+internal class UpdateProfileImageCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IMediator mediator, IMemoryCache cache) : EFCommandHandler<UpdateProfileImageCommand>(db)
 {
 	public override async Task<ResponseWrapper> Handle(UpdateProfileImageCommand req, CancellationToken ct)
 	{
@@ -45,6 +46,8 @@ internal class UpdateProfileImageCommandHandler(IUserDatabaseContext db, IUserRe
 		{
 			await mediator.Send(new DeleteBlobCommand(_.BlobId), ct);
 		}));
+
+		cache.Remove($"user:{userId}");
 
 		return new();
 	}

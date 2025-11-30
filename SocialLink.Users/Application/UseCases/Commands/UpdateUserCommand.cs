@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SocialLink.Common.Application;
 using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
@@ -8,7 +9,7 @@ namespace SocialLink.Users.Application.UseCases.Commands;
 
 internal sealed record UpdateUserCommand(UserDto Data) : Command;
 
-internal class UpdateUserCommandHandler(IUserDatabaseContext db, IUserRepository userRepository) : EFCommandHandler<UpdateUserCommand>(db)
+internal class UpdateUserCommandHandler(IUserDatabaseContext db, IUserRepository userRepository, IMemoryCache cache) : EFCommandHandler<UpdateUserCommand>(db)
 {
 	public override async Task<ResponseWrapper> Handle(UpdateUserCommand req, CancellationToken ct)
 	{
@@ -27,6 +28,8 @@ internal class UpdateUserCommandHandler(IUserDatabaseContext db, IUserRepository
 		data.ToModel(model);
 
 		await db.SaveChangesAsync(true, ct);
+
+		cache.Remove($"user{data.Id}");
 
 		return new();
 	}

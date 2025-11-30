@@ -9,7 +9,12 @@ using SocialLink.Users.Enumerators;
 
 namespace SocialLink.Users.Application.UseCases.Queries;
 
-internal sealed record GetUserQuery(Guid UserId) : Query<UserDto>;
+internal sealed record GetUserQuery(Guid UserId) : Query<UserDto>, ICacheableQuery
+{
+	public string CacheKey => $"user:{UserId}";
+
+	public TimeSpan? CacheDuration => TimeSpan.FromMinutes(20);
+}
 
 internal class GetUserQueryHandler(IUserDatabaseContext db, IMediator mediator) : EFQueryHandler<GetUserQuery, UserDto>(db)
 {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialLink.Blobs.Contracts.Dtos;
 using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Domain;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Commands;
 using SocialLink.Users.Application.UseCases.Queries;
@@ -11,13 +12,13 @@ namespace SocialLink.Users.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-internal class AuthController(IMediator mediator) : ControllerBase
+internal class AuthController(IMediator mediator, IIdentityUser currentUser) : ControllerBase
 {
 	[HttpGet]
 	[Authorize]
 	public async Task<IActionResult> GetCurrentUser(CancellationToken ct = default)
 	{
-		var result = await mediator.Send(new GetCurrentUserQuery(), ct);
+		var result = await mediator.Send(new GetCurrentUserQuery(currentUser.Id), ct);
 
 		return result.IsSuccess
 			? Ok(result.Data)

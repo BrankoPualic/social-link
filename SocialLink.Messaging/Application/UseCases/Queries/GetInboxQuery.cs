@@ -12,7 +12,12 @@ using System.Linq.Expressions;
 
 namespace SocialLink.Messaging.Application.UseCases.Queries;
 
-internal sealed record GetInboxQuery(InboxSearch Search) : Query<PagedResponse<ConversationDto>>;
+internal sealed record GetInboxQuery(InboxSearch Search) : Query<PagedResponse<ConversationDto>>, ICacheableQuery
+{
+	public string CacheKey => $"inbox:{Search.UserId}";
+
+	public TimeSpan? CacheDuration => TimeSpan.FromMinutes(5);
+}
 
 internal class GetInboxQueryHandler(IEFMessagingDatabaseContext db, IMediator mediator) : EFQueryHandler<GetInboxQuery, PagedResponse<ConversationDto>>(db)
 {

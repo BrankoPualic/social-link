@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SocialLink.Common.Application;
 using SocialLink.SharedKernel;
 using SocialLink.Users.Application.Dtos;
@@ -8,7 +9,7 @@ namespace SocialLink.Users.Application.UseCases.Commands;
 
 internal sealed record AcceptFollowCommand(FollowDto Data) : Command;
 
-internal class AcceptFollowCommandHandler(IUserDatabaseContext db, INotificationService notificationService) : EFCommandHandler<AcceptFollowCommand>(db)
+internal class AcceptFollowCommandHandler(IUserDatabaseContext db, INotificationService notificationService, IMemoryCache cache) : EFCommandHandler<AcceptFollowCommand>(db)
 {
 	public override async Task<ResponseWrapper> Handle(AcceptFollowCommand req, CancellationToken ct)
 	{
@@ -29,6 +30,9 @@ internal class AcceptFollowCommandHandler(IUserDatabaseContext db, INotification
 		await db.SaveChangesAsync(false, ct);
 
 		await notificationService.SendFollowAcceptedAsync(follow, ct);
+
+		cache.Remove($"user:{data.FollowerId}");
+		cache.Remove($"user:{data.FollowingId}");
 
 		return new();
 	}
