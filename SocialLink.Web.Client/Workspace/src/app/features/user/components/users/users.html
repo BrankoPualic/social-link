@@ -1,0 +1,27 @@
+<div class="position-relative h-100">
+  <app-page-loader [containerLoader]="usersLoading" />
+
+  <div class="d-flex flex-column">
+    @if (!!users && users.items!.length! > 0)
+    {
+    @for (user of users.items; track $index)
+    {
+    <div class="d-flex align-items-center pointer mb-2" (click)="emitOnClick(user)">
+      <div class="image" [class.is-online]="showPresence() && presenceService.onlineUsersSignal().includes(user.id!)">
+        <img [src]="sharedService.getImage(user?.profileImage)" alt="User image" />
+      </div>
+
+      <div class="ms-2">
+        {{ user?.username }}
+      </div>
+    </div>
+    }
+    }
+    @else
+    {
+    <div class="text-center">
+      User not found.
+    </div>
+    }
+  </div>
+</div>

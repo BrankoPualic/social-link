@@ -6,6 +6,7 @@ import { userRoutes } from './features/user/user.routes';
 import { notificationRoutes } from './features/notifications/notification.routes';
 import { postRoutes } from './features/post/post.routes';
 import { messagingRoutes } from './features/messaging/messaging.routes';
+import { exploreRoutes } from './features/explore/explore.routes';
 
 export const routes: Routes = [
   ...authRoutes,
@@ -15,6 +16,7 @@ export const routes: Routes = [
   ...notificationRoutes,
   ...postRoutes,
   ...messagingRoutes,
+  ...exploreRoutes,
 
   {
     path: "**",

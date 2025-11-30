@@ -1,0 +1,18 @@
+<app-navigation />
+
+<div class="container-fluid p-4 main">
+  <div class="d-flex flex-column h-100">
+    <app-search (onSearch)="onSearch($event)" class="mb-4"/>
+
+    <div class="flex-grow-1">
+      @if (isSearching)
+      {
+      <app-users [keyword]="keyword()" (onClick)="goToProfile($event)" />
+      }
+      @else
+      {
+      <app-posts />
+      }
+    </div>
+  </div>
+</div>

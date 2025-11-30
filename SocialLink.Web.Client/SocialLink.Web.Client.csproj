@@ -14,12 +14,14 @@
     <Folder Include="Workspace\src\app\core\pipes\" />
     <Folder Include="Workspace\src\app\features\auth\pages\" />
     <Folder Include="Workspace\src\app\features\errors\pages\" />
+    <Folder Include="Workspace\src\app\features\explore\pages\" />
     <Folder Include="Workspace\src\app\features\messaging\models\" />
     <Folder Include="Workspace\src\app\features\messaging\pages\" />
     <Folder Include="Workspace\src\app\features\messaging\services\" />
     <Folder Include="Workspace\src\app\features\notifications\pages\" />
     <Folder Include="Workspace\src\app\features\post\components\" />
     <Folder Include="Workspace\src\app\features\post\pages\" />
+    <Folder Include="Workspace\src\app\features\user\components\" />
     <Folder Include="Workspace\src\app\shared\base\" />
     <Folder Include="Workspace\src\app\shared\components\forms\" />
     <Folder Include="Workspace\src\app\shared\components\voice-recorder-button\" />

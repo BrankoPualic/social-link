@@ -13,7 +13,7 @@ import { HeartIcon } from '../../../../shared/components/heart-icon';
   templateUrl: './posts.html',
   styleUrl: './posts.scss'
 })
-export class Posts implements OnChanges {
+export class Posts implements OnInit {
   postsLoading = false;
   posts: PostModel[] = [];
   userId = input<string | undefined>(undefined);
@@ -22,10 +22,8 @@ export class Posts implements OnChanges {
     private apiService: ApiService
   ) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['userId'] && changes['userId'].currentValue) {
-      this.load();
-    }
+  ngOnInit(): void {
+    this.load();
   }
 
   load(): void {
@@ -38,6 +36,6 @@ export class Posts implements OnChanges {
       )
       .subscribe({
         next: result => this.posts = result.items || []
-      })
+      });
   }
 }

@@ -7,8 +7,8 @@
     <li class="m-2" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       <i class="fa-regular fa-house"></i><span class="d-md-inline d-none"> Home</span>
     </li>
-    <li class="m-2" routerLinkActive="active">
-      <i class="fa-solid fa-magnifying-glass"></i><span class="d-md-inline d-none"> Search</span>
+    <li class="m-2" [routerLink]="['/explore']" routerLinkActive="active">
+      <i class="fa-solid fa-magnifying-glass"></i><span class="d-md-inline d-none"> Explore</span>
     </li>
     <li class="m-2" [routerLink]="['/inbox']" routerLinkActive="active">
       <i class="fa-regular fa-message"></i><span class="d-md-inline d-none"> Inbox</span>

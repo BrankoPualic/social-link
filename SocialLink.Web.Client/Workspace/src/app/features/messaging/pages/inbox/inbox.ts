@@ -1,30 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { finalize, take } from 'rxjs';
 import { PagedResponse } from '../../../../core/models/paged-response';
 import { TimeAgoPipe } from '../../../../core/pipes/time-ago.pipe';
 import { ApiService } from '../../../../core/services/api.service';
 import { AuthService } from '../../../../core/services/auth.service';
+import { PageLoaderService } from '../../../../core/services/page-loader.service';
+import { SharedService } from '../../../../core/services/shared.service';
+import { BaseComponent } from '../../../../shared/base/base';
 import { Navigation } from '../../../../shared/components/navigation/navigation';
 import { Search } from '../../../../shared/components/search/search';
+import { Users } from '../../../user/components/users/users';
 import { UserLightModel } from '../../../user/models/user-light.model';
 import { ConversationModel } from '../../models/conversation.model';
 import { PresenceService } from '../../services/presence.service';
-import { BaseComponent } from '../../../../shared/base/base';
-import { PageLoaderService } from '../../../../core/services/page-loader.service';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { SharedService } from '../../../../core/services/shared.service';
 
 @Component({
   selector: 'app-inbox',
-  imports: [Navigation, Search, TimeAgoPipe, RouterLink, RouterOutlet],
+  imports: [Navigation, Search, TimeAgoPipe, RouterLink, RouterOutlet, Users],
   templateUrl: './inbox.html',
   styleUrl: './inbox.scss'
 })
 export class Inbox extends BaseComponent implements OnInit {
   conversations?: PagedResponse<ConversationModel>;
-  users?: PagedResponse<UserLightModel>;
+  //users?: PagedResponse<UserLightModel>;
   searching = false;
   currentUserId?: string;
+
+  keyword = signal('');
 
   constructor(
     loaderService: PageLoaderService,
@@ -49,24 +52,18 @@ export class Inbox extends BaseComponent implements OnInit {
   }
 
   onSearch(value: string) {
-    this.users = undefined;
-
     if (!value) {
       this.searching = false;
       return;
     }
 
     this.searching = true;
-    this.apiService.post<PagedResponse<UserLightModel>>('/User/SearchContracts', { keyword: value, following: true }).pipe(
-      take(1)
-    ).subscribe({
-      next: response => this.users = response
-    });
+    this.keyword.set(value);
   }
 
-  openConversation(userId: string): void {
+  openConversation(user: UserLightModel): void {
     this.loading = true;
-    this.apiService.post<string>('/Inbox/CreateConversation', { users: [userId, this.currentUserId] }).pipe(
+    this.apiService.post<string>('/Inbox/CreateConversation', { users: [user.id, this.currentUserId] }).pipe(
       take(1),
       finalize(() => this.loading = false)
     ).subscribe({

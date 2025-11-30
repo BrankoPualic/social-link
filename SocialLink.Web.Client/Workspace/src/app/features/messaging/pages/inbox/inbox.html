@@ -9,7 +9,7 @@
       <i class="fa-regular fa-pen-to-square ms-2 text-black-50 pointer" style="font-size: 1.3rem;" [routerLink]="['/create-group']"></i>
     </div>
 
-    <div class="col-12">
+    <div class="col-12 flex-grow-1">
       @if (!searching)
       {
       @if (!!conversations && conversations.items!.length > 0)
@@ -42,27 +42,7 @@
       }
       @else
       {
-      @if (!!users && users.items!.length! > 0)
-      {
-      @for (user of users.items; track $index)
-      {
-      <div class="d-flex align-items-center pointer mb-2" (click)="openConversation(user?.id!)">
-        <div class="image" [class.is-online]="presenceService.onlineUsersSignal().includes(user.id!)">
-          <img [src]="sharedService.getImage(user?.profileImage)" alt="User image" />
-        </div>
-
-        <div class="ms-2">
-          {{ user?.username }}
-        </div>
-      </div>
-      }
-      }
-      @else
-      {
-      <div class="text-center">
-        User not found.
-      </div>
-      }
+      <app-users [keyword]="keyword()" [showPresence]="true" [onlyFollowing]="true" (onClick)="openConversation($event)" />
       }
     </div>
   </div>

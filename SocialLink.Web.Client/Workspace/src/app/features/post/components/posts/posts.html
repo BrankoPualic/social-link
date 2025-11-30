@@ -1,18 +1,20 @@
-<app-page-loader [containerLoader]="postsLoading"/>
+<div class="position-relative h-100">
+  <app-page-loader [containerLoader]="postsLoading" />
 
-<div class="d-flex flex-wrap" style="gap: 10px;">
-  @for (post of posts; track $index)
-  {
-  <div class="post-preview" [routerLink]="['/post', post.id]">
-    <img [src]="post.media?.[0]?.url" alt="Post media preview" />
-    <div class="post-info">
-      <span class="me-2 small"><app-heart-icon [status]="post?.isLiked"/> {{ post.likesCount }}</span>
-      <span class="small"><i class="fa-regular fa-comment"></i> {{ post.commentsCount }}</span>
+  <div class="d-flex flex-wrap">
+    @for (post of posts; track $index)
+    {
+    <div class="post-preview col-6 col-sm-4 col-md-3 col-lg-2 p-1" [routerLink]="['/post', post.id]">
+      <img [src]="post.media?.[0]?.url" alt="Post media preview" />
+      <div class="post-info">
+        <span class="me-2 small"><app-heart-icon [status]="post?.isLiked" /> {{ post.likesCount }}</span>
+        <span class="small"><i class="fa-regular fa-comment"></i> {{ post.commentsCount }}</span>
+      </div>
     </div>
-  </div>
-  }
-  @if (posts.length === 0)
-  {
+    }
+    @if (posts.length === 0)
+    {
     Nothing posted yet.
-  }
+    }
+  </div>
 </div>
