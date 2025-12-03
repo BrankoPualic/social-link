@@ -12,4 +12,6 @@ export class PostModel {
   user?: UserLightModel;
   media?: BlobModel[];
   isLiked?: boolean;
+
+  activeCarouselMedia = 0;
 }

@@ -1,0 +1,39 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.carousel {
+  background-color: rgba(0,0,0,0.9);
+
+  .carousel-inner {
+    .carousel-item {
+      text-align: center;
+
+      img {
+        object-fit: contain;
+        width: 50%;
+        height: 100%
+      }
+    }
+  }
+
+  .media-counter {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    background-color: $white;
+    color: $black;
+    border-radius: $border-radius;
+    padding: 0rem 0.3rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .carousel {
+    .carousel-inner {
+      .carousel-item {
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

@@ -1,1 +1,70 @@
 <app-navigation />
+
+@if (posts?.items && posts?.items!.length! > 0)
+{
+<div class="container-fluid px-sm-3 px-md-5">
+  <div class="d-flex flex-column">
+    @for (post of posts?.items; track $index)
+    {
+    <div class="border rounded my-2">
+      <div id="carouselContainer" class="carousel col-12 d-flex justify-content-center align-items-center border">
+        <div class="carousel-inner">
+          @for (media of post?.media; track $index)
+          {
+          <div class="carousel-item" [ngClass]="{'active': post.activeCarouselMedia === $index}">
+            <img [src]="media.url" alt="Post media" />
+          </div>
+          }
+        </div>
+
+        @if (post?.media && post?.media?.length! > 1)
+        {
+        @if (post?.activeCarouselMedia !== 0)
+        {
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselContainer" data-bs-slide="prev" (click)="previousMedia(post)">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        }
+        @if (post?.activeCarouselMedia !== post?.media?.length! - 1)
+        {
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselContainer" data-bs-slide="next" (click)="nextMedia(post)">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        }
+
+        <div class="media-counter small">
+          {{ post?.activeCarouselMedia! + 1 }}/{{ post?.media?.length! }}
+        </div>
+        }
+      </div>
+
+      <div class="col-12 p-2" [innerHtml]="post?.description | formatText"></div>
+
+      <div class="col-12 p-2 d-flex flex-column">
+        <span>
+          <app-heart-icon [status]="post?.isLiked" (click)="likePost(post)" />
+          @if (post?.isLiked && post?.likesCount === 2) { You and 1 other }
+          @else if (post?.isLiked && post?.likesCount! > 2) { You and {{ post?.likesCount! - 1 }} others}
+          @else if (post?.isLiked) { You }
+          @else if (post?.likesCount === 1) { 1 Person }
+          @else if (post?.likesCount! > 1) { {{ post?.likesCount }} People }
+          @else { {{ post?.likesCount || 0 }} }
+          liked this post
+        </span>
+        <span [routerLink]="['/post', post.id]" class="pointer">
+          <i class="fa-regular fa-comment"></i> {{ post?.commentsCount }} Comment@if (post?.commentsCount! > 1){s}
+        </span>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+}
+@else
+{
+<div class="text-center">
+  No new posts available.
+</div>
+}

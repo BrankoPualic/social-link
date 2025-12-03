@@ -1,6 +1,6 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, ElementRef, OnDestroy, effect, viewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject, debounceTime, map, take } from 'rxjs';
 import { ApiService } from '../../../../core/services/api.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -18,7 +18,7 @@ import { PresenceService } from '../../services/presence.service';
 
 @Component({
   selector: 'app-conversation',
-  imports: [RouterLink, MessageInput, DatePipe, AsyncPipe, VoiceRecorderButton, AudioPlayer, Message],
+  imports: [MessageInput, DatePipe, AsyncPipe, VoiceRecorderButton, AudioPlayer, Message],
   templateUrl: './conversation.html',
   styleUrl: './conversation.scss'
 })
