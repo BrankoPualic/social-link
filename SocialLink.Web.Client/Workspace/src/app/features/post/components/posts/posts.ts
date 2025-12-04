@@ -35,7 +35,7 @@ export class Posts implements OnInit {
         finalize(() => this.postsLoading = false)
       )
       .subscribe({
-        next: result => this.posts = result.items || []
+        next: result => this.posts = result?.items || []
       });
   }
 }

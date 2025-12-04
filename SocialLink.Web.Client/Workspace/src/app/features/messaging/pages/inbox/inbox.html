@@ -1,3 +1,5 @@
+@if (isBigScreen || (!isConversationSelected && !isBigScreen))
+{
 <app-navigation />
 
 <div class="main d-flex">
@@ -19,7 +21,7 @@
       {
       @for (conversation of conversations.items; track $index)
       {
-      <div class="d-flex align-items-center pointer mb-2" [routerLink]="['/inbox', conversation.id]">
+      <div class="d-flex align-items-center pointer mb-2" (click)="gotoConversation(conversation.id)">
         <div class="image" [class.is-online]="!conversation?.isGroup && presenceService.onlineUsersSignal().includes(conversation.user?.id!)">
           <img [src]="sharedService.getImage(conversation?.isGroup ? conversation.groupImageUrl : conversation.user?.profileImage)" alt="Conversation image" />
         </div>
@@ -49,8 +51,14 @@
       }
     </div>
   </div>
-
+</div>
+}
+@else
+{
+<div class="main d-flex">
   <div class="flex-grow-1">
     <router-outlet />
   </div>
 </div>
+}
+

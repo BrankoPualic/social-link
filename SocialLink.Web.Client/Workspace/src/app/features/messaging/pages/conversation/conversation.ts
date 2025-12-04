@@ -1,6 +1,6 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, ElementRef, OnDestroy, effect, viewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable, Subject, debounceTime, map, take } from 'rxjs';
 import { ApiService } from '../../../../core/services/api.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -18,7 +18,7 @@ import { PresenceService } from '../../services/presence.service';
 
 @Component({
   selector: 'app-conversation',
-  imports: [MessageInput, DatePipe, AsyncPipe, VoiceRecorderButton, AudioPlayer, Message],
+  imports: [MessageInput, DatePipe, AsyncPipe, VoiceRecorderButton, AudioPlayer, Message, RouterLink],
   templateUrl: './conversation.html',
   styleUrl: './conversation.scss'
 })
@@ -32,6 +32,8 @@ export class Conversation implements OnDestroy {
 
   isAudioRecorded = false;
   audioBlob?: Blob;
+
+  isSmallScreen = false;
 
   constructor(
     private apiService: ApiService,
@@ -70,6 +72,9 @@ export class Conversation implements OnDestroy {
     ).subscribe(() => this.messageService.stopTyping(this.conversationId!));
 
     this.eventBusService.on(Constants.audioMessageLoaded, () => this.scrollToBottom());
+
+    if (window.screen.width < 768)
+      this.isSmallScreen = true;
   }
 
   ngOnDestroy(): void {

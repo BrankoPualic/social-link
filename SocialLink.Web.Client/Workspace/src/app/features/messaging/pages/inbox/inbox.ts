@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { finalize, take } from 'rxjs';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { filter, finalize, take } from 'rxjs';
 import { PagedResponse } from '../../../../core/models/paged-response';
 import { TimeAgoPipe } from '../../../../core/pipes/time-ago.pipe';
 import { ApiService } from '../../../../core/services/api.service';
@@ -31,17 +31,26 @@ export class Inbox extends BaseComponent implements OnInit {
 
   keyword = signal('');
 
+  isBigScreen = true;
+  isConversationSelected = false;
+
   constructor(
     loaderService: PageLoaderService,
     private apiService: ApiService,
     private authService: AuthService,
     public presenceService: PresenceService,
     public sharedService: SharedService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     super(loaderService);
 
     this.currentUserId = this.authService.getUserId();
+
+    if (window.screen.width < 768)
+      this.isBigScreen = false;
+
+    this.isConversationSelected = false;
   }
 
   ngOnInit(): void {
@@ -53,6 +62,18 @@ export class Inbox extends BaseComponent implements OnInit {
       next: response => this.conversations = response,
       error: _ => console.error(_)
     });
+
+    this.updateIsConversationSelected();
+
+    // 2. Handle navigation inside Angular app (including Back button)
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => this.updateIsConversationSelected());
+  }
+
+  private updateIsConversationSelected() {
+    const id = this.route.snapshot.firstChild?.paramMap.get('id');
+    this.isConversationSelected = !!id;
   }
 
   onSearch(value: string) {
@@ -73,5 +94,10 @@ export class Inbox extends BaseComponent implements OnInit {
     ).subscribe({
       next: conversationId => this.router.navigateByUrl(`/inbox/${conversationId}`),
     });
+  }
+
+  gotoConversation(id?: string): void {
+    this.isConversationSelected = true;
+    this.router.navigateByUrl(`/inbox/${id}`);
   }
 }
