@@ -7,6 +7,7 @@ import { Observable, finalize, take, tap } from "rxjs";
 import { PageLoaderService } from "../../../core/services/page-loader.service";
 import { AuthService } from "../../../core/services/auth.service";
 import { FileUploadService } from "../../../core/services/file-upload.service";
+import { MessageSearch } from "../../../core/models/search/message-search";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,9 @@ export class MessageService {
 
     this._hubConnection.start().catch(_ => console.error(_));
 
-    this._hubConnection.onreconnected(() => this.getMessages(chatGroupId));
+    const searchOptions = new MessageSearch();
+    searchOptions.chatGroupId = chatGroupId;
+    this._hubConnection.onreconnected(() => this.getMessages(searchOptions));
 
     this._hubConnection.on('NewMessage', (message: MessageModel) => {
       this._messages.update((current) => {
@@ -73,12 +76,25 @@ export class MessageService {
     this._hubConnection?.invoke('StoppedTyping', chatGroupId).catch(_ => console.error(_));
   }
 
-  getMessages(chatGroupId: string): Observable<PagedResponse<MessageModel>> {
+  getMessages(searchOptions: MessageSearch): Observable<PagedResponse<MessageModel>> {
     this.loaderService.show();
-    return this.apiService.post<PagedResponse<MessageModel>>('/Message/Get', { pageSize: 30, chatGroupId: chatGroupId }).pipe(
+    return this.apiService.post<PagedResponse<MessageModel>>('/Message/Get', searchOptions).pipe(
       take(1),
       finalize(() => this.loaderService.hide()),
-      tap((response) => this._messages.set(response))
+      tap((response) => {
+        if (this._messages()) {
+          this._messages.update((current) => {
+            return {
+              ...current,
+              currentPage: searchOptions.page,
+              items: [...response.items!, ...current?.items!]
+            }
+          });
+        }
+        else {
+          this._messages.set(response);
+        }
+      })
     );
   };
 

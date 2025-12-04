@@ -1,12 +1,12 @@
 <div class="main d-flex flex-column">
   <div class="header d-flex align-items-center justify-content-between py-2 px-3">
     <div class="d-flex align-items-center pointer" (click)="!conversation?.isGroup && goToProfile(conversation?.user?.id)">
-    @if (isSmallScreen)
-    {
-    <div class="me-3" [routerLink]="['/inbox']">
-      <i class="fa-solid fa-arrow-left"></i>
-    </div>
-    }
+      @if (isSmallScreen)
+      {
+      <div class="me-3" [routerLink]="['/inbox']">
+        <i class="fa-solid fa-arrow-left"></i>
+      </div>
+      }
       <div class="image">
         <img [src]="sharedService.getImage(conversation?.isGroup ? conversation?.groupImageUrl : conversation?.user?.profileImage)" alt="Converastion image" />
       </div>
@@ -22,9 +22,9 @@
 
   @if (messageService.messagesSignal()?.items)
   {
-  <div class="body flex-grow-1 p-3 overflow-auto d-flex flex-column justify-content-between" #messagesContainer>
+  <div class="body flex-grow-1 p-3 overflow-auto d-flex flex-column justify-content-between" #messagesContainer (scroll)="onScroll()">
     <div>
-      @for (message of messageService.messagesSignal()?.items; track $index)
+      @for (message of messageService.messagesSignal()?.items; track message.id)
       {
       @if (displayDate(message, $index))
       {
@@ -33,7 +33,7 @@
       </div>
       }
 
-      <app-message [message]="message" [index]="$index"/>
+      <app-message [message]="message" [index]="$index" />
       }
     </div>
     @if (isSomeoneTyping() | async; as typingUser)
