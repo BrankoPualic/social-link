@@ -28,23 +28,17 @@ internal class GetUsersContractQueryHandler(IUserDatabaseContext db, IMediator m
 			return new(new Error("Users not found."));
 
 		var modelUserIds = models.Select(_ => _.Id).ToList();
-		var blobIds = await db.Media
+		var mediaMap = await db.Media
 			.Where(_ => modelUserIds.Contains(_.UserId))
 			.Where(_ => _.IsActive == true)
-			.Select(_ => _.BlobId)
-			.ToListAsync(ct);
+			.ToDictionaryAsync(_ => _.UserId, _ => _.BlobId, ct);
 
-		var blobsResult = await mediator.Send(new GetBlobsQuery(blobIds), ct);
+		var blobsResult = await mediator.Send(new GetBlobsQuery(mediaMap.Values.ToList()), ct);
 		if (!blobsResult.IsSuccess)
 			return new(blobsResult.Errors);
 
 		foreach (var model in models)
-		{
-			model.ProfileImage = blobIds
-				.Select(id => blobsResult.Data.FirstOrDefault(_ => _.Id == id)?.Url)
-				.Where(_ => _ is not null)
-				.FirstOrDefault();
-		}
+			model.ProfileImage = blobsResult.Data.FirstOrDefault(_ => _.Id == mediaMap.GetValueOrDefault(model.Id))?.Url;
 
 		return new(models);
 	}
