@@ -38,7 +38,7 @@ internal class AuthController(IMediator mediator, IIdentityUser currentUser) : C
 
 	[HttpPost]
 	[AllowAnonymous]
-	public async Task<IActionResult> Signup(SignupDto request, CancellationToken ct = default)
+	public async Task<IActionResult> Signup([FromForm] SignupDto request, CancellationToken ct = default)
 	{
 		var fileReads = HttpContext.Request.Form.Files?.Select(async file =>
 		{
