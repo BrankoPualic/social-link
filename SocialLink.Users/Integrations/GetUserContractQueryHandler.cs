@@ -35,7 +35,7 @@ internal class GetUserContractQueryHandler(IUserDatabaseContext db, IMediator me
 		if (!blobResult.IsSuccess)
 			return new(blobResult.Errors);
 
-		model.ProfileImage = blobResult.Data.Url;
+		model.ProfileImage = blobResult.Data?.Url;
 
 		return new(model);
 	}

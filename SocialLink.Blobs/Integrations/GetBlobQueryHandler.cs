@@ -11,6 +11,10 @@ internal class GetBlobQueryHandler(IBlobService blobService) : MongoQueryHandler
 	public override async Task<ResponseWrapper<BlobDto>> Handle(GetBlobQuery req, CancellationToken ct)
 	{
 		var id = req.BlobId;
+
+		if (id == Guid.Empty)
+			return new();
+
 		var result = await blobService.GetBlobSasUriAsync(id);
 		if (!result.IsSuccess)
 			return new(result.Errors);

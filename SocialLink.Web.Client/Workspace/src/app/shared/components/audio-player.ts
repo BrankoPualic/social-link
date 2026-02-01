@@ -21,7 +21,7 @@ export class AudioPlayer implements OnChanges {
 
     const template = `<wave-audio-path-player
       src="${src}"
-      wave-width="200"
+      wave-width="100"
       wave-height="40"
       color="${primaryColor}"
       wave-progress-color="${primaryColor}"

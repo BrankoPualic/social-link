@@ -38,7 +38,7 @@ internal class GetUsersContractQueryHandler(IUserDatabaseContext db, IMediator m
 			return new(blobsResult.Errors);
 
 		foreach (var model in models)
-			model.ProfileImage = blobsResult.Data.FirstOrDefault(_ => _.Id == mediaMap.GetValueOrDefault(model.Id))?.Url;
+			model.ProfileImage = blobsResult.Data?.FirstOrDefault(_ => _.Id == mediaMap.GetValueOrDefault(model.Id))?.Url;
 
 		return new(models);
 	}

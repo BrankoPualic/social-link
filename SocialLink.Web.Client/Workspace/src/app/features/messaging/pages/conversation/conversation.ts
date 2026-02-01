@@ -157,7 +157,7 @@ export class Conversation implements OnDestroy {
         this.audioBlob = undefined;
     }
 
-    onScroll(): void {
+  onScroll(): void {
         const container = this.messagesContainer()?.nativeElement;
 
         if (container && container.scrollTop === 0 && !this.messagesLoading) {

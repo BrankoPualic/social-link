@@ -45,12 +45,22 @@ export class MessageService {
     this._hubConnection.onreconnected(() => this.getMessages(searchOptions));
 
     this._hubConnection.on('NewMessage', (message: MessageModel) => {
-      this._messages.update((current) => {
-        return {
-          ...current,
-          items: [...current?.items!, message]
-        }
-      });
+      if (this._messages()) {
+        this._messages.update((current) => {
+          return {
+            ...current,
+            items: [...current?.items!, message]
+          }
+        });
+      }
+      else {
+        this._messages.update((current) => {
+          return {
+            ...new PagedResponse(),
+            items: [message]
+          }
+        });
+      }
 
       this.apiService.post('/Message/ReadMessage', {
         lastMessageId: message.id,
@@ -82,18 +92,26 @@ export class MessageService {
       take(1),
       finalize(() => this.loaderService.hide()),
       tap((response) => {
-        if (this._messages()) {
-          this._messages.update((current) => {
-            return {
-              ...current,
-              currentPage: searchOptions.page,
-              items: [...response.items!, ...current?.items!]
-            }
-          });
-        }
-        else {
-          this._messages.set(response);
-        }
+        this._messages.update((current) => {
+          const cur = current?.items ?? [];
+          const incoming = response.items ?? [];
+
+          // Merge (newest first if you prepend) and dedupe by id
+          const map = new Map<string, MessageModel>();
+
+          // order matters: put incoming first if you want incoming to win
+          for (const m of incoming) map.set(m.id!, m);
+          for (const m of cur) map.set(m.id!, m);
+
+          const items = Array.from(map.values());
+
+          return {
+            ...(current ?? response),
+            ...response,                 // keep other paging fields fresh
+            currentPage: searchOptions.page,
+            items
+          };
+        });
       })
     );
   };

@@ -20,30 +20,32 @@
     </div>
   </div>
 
-  @if (messageService.messagesSignal()?.items)
-  {
-  <div class="body flex-grow-1 p-3 overflow-auto d-flex flex-column justify-content-between" #messagesContainer (scroll)="onScroll()">
-    <div>
-      @for (message of messageService.messagesSignal()?.items; track message.id)
+  <div class="flex-grow-1 overflow-auto"  #messagesContainer (scroll)="onScroll()">
+    @if (messageService.messagesSignal()?.items)
+    {
+    <div class="body flex-grow-1 p-3 overflow-auto d-flex flex-column justify-content-between">
+      <div>
+        @for (message of messageService.messagesSignal()?.items; track message.id)
+        {
+        @if (displayDate(message, $index))
+        {
+        <div class="text-center lightgray smaller mb-1">
+          {{ message.createdOn | date: 'mediumDate'}}
+        </div>
+        }
+
+        <app-message [message]="message" [index]="$index" />
+        }
+      </div>
+      @if (isSomeoneTyping() | async; as typingUser)
       {
-      @if (displayDate(message, $index))
-      {
-      <div class="text-center lightgray smaller mb-1">
-        {{ message.createdOn | date: 'mediumDate'}}
+      <div class="typing-indicator">
+        <span class="typing-text"><strong>{{ typingUser }}</strong> is typing...</span>
       </div>
       }
-
-      <app-message [message]="message" [index]="$index" />
-      }
-    </div>
-    @if (isSomeoneTyping() | async; as typingUser)
-    {
-    <div class="typing-indicator">
-      <span class="typing-text"><strong>{{ typingUser }}</strong> is typing...</span>
     </div>
     }
   </div>
-  }
 
   @if (isAudioRecorded)
   {
