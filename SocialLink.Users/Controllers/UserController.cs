@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialLink.Blobs.Contracts.Dtos;
+using SocialLink.SharedKernel.Attributes;
+using SocialLink.SharedKernel.Enumerators;
 using SocialLink.Users.Application;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Application.UseCases.Commands;
@@ -25,6 +27,7 @@ internal class UserController(IMediator mediator) : ControllerBase
 	}
 
 	[HttpPost]
+	[Authorization(eSystemRole.SystemAdministrator)]
 	public async Task<IActionResult> Search(UserSearch search, CancellationToken ct = default)
 	{
 		var result = await mediator.Send(new GetUsersQuery(search), ct);
