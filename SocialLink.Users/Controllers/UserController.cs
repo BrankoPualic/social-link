@@ -28,6 +28,14 @@ internal class UserController(IMediator mediator) : ControllerBase
 
 	[HttpPost]
 	[Authorization(eSystemRole.SystemAdministrator)]
+	public async Task<IActionResult> GetCount(UserCountSearch search, CancellationToken ct = default)
+	{
+		var result = await mediator.Send(new GetUserCountQuery(search), ct);
+		return Ok(result.Data);
+	}
+
+	[HttpPost]
+	[Authorization(eSystemRole.SystemAdministrator)]
 	public async Task<IActionResult> Search(UserSearch search, CancellationToken ct = default)
 	{
 		var result = await mediator.Send(new GetUsersQuery(search), ct);

@@ -6,6 +6,7 @@ using SocialLink.Posts.Application;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Application.UseCases.Commands;
 using SocialLink.Posts.Application.UseCases.Queries;
+using SocialLink.SharedKernel.Attributes;
 
 namespace SocialLink.Posts.Controllers;
 
@@ -34,6 +35,14 @@ internal class PostController(IMediator mediator) : ControllerBase
 			return Ok(result.Data);
 		else
 			return BadRequest(result.Errors);
+	}
+
+	[HttpGet]
+	[Authorization(SharedKernel.Enumerators.eSystemRole.SystemAdministrator)]
+	public async Task<IActionResult> GetCount(CancellationToken ct = default)
+	{
+		var result = await mediator.Send(new GetPostCountQuery(), ct);
+		return Ok(result.Data);
 	}
 
 	[HttpPost]

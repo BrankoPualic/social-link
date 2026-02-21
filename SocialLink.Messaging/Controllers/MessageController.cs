@@ -6,6 +6,7 @@ using SocialLink.Messaging.Application;
 using SocialLink.Messaging.Application.Dtos;
 using SocialLink.Messaging.Application.UseCases.Commands;
 using SocialLink.Messaging.Application.UseCases.Queries;
+using SocialLink.SharedKernel.Attributes;
 
 namespace SocialLink.Messaging.Controllers;
 
@@ -22,6 +23,14 @@ internal class MessageController(IMediator mediator) : ControllerBase
 		return result.IsSuccess
 			? Ok(result.Data)
 			: BadRequest(result.Data);
+	}
+
+	[HttpGet]
+	[Authorization(SharedKernel.Enumerators.eSystemRole.SystemAdministrator)]
+	public async Task<IActionResult> GetCount(CancellationToken ct = default)
+	{
+		var result = await mediator.Send(new GetMessageCountQuery(), ct);
+		return Ok(result.Data);
 	}
 
 	[HttpPost]
