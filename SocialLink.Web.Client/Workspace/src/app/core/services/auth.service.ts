@@ -36,7 +36,10 @@ export class AuthService {
   }
 
   logout() {
-    return this.apiService.post<void>('/Auth/Logout', {}).pipe(take(1));
+    return this.apiService.post<void>('/Auth/Logout', {}).pipe(
+      take(1),
+      tap(() => this._currentUser.set(null))
+    );
   }
 
   refreshToken() {
