@@ -1,7 +1,6 @@
 ﻿using SocialLink.Common.Application;
 using SocialLink.Common.Data;
 using SocialLink.SharedKernel;
-using SocialLink.SharedKernel.Enumerators;
 using SocialLink.Users.Application.Dtos;
 using SocialLink.Users.Domain;
 using System.Linq.Expressions;
@@ -16,12 +15,7 @@ internal class GetUsersQueryHandler(IUserDatabaseContext db) : EFQueryHandler<Ge
 	{
 		var search = req.Search;
 
-		var filters = new List<Expression<Func<User, bool>>>
-		{
-			_ => _.IsActive,
-			_ => !_.IsLocked,
-			_ => !_.Roles.Select(_ => _.RoleId).Contains(eSystemRole.SystemAdministrator)
-		};
+		var filters = new List<Expression<Func<User, bool>>>();
 
 		if (!string.IsNullOrWhiteSpace(search.Keyword))
 			filters.Add(_ => _.Username.Contains(search.Keyword));

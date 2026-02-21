@@ -76,12 +76,15 @@ export class AuthService {
     );
   }
 
-  hasAccess(role: eSystemRole): boolean {
-    if (!this._currentUser())
-      return false;
+  hasAccess(role: eSystemRole | eSystemRole[]): boolean {
+    if (!this._currentUser()) return false;
 
     const roles: Lookup[] = this._currentUser()!.roles;
 
-    return !!roles.length && roles.some(_ => _.id == role);
+    if (!roles?.length) return false;
+
+    const roleIds = Array.isArray(role) ? role : [role];
+
+    return roles.some(r => roleIds.includes(r.id as eSystemRole));
   }
 }

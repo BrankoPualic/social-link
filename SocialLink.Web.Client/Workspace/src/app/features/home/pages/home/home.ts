@@ -41,6 +41,7 @@ export class Home extends BaseComponent implements OnInit {
     ).subscribe({
       next: response => {
         this.posts = response;
+        if (!this.posts || !this.posts.items) return;
         this.posts.items!.forEach((el: PostModel) => {
           el.activeCarouselMedia = 0;
         })

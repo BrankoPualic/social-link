@@ -52,6 +52,12 @@
       <li>
         <a class="dropdown-item" [routerLink]="['/profile', userId, 'myNotifications']">My notifications</a>
       </li>
+      @if (hasAdminAccess)
+      {
+      <li>
+        <a class="dropdown-item" [routerLink]="['/admin/panel']"><i class="fa-solid fa-gear"></i> Admin Panel</a>
+      </li>
+      }
     </ul>
     }
     @else if (followStatus == eFollowStatus.Pending)

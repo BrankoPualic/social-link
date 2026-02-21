@@ -7,6 +7,7 @@ import { notificationRoutes } from './features/notifications/notification.routes
 import { postRoutes } from './features/post/post.routes';
 import { messagingRoutes } from './features/messaging/messaging.routes';
 import { exploreRoutes } from './features/explore/explore.routes';
+import { adminRoutes } from './features/admin/admin.routes';
 
 export const routes: Routes = [
   ...authRoutes,
@@ -17,6 +18,7 @@ export const routes: Routes = [
   ...postRoutes,
   ...messagingRoutes,
   ...exploreRoutes,
+  ...adminRoutes,
 
   {
     path: "**",

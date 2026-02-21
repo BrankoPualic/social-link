@@ -15,6 +15,7 @@ import { FileUploadService } from '../../../../core/services/file-upload.service
 import { Posts } from '../../../post/components/posts/posts';
 import { SharedService } from '../../../../core/services/shared.service';
 import { FormatTextPipe } from '../../../../core/pipes/format-text.pipe';
+import { eSystemRole } from '../../../../core/enumerators/system-role.enum';
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +31,8 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
   followStatus?: eFollowStatus;
   eFollowStatus = eFollowStatus;
 
+  hasAdminAccess = false;
+
   constructor(
     loaderService: PageLoaderService,
     private authService: AuthService,
@@ -40,6 +43,8 @@ export class Profile extends BaseComponentGeneric<UserModel> implements IFileUpl
     private router: Router
   ) {
     super(loaderService);
+
+    this.hasAdminAccess = this.authService.hasAccess(eSystemRole.SystemAdministrator);
 
     this.currentUserId = this.authService.getUserId();
 
