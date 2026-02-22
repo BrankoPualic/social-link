@@ -10,6 +10,8 @@ export class UserModel {
   email?: string;
   genderId?: eGender;
   isPrivate?: boolean;
+  isActive?: boolean;
+  isLocked?: boolean;
   biography?: string;
   dateOfBirth?: Date | string;
   createdOn?: Date | string;

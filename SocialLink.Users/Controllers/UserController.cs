@@ -63,6 +63,26 @@ internal class UserController(IMediator mediator) : ControllerBase
 	}
 
 	[HttpPost]
+	[Authorization(eSystemRole.SystemAdministrator)]
+	public async Task<IActionResult> UpdateActiveStatus([FromQuery] Guid userId, CancellationToken ct = default)
+	{
+		var result = await mediator.Send(new UpdateActiveStatusCommand(userId), ct);
+		return !result.IsSuccess
+			? BadRequest(result.Errors)
+			: NoContent();
+	}
+
+	[HttpPost]
+	[Authorization(eSystemRole.SystemAdministrator)]
+	public async Task<IActionResult> UpdateLockStatus([FromQuery] Guid userId, CancellationToken ct = default)
+	{
+		var result = await mediator.Send(new UpdateLockStatusCommand(userId), ct);
+		return !result.IsSuccess
+			? BadRequest(result.Errors)
+			: NoContent();
+	}
+
+	[HttpPost]
 	public async Task<IActionResult> UpdateProfileImage([FromForm] Guid userId, CancellationToken ct = default)
 	{
 		if (HttpContext.Request.Form.Files.Count is 0)

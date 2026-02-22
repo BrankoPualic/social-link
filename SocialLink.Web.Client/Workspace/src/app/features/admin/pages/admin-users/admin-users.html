@@ -17,3 +17,7 @@
 <ng-template #createdOnCell let-row>
   <span>{{ row.createdOn | date: 'MMM d, y h:mm a' }}</span>
 </ng-template>
+<ng-template #deleteCell let-row>
+  <button class="btn btn-sm btn-primary me-1" type="button" (click)="changeActiveStatus(row)" [title]="getStatusTitle(row)"><i class="fa-solid" [class]="getStatusClsas(row)"></i></button>
+  <button class="btn btn-sm btn-primary" type="button" (click)="changeLockStatus(row)" [title]="getLockTitle(row)"><i class="fa-solid" [class]="getLockClass(row)"></i></button>
+</ng-template>

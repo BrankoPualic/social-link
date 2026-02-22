@@ -23,6 +23,10 @@ internal class UserDto
 
 	public bool IsPrivate { get; set; }
 
+	public bool IsActive { get; set; }
+
+	public bool IsLocked { get; set; }
+
 	public string Biography { get; set; }
 
 	public DateTime? DateOfBirth { get; set; }
@@ -49,6 +53,8 @@ internal class UserDto
 		DateOfBirth = _.DateOfBirth,
 		Biography = _.Biography,
 		IsPrivate = _.IsPrivate,
+		IsActive = _.IsActive,
+		IsLocked = _.IsLocked,
 		CreatedOn = _.CreatedOn,
 	};
 
