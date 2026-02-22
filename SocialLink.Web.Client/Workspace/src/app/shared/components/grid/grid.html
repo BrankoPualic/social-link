@@ -1,0 +1,44 @@
+<table class="data-table"
+       [style.overflow]="options()!.scrollable ? 'scroll' : 'none'"
+       [style.height]="options()!.height">
+  <thead>
+    <tr>
+      @for (column of options()!.columns; track $index)
+      {
+      <th [style.width.px]="column.width" [style]="column.titleStyle" [class]="column.titleClass">{{ column.title }}</th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @if (isPagedResponse) {
+    @for (item of data.items; let i = $index; track i) {
+    <tr [class.odd-row]="i % 2 !== 0">
+      @for (column of options()!.columns; track $index) {
+      @if (column.template)
+      {
+      <td [innerHtml]="column.template.replace('dataItem', item[column!.field!])" [style]="column.style" [class]="column.class"></td>
+      }
+      @else
+      {
+      <td [style]="column.style" [class]="column.class">{{ item[column!.field!] }}</td>
+      }
+      }
+    </tr>
+    }
+    } @else {
+    @for (item of data; let i = $index; track i) {
+    <tr [class.odd-row]="i % 2 !== 0">
+      @for (column of options()!.columns; track $index) {
+      <td>
+        {{
+                column.template
+                  ? column.template.replace('dataItem', item[column!.field!])
+                  : item[column!.field!]
+        }}
+      </td>
+      }
+    </tr>
+    }
+    }
+  </tbody>
+</table>

@@ -1,0 +1,28 @@
+.data-table .odd-row {
+  background-color: #f4f4f4;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+  .data-table th,
+  .data-table td {
+    padding: 0.3rem;
+    text-align: left;
+  }
+
+  .data-table th {
+    font-weight: bold;
+    border-bottom: 2px solid var(--bs-border-color);
+  }
+
+  .data-table td {
+    font-size: 0.95rem;
+  }
+
+  .data-table .odd-row {
+    background-color: #f4f4f4;
+  }
