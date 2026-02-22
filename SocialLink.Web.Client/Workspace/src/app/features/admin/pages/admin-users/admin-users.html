@@ -1,0 +1,19 @@
+<app-navigation/>
+
+<div class="container-fluid p-4">
+  <h3 class="mx-2 text-center text-sm-start">Users</h3>
+
+  <div class="m-2">
+    <app-grid [options]="gridOptions"></app-grid>
+  </div>
+</div>
+
+<ng-template #userLinkCell let-row>
+  <a [routerLink]="['/profile', row.id]">{{ row.id }}</a>
+</ng-template>
+<ng-template #dobCell let-row>
+  <span>{{ row.dateOfBirth | date: 'mediumDate' }}</span>
+</ng-template>
+<ng-template #createdOnCell let-row>
+  <span>{{ row.createdOn | date: 'MMM d, y h:mm a' }}</span>
+</ng-template>

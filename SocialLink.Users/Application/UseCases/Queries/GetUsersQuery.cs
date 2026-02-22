@@ -7,7 +7,12 @@ using System.Linq.Expressions;
 
 namespace SocialLink.Users.Application.UseCases.Queries;
 
-internal sealed record GetUsersQuery(UserSearch Search) : Query<PagedResponse<UserDto>>;
+internal sealed record GetUsersQuery(UserSearch Search) : Query<PagedResponse<UserDto>>, ICacheableQuery
+{
+	public string CacheKey => $"users:{Search.Keyword}";
+
+	public TimeSpan? CacheDuration => TimeSpan.FromMinutes(3);
+}
 
 internal class GetUsersQueryHandler(IUserDatabaseContext db) : EFQueryHandler<GetUsersQuery, PagedResponse<UserDto>>(db)
 {

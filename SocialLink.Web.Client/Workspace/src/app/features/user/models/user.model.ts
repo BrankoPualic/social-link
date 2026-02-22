@@ -7,10 +7,12 @@ export class UserModel {
   firstName?: string;
   lastName?: string;
   fullName?: string;
+  email?: string;
   genderId?: eGender;
   isPrivate?: boolean;
   biography?: string;
   dateOfBirth?: Date | string;
+  createdOn?: Date | string;
   profileImage?: BlobModel;
   posts?: number;
   followers?: number;

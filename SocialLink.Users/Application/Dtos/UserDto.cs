@@ -17,6 +17,8 @@ internal class UserDto
 
 	public string FullName { get; set; }
 
+	public string Email { get; set; }
+
 	public eGender GenderId { get; set; }
 
 	public bool IsPrivate { get; set; }
@@ -24,6 +26,8 @@ internal class UserDto
 	public string Biography { get; set; }
 
 	public DateTime? DateOfBirth { get; set; }
+
+	public DateTime CreatedOn { get; set; }
 
 	public BlobDto ProfileImage { get; set; }
 
@@ -40,10 +44,12 @@ internal class UserDto
 		FirstName = _.FirstName,
 		LastName = _.LastName,
 		FullName = _.FullName,
+		Email = _.Email,
 		GenderId = _.GenderId,
 		DateOfBirth = _.DateOfBirth,
 		Biography = _.Biography,
-		IsPrivate = _.IsPrivate
+		IsPrivate = _.IsPrivate,
+		CreatedOn = _.CreatedOn,
 	};
 
 	public void ToModel(User model)

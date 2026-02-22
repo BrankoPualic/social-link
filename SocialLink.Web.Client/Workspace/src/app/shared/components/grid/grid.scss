@@ -26,3 +26,27 @@
   .data-table .odd-row {
     background-color: #f4f4f4;
   }
+
+
+.table-shell {
+  width: 100%;
+  overflow: hidden; /* default */
+}
+
+  .table-shell.scroll {
+    overflow: auto; /* enables both x and y scrollbars when needed */
+  }
+
+.data-table {
+  border-collapse: collapse;
+  table-layout: fixed; /* IMPORTANT: respect your col widths */
+  min-width: max-content; /* IMPORTANT: allow horizontal overflow */
+  width: 100%; /* still fill container if smaller than columns */
+}
+
+  .data-table th,
+  .data-table td {
+    white-space: nowrap; /* optional: prevents wrapping so table stays wide */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }

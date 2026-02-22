@@ -1,11 +1,11 @@
 <app-navigation />
 
 <div class="container-fluid p-4">
-  <h3 class="mx-2 text-center text-sm-start">Admin Panel</h3>
+  <h3 class="mx-2 text-center text-sm-start">Dashboard</h3>
 
-  <div class="d-flex flex-sm-row flex-column justify-content-between">
+  <div class="d-flex flex-sm-row flex-column justify-content-start">
     <div class="m-2 d-flex flex-column text-center p-5 border rounded">
-      <h5 class="text-decoration-underline pointer">Total users</h5>
+      <h5 class="text-decoration-underline pointer" routerLink="/admin/users">Total users</h5>
       <strong>{{ userCount }}</strong>
     </div>
     <div class="m-2 d-flex flex-column text-center p-5 border rounded">

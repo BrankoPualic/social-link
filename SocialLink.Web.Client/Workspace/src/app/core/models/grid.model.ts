@@ -1,3 +1,5 @@
+import { TemplateRef } from "@angular/core";
+
 export class GridOptions {
   columns!: GridColumn[];
   read!: () => Promise<any[]>;
@@ -5,10 +7,10 @@ export class GridOptions {
   height?: string;
 }
 
-export class GridColumn {
+export class GridColumn<T = any> {
   title?: string;
-  field?: string;
-  template?: string;
+  field?: keyof T;
+  template?: TemplateRef<{ $implicit: T; column: GridColumn<T> }>;
   class?: string;
   style?: string;
   width?: number;

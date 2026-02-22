@@ -1,18 +1,19 @@
-import { Component, OnChanges, SimpleChanges, input } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Component, OnInit, input } from "@angular/core";
 import { GridOptions } from "../../../core/models/grid.model";
-import { PagedResponse } from "../../../core/models/paged-response";
 
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.html',
-  styleUrl: './grid.scss'
+  styleUrl: './grid.scss',
+  imports: [CommonModule]
 })
-export class Grid implements OnChanges{
+export class Grid implements OnInit {
   options = input<GridOptions>();
   data!: any;
   isPagedResponse = false;
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnInit(): void {
     this.options()!.read()
       .then(result => {
         if (
@@ -24,7 +25,7 @@ export class Grid implements OnChanges{
           this.isPagedResponse = true;
         }
 
-        this.data = result
+        this.data = result;
       });
   }
 }
