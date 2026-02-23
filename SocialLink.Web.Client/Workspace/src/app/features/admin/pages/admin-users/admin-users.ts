@@ -56,7 +56,7 @@ export class AdminUsers extends BaseComponentGeneric<UserModel> implements OnIni
     this.gridOptions = {
       columns: [
         {
-          title: 'User Id',
+          title: 'User ID',
           field: this.nameof(_ => _.id),
           width: 310
         },

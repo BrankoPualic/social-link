@@ -1,0 +1,22 @@
+<app-navigation />
+
+<div class="container-fluid p-4">
+  <h3 class="mx-2 text-center text-sm-start">Posts</h3>
+
+  <div class="m-2">
+    <app-grid [options]="gridOptions"></app-grid>
+  </div>
+</div>
+
+<ng-template #postLinkCell let-row>
+  <a [routerLink]="['/post', row.id]">{{ row.id }}</a>
+</ng-template>
+<ng-template #userLinkCell let-row>
+  <a [routerLink]="['/profile', row.user.id]">{{ row.user.username }}</a>
+</ng-template>
+<ng-template #descriptionCell let-row>
+  <div [innerHtml]="row.description | formatText" [title]="row.description | formatText"></div>
+</ng-template>
+<ng-template #createdOnCell let-row>
+  <span>{{ row.createdOn | date: 'MMM d, y h:mm a' }}</span>
+</ng-template>

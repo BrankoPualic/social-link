@@ -10,5 +10,10 @@ export const adminRoutes: Routes = [
     path: "admin/users",
     title: "Admin | Users",
     loadComponent: () => import("./pages/admin-users/admin-users").then(_ => _.AdminUsers)
+  },
+  {
+    path: "admin/posts",
+    title: "Admin | Posts",
+    loadComponent: () => import("./pages/admin-posts/admin-posts").then(_ => _.AdminPosts)
   }
 ]

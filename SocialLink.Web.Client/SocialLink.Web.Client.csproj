@@ -13,6 +13,7 @@
     <Folder Include="Workspace\src\app\core\utils\" />
     <Folder Include="Workspace\src\app\core\pipes\" />
     <Folder Include="Workspace\src\app\features\admin\pages\admin-users\" />
+    <Folder Include="Workspace\src\app\features\admin\pages\admin-posts\" />
     <Folder Include="Workspace\src\app\features\auth\pages\" />
     <Folder Include="Workspace\src\app\features\errors\pages\" />
     <Folder Include="Workspace\src\app\features\explore\pages\" />
