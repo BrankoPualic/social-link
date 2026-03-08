@@ -1,22 +1,21 @@
+import { DatePipe } from "@angular/common";
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
-import { Grid } from "../../../../shared/components/grid/grid";
-import { BaseComponentGeneric } from "../../../../shared/base/base";
-import { PostModel } from "../../../post/models/post.model";
+import { RouterLink } from "@angular/router";
+import { finalize, lastValueFrom, take } from "rxjs";
 import { GridColumn, GridOptions } from "../../../../core/models/grid.model";
-import { PageLoaderService } from "../../../../core/services/page-loader.service";
+import { PagedResponse } from "../../../../core/models/paged-response";
 import { ApiService } from "../../../../core/services/api.service";
 import { DialogService } from "../../../../core/services/dialog.service";
-import { finalize, lastValueFrom, take } from "rxjs";
-import { PagedResponse } from "../../../../core/models/paged-response";
+import { PageLoaderService } from "../../../../core/services/page-loader.service";
+import { BaseComponentGeneric } from "../../../../shared/base/base";
+import { Grid } from "../../../../shared/components/grid/grid";
 import { Navigation } from "../../../../shared/components/navigation/navigation";
-import { RouterLink } from "@angular/router";
-import { FormatTextPipe } from "../../../../core/pipes/format-text.pipe";
-import { DatePipe } from "@angular/common";
+import { PostModel } from "../../../post/models/post.model";
 
 @Component({
   selector: 'app-admin-posts',
   templateUrl: './admin-posts.html',
-  imports: [Navigation, Grid, RouterLink, FormatTextPipe, DatePipe]
+  imports: [Navigation, Grid, RouterLink, DatePipe]
 })
 export class AdminPosts extends BaseComponentGeneric<PostModel> implements OnInit, AfterViewInit {
   gridOptions!: GridOptions;
@@ -79,7 +78,9 @@ export class AdminPosts extends BaseComponentGeneric<PostModel> implements OnIni
         {
           title: 'Description',
           field: this.nameof(_ => _.description),
-          width: 300
+          width: 100,
+          class: 'text-center',
+          titleClass: 'text-center'
         },
         {
           title: 'Created On',
@@ -99,4 +100,6 @@ export class AdminPosts extends BaseComponentGeneric<PostModel> implements OnIni
       }
     } as GridOptions;
   }
+
+  previewDescription = (description?: string) => description && this.dialogService.previewDescription(description);
 }

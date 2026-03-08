@@ -12,6 +12,7 @@
     <Folder Include="Workspace\src\app\core\models\search\" />
     <Folder Include="Workspace\src\app\core\utils\" />
     <Folder Include="Workspace\src\app\core\pipes\" />
+    <Folder Include="Workspace\src\app\features\admin\components\description-dialog\" />
     <Folder Include="Workspace\src\app\features\admin\pages\admin-users\" />
     <Folder Include="Workspace\src\app\features\admin\pages\admin-posts\" />
     <Folder Include="Workspace\src\app\features\auth\pages\" />

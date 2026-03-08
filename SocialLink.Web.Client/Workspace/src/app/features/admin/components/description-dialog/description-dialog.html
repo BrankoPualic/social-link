@@ -1,0 +1,15 @@
+<div class="dialog-backdrop">
+  <div class="dialog">
+
+    <div class="dialog-header">Preview Post Description</div>
+
+    <div class="dialog-body" [innerHtml]="description() | formatText"></div>
+
+    <div class="dialog-footer">
+      <div class="dialog-actions">
+        <button class="btn btn-sm btn-outline-primary" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>

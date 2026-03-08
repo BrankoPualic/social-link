@@ -1,21 +1,21 @@
+import { DatePipe } from "@angular/common";
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild, signal } from "@angular/core";
+import { RouterLink } from "@angular/router";
+import { finalize, lastValueFrom, take } from "rxjs";
+import { EventData } from "../../../../core/models/event-data.model";
 import { GridColumn, GridOptions } from "../../../../core/models/grid.model";
+import { PagedResponse } from "../../../../core/models/paged-response";
+import { UserSearch } from "../../../../core/models/search/user-search";
 import { ApiService } from "../../../../core/services/api.service";
+import { DialogService } from "../../../../core/services/dialog.service";
+import { EventBusService } from "../../../../core/services/event-bus.service";
 import { PageLoaderService } from "../../../../core/services/page-loader.service";
 import { BaseComponentGeneric } from "../../../../shared/base/base";
-import { Navigation } from "../../../../shared/components/navigation/navigation";
-import { UserModel } from "../../../user/models/user.model";
-import { finalize, lastValueFrom, take } from "rxjs";
 import { Grid } from "../../../../shared/components/grid/grid";
-import { PagedResponse } from "../../../../core/models/paged-response";
-import { RouterLink } from "@angular/router";
-import { DatePipe } from "@angular/common";
-import { DialogService } from "../../../../core/services/dialog.service";
+import { Navigation } from "../../../../shared/components/navigation/navigation";
 import { Search } from "../../../../shared/components/search/search";
-import { EventBusService } from "../../../../core/services/event-bus.service";
-import { EventData } from "../../../../core/models/event-data.model";
 import { Constants } from "../../../../shared/constants";
-import { UserSearch } from "../../../../core/models/search/user-search";
+import { UserModel } from "../../../user/models/user.model";
 
 @Component({
   selector: 'app-admin-users',

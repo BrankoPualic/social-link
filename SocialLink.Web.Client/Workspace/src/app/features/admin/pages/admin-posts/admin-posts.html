@@ -15,7 +15,10 @@
   <a [routerLink]="['/profile', row.user.id]">{{ row.user.username }}</a>
 </ng-template>
 <ng-template #descriptionCell let-row>
-  <div [innerHtml]="row.description | formatText" [title]="row.description | formatText"></div>
+  @if (row.description)
+  {
+  <button class="btn btn-sm btn-primary" type="button" (click)="previewDescription(row.description)"><i class="far fa-eye"></i></button>
+  }
 </ng-template>
 <ng-template #createdOnCell let-row>
   <span>{{ row.createdOn | date: 'MMM d, y h:mm a' }}</span>
