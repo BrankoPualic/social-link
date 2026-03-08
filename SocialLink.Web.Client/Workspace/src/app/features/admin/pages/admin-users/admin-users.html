@@ -1,9 +1,13 @@
-<app-navigation/>
+<app-navigation />
 
 <div class="container-fluid p-4">
   <h3 class="mx-2 text-center text-sm-start">Users</h3>
 
-  <div class="m-2">
+  <div class="col-12 col-sm-6 col-md-4">
+    <app-search (onSearch)="onSearch($event)" />
+  </div>
+
+  <div class="mb-2">
     <app-grid [options]="gridOptions"></app-grid>
   </div>
 </div>

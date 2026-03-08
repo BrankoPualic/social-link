@@ -1,6 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, input } from "@angular/core";
 import { GridOptions } from "../../../core/models/grid.model";
+import { EventBusService } from "../../../core/services/event-bus.service";
+import { Subscription } from "rxjs/internal/Subscription";
+import { Constants } from "../../constants";
 
 @Component({
   selector: 'app-grid',
@@ -13,7 +16,21 @@ export class Grid implements OnInit {
   data!: any;
   isPagedResponse = false;
 
+  eventBusSub = new Subscription();
+
+  constructor(
+    private eventBusService: EventBusService
+  ) { }
+
   ngOnInit(): void {
+    this.load();
+
+    this.eventBusSub.add(
+      this.eventBusService.on(Constants.gridReadEvent, () => this.load())
+    );
+  }
+
+  private load() {
     this.options()!.read()
       .then(result => {
         if (

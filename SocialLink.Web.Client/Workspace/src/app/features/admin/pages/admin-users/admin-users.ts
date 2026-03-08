@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild, signal } from "@angular/core";
 import { GridColumn, GridOptions } from "../../../../core/models/grid.model";
 import { ApiService } from "../../../../core/services/api.service";
 import { PageLoaderService } from "../../../../core/services/page-loader.service";
@@ -11,14 +11,20 @@ import { PagedResponse } from "../../../../core/models/paged-response";
 import { RouterLink } from "@angular/router";
 import { DatePipe } from "@angular/common";
 import { DialogService } from "../../../../core/services/dialog.service";
+import { Search } from "../../../../shared/components/search/search";
+import { EventBusService } from "../../../../core/services/event-bus.service";
+import { EventData } from "../../../../core/models/event-data.model";
+import { Constants } from "../../../../shared/constants";
 
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.html',
-  imports: [Navigation, Grid, RouterLink, DatePipe]
+  imports: [Navigation, Grid, RouterLink, DatePipe, Search]
 })
 export class AdminUsers extends BaseComponentGeneric<UserModel> implements OnInit, AfterViewInit {
   gridOptions!: GridOptions;
+  keyword = signal('');
+
   @ViewChild('userLinkCell', { read: TemplateRef }) userLinkCell!: TemplateRef<any>;
   @ViewChild('dobCell', { read: TemplateRef }) dobCell!: TemplateRef<any>;
   @ViewChild('createdOnCell', { read: TemplateRef }) createdOnCell!: TemplateRef<any>;
@@ -27,7 +33,8 @@ export class AdminUsers extends BaseComponentGeneric<UserModel> implements OnIni
   constructor(
     loaderService: PageLoaderService,
     private apiService: ApiService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private eventBusService: EventBusService
   ) {
     super(loaderService);
   }
@@ -94,13 +101,18 @@ export class AdminUsers extends BaseComponentGeneric<UserModel> implements OnIni
       height: 'calc(100dvh - 200px)',
       read: async () => {
         this.loading = true;
-        return lastValueFrom(this.apiService.post<PagedResponse<UserModel>>('/User/Search', {})
+        return lastValueFrom(this.apiService.post<PagedResponse<UserModel>>('/User/Search', { keyword: this.keyword() })
           .pipe(
             take(1),
             finalize(() => this.loading = false),
           ));
       }
     } as GridOptions;
+  }
+
+  onSearch(value: string) {
+    this.keyword.set(value);
+    this.eventBusService.emit(new EventData(Constants.gridReadEvent, null));
   }
 
   changeActiveStatus(user: UserModel) {
