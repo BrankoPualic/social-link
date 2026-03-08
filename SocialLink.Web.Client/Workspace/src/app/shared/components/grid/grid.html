@@ -59,7 +59,8 @@
 
 @if (isPagedResponse)
 {
-<div>
+<div class="d-flex flex-row align-items-center justify-content-end mt-1">
   <span class="float-end small lightgray">Total items {{ data.totalCount }}</span>
+  <app-pagination [options]="data" class="ms-2"/>
 </div>
 }

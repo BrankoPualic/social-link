@@ -4,12 +4,13 @@ import { GridOptions } from "../../../core/models/grid.model";
 import { EventBusService } from "../../../core/services/event-bus.service";
 import { Subscription } from "rxjs/internal/Subscription";
 import { Constants } from "../../constants";
+import { Pagination } from "../pagination/pagination";
 
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.html',
   styleUrl: './grid.scss',
-  imports: [CommonModule]
+  imports: [CommonModule, Pagination]
 })
 export class Grid implements OnInit {
   options = input<GridOptions>();

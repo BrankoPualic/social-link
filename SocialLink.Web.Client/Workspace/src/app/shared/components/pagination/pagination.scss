@@ -1,0 +1,12 @@
+@import '../../../../assets/styles/variables.scss';
+
+.box {
+  color: $primary;
+  font-size: 0.9rem;
+  width: 35px;
+}
+
+  .box.active {
+    background-color: $primary;
+    color: $white;
+  }

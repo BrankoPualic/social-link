@@ -15,6 +15,7 @@ import { Search } from "../../../../shared/components/search/search";
 import { EventBusService } from "../../../../core/services/event-bus.service";
 import { EventData } from "../../../../core/models/event-data.model";
 import { Constants } from "../../../../shared/constants";
+import { UserSearch } from "../../../../core/models/search/user-search";
 
 @Component({
   selector: 'app-admin-users',
@@ -24,6 +25,7 @@ import { Constants } from "../../../../shared/constants";
 export class AdminUsers extends BaseComponentGeneric<UserModel> implements OnInit, AfterViewInit {
   gridOptions!: GridOptions;
   keyword = signal('');
+  searchOptions = new UserSearch();
 
   @ViewChild('userLinkCell', { read: TemplateRef }) userLinkCell!: TemplateRef<any>;
   @ViewChild('dobCell', { read: TemplateRef }) dobCell!: TemplateRef<any>;
@@ -41,6 +43,11 @@ export class AdminUsers extends BaseComponentGeneric<UserModel> implements OnIni
 
   ngOnInit(): void {
     this.gridInit();
+
+    this.eventBusService.on(Constants.paginationChangePageEvent, (page: number) => {
+      this.searchOptions.page = page;
+      this.eventBusService.emit(new EventData(Constants.gridReadEvent, null));
+    });
   }
 
   // TODO: This is working but its really bad implementation, find another way
@@ -101,7 +108,8 @@ export class AdminUsers extends BaseComponentGeneric<UserModel> implements OnIni
       height: 'calc(100dvh - 200px)',
       read: async () => {
         this.loading = true;
-        return lastValueFrom(this.apiService.post<PagedResponse<UserModel>>('/User/Search', { keyword: this.keyword() })
+        this.searchOptions.keyword = this.keyword();
+        return lastValueFrom(this.apiService.post<PagedResponse<UserModel>>('/User/Search', this.searchOptions)
           .pipe(
             take(1),
             finalize(() => this.loading = false),
