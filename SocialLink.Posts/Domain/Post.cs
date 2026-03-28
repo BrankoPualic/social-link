@@ -12,6 +12,8 @@ internal class Post : AuditedDomainModel<Guid>
 
 	public bool IsArchived { get; set; }
 
+	public bool? IsActive { get; set; }
+
 	public virtual ICollection<Comment> Comments { get; set; } = [];
 
 	public virtual ICollection<PostMedia> Media { get; set; } = [];

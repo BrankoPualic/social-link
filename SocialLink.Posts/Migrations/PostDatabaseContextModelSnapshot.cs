@@ -18,7 +18,7 @@ namespace SocialLink.Posts.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("post")
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "9.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -102,6 +102,9 @@ namespace SocialLink.Posts.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
