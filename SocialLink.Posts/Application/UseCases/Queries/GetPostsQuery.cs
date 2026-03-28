@@ -6,6 +6,7 @@ using SocialLink.Common.Data;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
 using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Enumerators;
 using SocialLink.SharedKernel.Extensions;
 using SocialLink.Users.Contracts;
 using System.Linq.Expressions;
@@ -21,6 +22,9 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 		var search = req.Search;
 
 		var filters = new List<Expression<Func<Post, bool>>>();
+
+		if (!db.CurrentUser.HasRole([eSystemRole.SystemAdministrator]))
+			filters.Add(_ => _.IsActive == true);
 
 		if (search.UserId.HasValue)
 			filters.Add(_ => _.UserId == search.UserId);

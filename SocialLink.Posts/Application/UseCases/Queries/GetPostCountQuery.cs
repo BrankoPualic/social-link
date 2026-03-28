@@ -15,6 +15,6 @@ internal class GetPostCountQueryHandler(IPostDatabaseContext db) : EFQueryHandle
 {
 	public override async Task<ResponseWrapper<int>> Handle(GetPostCountQuery req, CancellationToken ct)
 	{
-		return new(await db.Posts.CountAsync(ct));
+		return new(await db.Posts.Where(_ => _.IsActive == true).CountAsync(ct));
 	}
 }

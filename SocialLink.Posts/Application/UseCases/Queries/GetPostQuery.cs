@@ -5,6 +5,7 @@ using SocialLink.Common.Application;
 using SocialLink.Posts.Application.Dtos;
 using SocialLink.Posts.Domain;
 using SocialLink.SharedKernel;
+using SocialLink.SharedKernel.Enumerators;
 using SocialLink.Users.Contracts;
 
 namespace SocialLink.Posts.Application.UseCases.Queries;
@@ -16,9 +17,14 @@ internal class GetPostQueryHandler(IPostDatabaseContext db, IMediator mediator) 
 	{
 		var postId = req.PostId;
 
-		var model = await db.Posts
+		var query = db.Posts
 			.Select(PostDto.Projection)
-			.FirstOrDefaultAsync(_ => _.Id == postId, ct);
+			.AsQueryable();
+
+		if (!db.CurrentUser.HasRole([eSystemRole.SystemAdministrator]))
+			query = query.Where(_ => _.IsActive == true);
+
+		var model = await query.FirstOrDefaultAsync(_ => _.Id == postId, ct);
 		if (model is null)
 			return new(new Error(nameof(Post), "Post not found."));
 

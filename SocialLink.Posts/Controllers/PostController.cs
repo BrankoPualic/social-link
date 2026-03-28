@@ -100,4 +100,14 @@ internal class PostController(IMediator mediator) : ControllerBase
 		await mediator.Send(new UpdatePostLikeStatusCommand(request), ct);
 		return NoContent();
 	}
+
+	[HttpPost]
+	[Authorization(SharedKernel.Enumerators.eSystemRole.SystemAdministrator)]
+	public async Task<IActionResult> UpdateActiveStatus([FromQuery] Guid postId, CancellationToken ct = default)
+	{
+		var result = await mediator.Send(new UpdateActiveStatusCommand(postId), ct);
+		return !result.IsSuccess
+			? BadRequest(result.Errors)
+			: NoContent();
+	}
 }

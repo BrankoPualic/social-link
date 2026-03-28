@@ -154,7 +154,7 @@ export class AdminUsers extends BaseComponentGeneric<UserModel> implements OnIni
   }
 
   getStatusTitle = (user: UserModel) => user.isActive ? 'Deactivate' : 'Activate';
-  getStatusClsas = (user: UserModel) => user.isActive ? 'fa-xmark' : 'fa-check';
+  getStatusClass = (user: UserModel) => user.isActive ? 'fa-xmark' : 'fa-check';
 
   getLockTitle = (user: UserModel) => user.isLocked ? 'Unlock' : 'Lock';
   getLockClass = (user: UserModel) => user.isLocked ? 'fa-unlock' : 'fa-lock';

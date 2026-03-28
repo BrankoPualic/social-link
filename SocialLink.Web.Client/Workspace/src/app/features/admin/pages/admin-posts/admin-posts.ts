@@ -23,6 +23,7 @@ export class AdminPosts extends BaseComponentGeneric<PostModel> implements OnIni
   @ViewChild('userLinkCell', { read: TemplateRef }) userLinkCell!: TemplateRef<any>;
   @ViewChild('descriptionCell', { read: TemplateRef }) descriptionCell!: TemplateRef<any>;
   @ViewChild('createdOnCell', { read: TemplateRef }) createdOnCell!: TemplateRef<any>;
+  @ViewChild('deleteCell', { read: TemplateRef }) deleteCell!: TemplateRef<any>;
 
   constructor(
     loaderService: PageLoaderService,
@@ -41,6 +42,7 @@ export class AdminPosts extends BaseComponentGeneric<PostModel> implements OnIni
     this.gridOptions.columns[1].template = this.userLinkCell;
     this.gridOptions.columns[4].template = this.descriptionCell;
     this.gridOptions.columns[5].template = this.createdOnCell;
+    this.gridOptions.columns[6].template = this.deleteCell;
 
     this.gridOptions = {
       ...this.gridOptions,
@@ -86,6 +88,10 @@ export class AdminPosts extends BaseComponentGeneric<PostModel> implements OnIni
           title: 'Created On',
           field: this.nameof(_ => _.createdOn),
           width: 200
+        },
+        {
+          title: '',
+          width: 150
         }
       ] as GridColumn[],
       scrollable: true,
@@ -102,4 +108,22 @@ export class AdminPosts extends BaseComponentGeneric<PostModel> implements OnIni
   }
 
   previewDescription = (description?: string) => description && this.dialogService.previewDescription(description);
+
+  changeActiveStatus(post: PostModel) {
+    this.dialogService.confirm(`Are you sure you want to ${post.isActive ? 'deactivate' : 'activate'} post ?`, `${post.isActive ? 'Deactivate' : 'Activate'} Post`)
+      .result
+      .then(() => {
+        this.loading = true;
+        this.apiService.post<void>('/Post/UpdateActiveStatus', {}, { params: { postId: post.id } })
+          .pipe(
+            take(1),
+            finalize(() => this.loading = false)
+          ).subscribe({
+            next: () => this.gridOptions.read()
+          })
+      })
+  }
+
+  getStatusTitle = (post: PostModel) => post.isActive ? 'Deactivate' : 'Activate';
+  getStatusClass = (post: PostModel) => post.isActive ? 'fa-xmark' : 'fa-check';
 }

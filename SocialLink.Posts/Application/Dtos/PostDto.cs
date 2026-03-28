@@ -27,6 +27,8 @@ internal class PostDto
 
 	public bool? IsLiked { get; set; }
 
+	public bool? IsActive { get; set; }
+
 	public static Expression<Func<Post, PostDto>> Projection => _ => new()
 	{
 		Id = _.Id,
@@ -34,5 +36,6 @@ internal class PostDto
 		Description = _.Description,
 		AllowComments = _.AllowComments,
 		CreatedOn = _.CreatedOn,
+		IsActive = _.IsActive,
 	};
 }
