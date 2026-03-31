@@ -18,5 +18,8 @@ internal class PostCreateDto
 		model.UserId = UserId;
 		model.Description = Description;
 		model.AllowComments = AllowComments;
+
+		if (model.IsNew)
+			model.IsActive = true;
 	}
 }

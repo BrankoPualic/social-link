@@ -43,14 +43,14 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 
 		var postIds = result.Items.SelectIds(_ => _.Id);
 
-		var blobIds = await db.Media
+		var blobIdGroups = await db.Media
 			.Where(_ => postIds.Contains(_.PostId))
 			.OrderBy(_ => _.Order)
-			.Select(_ => _.BlobId)
+			.Select(_ => new { _.PostId, _.BlobId })
 			.Distinct()
 			.ToListAsync(ct);
 
-		var blobsResult = await mediator.Send(new GetBlobsQuery(blobIds), ct);
+		var blobsResult = await mediator.Send(new GetBlobsQuery(blobIdGroups.SelectIds(_ => _.BlobId)), ct);
 		if (!blobsResult.IsSuccess)
 			return new(blobsResult.Errors);
 
@@ -79,9 +79,9 @@ internal class GetPostsQueryHandler(IPostDatabaseContext db, IMediator mediator)
 
 		foreach (var post in result.Items)
 		{
-			post.Media = blobIds
-				.Where(blobsMap.ContainsKey)
-				.Select(_ => blobsMap[_])
+			post.Media = blobIdGroups
+				.Where(_ => _.PostId == post.Id)
+				.Select(_ => blobsMap[_.BlobId])
 				.ToList();
 
 			post.User = usersMap.GetValueOrDefault(post.UserId);
