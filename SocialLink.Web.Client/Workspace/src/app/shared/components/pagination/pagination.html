@@ -1,24 +1,24 @@
-<div class="d-flex flex-row align-items-center">
-  <span class="box border text-center pointer p-1" (click)="setPage(1)">
+<div class="pagination-wrap d-inline-flex align-items-center">
+  <button class="page-btn" (click)="setPage(1)" title="First page">
     <i class="fa-solid fa-angles-left"></i>
-  </span>
-  <span class="box border text-center pointer p-1" (click)="setPage(options()?.currentPage! - 1)">
+  </button>
+  <button class="page-btn" (click)="setPage(options()?.currentPage! - 1)" title="Previous page">
     <i class="fa-solid fa-angle-left"></i>
-  </span>
+  </button>
 
   @for (page of pages; track $index)
   {
-  <span class="box border text-center pointer p-1"
-        [class.active]="page === options()?.currentPage"
-        (click)="setPage(page)">
+  <button class="page-btn"
+          [class.active]="page === options()?.currentPage"
+          (click)="setPage(page)">
     {{ page }}
-  </span>
+  </button>
   }
 
-  <span class="box border text-center pointer p-1" (click)="setPage(options()?.currentPage! + 1)">
+  <button class="page-btn" (click)="setPage(options()?.currentPage! + 1)" title="Next page">
     <i class="fa-solid fa-angle-right"></i>
-  </span>
-  <span class="box border text-center pointer p-1" (click)="setPage(options()?.pageCount)">
+  </button>
+  <button class="page-btn" (click)="setPage(options()?.pageCount)" title="Last page">
     <i class="fa-solid fa-angles-right"></i>
-  </span>
+  </button>
 </div>

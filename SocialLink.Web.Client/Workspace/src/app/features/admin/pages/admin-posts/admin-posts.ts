@@ -15,6 +15,7 @@ import { PostModel } from "../../../post/models/post.model";
 @Component({
   selector: 'app-admin-posts',
   templateUrl: './admin-posts.html',
+  styleUrl: '../admin-users/admin-page.scss',
   imports: [Navigation, Grid, RouterLink, DatePipe]
 })
 export class AdminPosts extends BaseComponentGeneric<PostModel> implements OnInit, AfterViewInit {

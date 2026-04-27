@@ -1,40 +1,64 @@
 @import '../../../../assets/styles/variables.scss';
 
+:host {
+  display: block;
+  width: 100%;
+}
+
+.input-wrap {
+  position: relative;
+  width: 100%;
+}
+
 textarea {
   resize: none;
-  //width: 90%;
-  //margin-right: 0.5rem;
-  border-radius: 50px;
-  box-shadow: $box-shadow2;
-  border: none;
+  border-radius: 22px;
+  background: $surface;
+  border: 1px solid $border;
+  padding: 0.6rem 3rem 0.6rem 1rem;
+  font-size: 0.95rem;
+  color: $ink;
+  width: 100%;
+  transition: border-color $dur $ease-out, box-shadow $dur $ease-out;
 
-  &::-webkit-input-placeholder {
-    color: $lightgray;
+  &::placeholder { color: $muted-2; }
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 4px $primary-soft;
   }
 
-  &::-moz-placeholder {
-    color: $lightgray;
-  }
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    //display: hidden;
-  }
-
+  &::-webkit-scrollbar { width: 5px; }
   &::-webkit-scrollbar-thumb {
     background-color: $lightgray;
     border-radius: 50px;
   }
 }
 
-button {
-  right: 0;
-  bottom: 0;
+button.send-btn {
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
   padding: 0 !important;
-  height: 38px;
-  width: 38px;
-  border: 2px solid $white;
+  height: 34px;
+  width: 34px;
+  border: none;
+  border-radius: 50%;
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: $gradient-primary;
+  color: $white;
+  box-shadow: 0 4px 10px rgba(236, 67, 102, 0.32);
+  transition: transform $dur $ease-spring, box-shadow $dur $ease-out, opacity $dur $ease-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.08) rotate(-6deg);
+    box-shadow: $shadow-primary;
+  }
+
+  &:active { transform: translateY(-50%) scale(0.92); }
 }

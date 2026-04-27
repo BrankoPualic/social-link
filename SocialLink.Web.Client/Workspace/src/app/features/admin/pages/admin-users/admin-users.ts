@@ -20,6 +20,7 @@ import { UserModel } from "../../../user/models/user.model";
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.html',
+  styleUrl: './admin-page.scss',
   imports: [Navigation, Grid, RouterLink, DatePipe, Search]
 })
 export class AdminUsers extends BaseComponentGeneric<UserModel> implements OnInit, AfterViewInit {

@@ -1,20 +1,83 @@
-// Colors
+// =====================================================
+// SocialLink — Design System
+// =====================================================
 
-$white: #fff;
+// --- Brand palette ---------------------------------------------------
+$primary: #ec4366;            // refined coral-pink, more saturated
+$primary-light: #ff8aa3;
+$primary-dark: #c92e51;
+$primary-soft: rgba(236, 67, 102, 0.08);
+$primary-glow: rgba(236, 67, 102, 0.35);
+
+$accent: #7c5cff;             // violet accent for variety
+$accent-light: #a796ff;
+$accent-soft: rgba(124, 92, 255, 0.08);
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, #ff7a8f 0%, #ec4366 50%, #c92e51 100%);
+$gradient-warm: linear-gradient(135deg, #ffb4a2 0%, #ec4366 60%, #7c5cff 100%);
+$gradient-cool: linear-gradient(135deg, #fef6f7 0%, #fce7eb 100%);
+$gradient-aurora: radial-gradient(ellipse at top left, rgba(236,67,102,0.18), transparent 60%),
+                  radial-gradient(ellipse at bottom right, rgba(124,92,255,0.15), transparent 55%),
+                  linear-gradient(180deg, #fafbfd 0%, #f4f5f9 100%);
+
+// --- Neutrals --------------------------------------------------------
+$white: #ffffff;
 $white-50: rgba(255, 255, 255, 0.5);
-$black: #373233;
-$black-50: #37323380;
-$primary: #ff677e;
-$primary-light: #ff9aa9;
-$secondary: #524a4c;
-$secondary-light: #6d6265;
-$smoke-white: #eff0f2;
-$lightgray: #aeb0b5;
-$green: #4daf7c;
+$white-70: rgba(255, 255, 255, 0.7);
+$white-90: rgba(255, 255, 255, 0.92);
 
-$error: #dc3545;
+$ink: #1f2030;                // strong text
+$ink-2: #34354a;
+$muted: #6c6e84;              // secondary text
+$muted-2: #9094a8;            // tertiary
+$lightgray: #b0b3c4;          // hints / icons
 
-$border-radius: 0.375rem;
+$black: #1f2030;              // re-mapped for legacy refs
+$black-50: rgba(31, 32, 48, 0.55);
 
-$box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-$box-shadow2: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+$bg: #f6f7fb;                 // app background
+$surface: #ffffff;            // cards
+$surface-2: #fafbfd;          // inset surfaces
+$smoke-white: #eef0f6;        // chip / message bubble bg
+$border: #e6e8f0;             // hairline borders
+$border-strong: #d7dae6;
+
+// --- Status ----------------------------------------------------------
+$success: #2eb872;
+$green: #2eb872;              // legacy alias
+$warning: #f5a524;
+$error: #e5484d;
+$info: #2f80ed;
+
+// --- Radius / spacing ------------------------------------------------
+$radius-xs: 6px;
+$radius-sm: 10px;
+$radius: 14px;                // default
+$radius-md: 16px;
+$radius-lg: 22px;
+$radius-xl: 28px;
+$radius-pill: 9999px;
+$border-radius: $radius;      // legacy alias
+
+// --- Shadows ---------------------------------------------------------
+$shadow-xs: 0 1px 2px rgba(31, 32, 48, 0.04);
+$shadow-sm: 0 2px 6px rgba(31, 32, 48, 0.06), 0 1px 2px rgba(31, 32, 48, 0.04);
+$shadow: 0 8px 24px rgba(31, 32, 48, 0.08), 0 2px 6px rgba(31, 32, 48, 0.04);
+$shadow-md: 0 14px 32px rgba(31, 32, 48, 0.10), 0 4px 10px rgba(31, 32, 48, 0.05);
+$shadow-lg: 0 30px 60px rgba(31, 32, 48, 0.18), 0 10px 24px rgba(31, 32, 48, 0.08);
+$shadow-primary: 0 14px 32px rgba(236, 67, 102, 0.32);
+$shadow-inset: inset 0 1px 2px rgba(31, 32, 48, 0.06);
+$box-shadow: $shadow-md;      // legacy alias
+$box-shadow2: $shadow-sm;     // legacy alias
+
+// --- Motion ----------------------------------------------------------
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+$ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+$ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+$dur-fast: 140ms;
+$dur: 220ms;
+$dur-slow: 360ms;
+
+// --- Typography ------------------------------------------------------
+$font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;

@@ -1,78 +1,101 @@
 <app-navigation />
 
-<div class="container-fluid p-4">
-  <div class="d-flex flex-lg-row flex-column">
-    <div class="profile-image border rounded">
-      <img class="rounded img-fluid" [src]="sharedService.getImage(user?.profileImage?.url, user?.genderId)" alt="Profile image" />
+<div class="profile-container">
+  <div class="profile-card anim-rise">
+    <div class="profile-cover"></div>
+
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <img [src]="sharedService.getImage(user?.profileImage?.url, user?.genderId)" alt="Profile image" />
+      </div>
+
+      <div class="profile-info">
+        <h1 class="profile-name">{{ user?.fullName }}</h1>
+        <div class="profile-username">&#64;{{ user?.username }}</div>
+
+        @if (user?.biography)
+        {
+        <div class="profile-bio" [innerHtml]="user?.biography | formatText"></div>
+        }
+
+        <div class="profile-stats">
+          <div class="stat">
+            <div class="stat-value" [class.is-empty]="!user?.posts">{{ user?.posts || 0 }}</div>
+            <div class="stat-label">Posts</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <div class="stat-value" [class.is-empty]="!user?.followers">{{ user?.followers || 0 }}</div>
+            <div class="stat-label">Followers</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <div class="stat-value" [class.is-empty]="!user?.following">{{ user?.following || 0 }}</div>
+            <div class="stat-label">Following</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="col-9 ms-lg-4">
-      <div class="row">
-        <span class="col-lg-2 col-12 fw-semibold">Full Name:</span>
-        <span class="col-lg-10 col-12">{{ user?.fullName }}</span>
-      </div>
-      <div class="row">
-        <span class="col-lg-2 col-12 fw-semibold">Username:</span>
-        <span class="col-lg-10 col-12">{{ user?.username }}</span>
-      </div>
-      <div class="row">
-        <span class="col-lg-2 col-12 fw-semibold">Posts:</span>
-        <span class="col-lg-10 col-12" [ngClass]="{'text-black-50': !user?.posts}">{{ user?.posts }}</span>
-      </div>
-      <div class="row">
-        <span class="col-lg-2 col-12 fw-semibold">Followers:</span>
-        <span class="col-lg-10 col-12" [ngClass]="{'text-black-50': !user?.followers}">{{ user?.followers }}</span>
-      </div>
-      <div class="row">
-        <span class="col-lg-2 col-12 fw-semibold">Following:</span>
-        <span class="col-lg-10 col-12" [ngClass]="{'text-black-50': !user?.following}">{{ user?.following }}</span>
-      </div>
-      <div class="row">
-        <span class="col-lg-2 col-12 fw-semibold">Biography:</span>
-        <span class="col-lg-10 col-12" [innerHtml]="user?.biography | formatText"></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="mt-lg-3 mt-1 d-flex dropdown">
-    @if (isCurrentUser)
-    {
-    <button class="btn btn-outline-primary px-3" [routerLink]="['/profile', userId, 'edit']">Edit profile</button>
-    <button class="btn btn-outline-primary ms-1 text-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <i class="fa-solid fa-gear"></i>
-    </button>
-    <ul class="dropdown-menu">
-      <li>
-        <a class="dropdown-item" style="cursor: pointer;" (click)="fileUpload.click()">Upload profile image</a>
-        <input type="file" style="display: none" #fileUpload (change)="onFileChange($event)" />
-      </li>
-      <li>
-        <a class="dropdown-item" [routerLink]="['/post/create']">Create post</a>
-      </li>
-      <li>
-        <a class="dropdown-item" [routerLink]="['/profile', userId, 'myNotifications']">My notifications</a>
-      </li>
-      @if (hasAdminAccess)
+    <div class="profile-actions dropdown">
+      @if (isCurrentUser)
       {
-      <li>
-        <a class="dropdown-item" [routerLink]="['/admin/dashboard']"><i class="fa-solid fa-gear"></i> Admin Dashboard</a>
-      </li>
+      <button class="btn btn-outline-primary" [routerLink]="['/profile', userId, 'edit']">
+        <i class="fa-regular fa-pen-to-square me-2"></i>Edit profile
+      </button>
+      <button class="btn btn-outline-primary btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-gear"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <a class="dropdown-item" style="cursor: pointer;" (click)="fileUpload.click()">
+            <i class="fa-regular fa-image me-2"></i>Upload profile image
+          </a>
+          <input type="file" style="display: none" #fileUpload (change)="onFileChange($event)" />
+        </li>
+        <li>
+          <a class="dropdown-item" [routerLink]="['/post/create']">
+            <i class="fa-solid fa-plus me-2"></i>Create post
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" [routerLink]="['/profile', userId, 'myNotifications']">
+            <i class="fa-regular fa-bell me-2"></i>My notifications
+          </a>
+        </li>
+        @if (hasAdminAccess)
+        {
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item" [routerLink]="['/admin/dashboard']">
+            <i class="fa-solid fa-shield-halved me-2"></i>Admin Dashboard
+          </a>
+        </li>
+        }
+      </ul>
       }
-    </ul>
-    }
-    @else if (followStatus == eFollowStatus.Pending)
-    {
-    <button class="btn btn-primary px-3" disabled>Pending request</button>
-    }
-    @else if (followStatus == eFollowStatus.Active)
-    {
-    <button class="btn btn-outline-primary px-3" (click)="unfollow()">Unfollow</button>
-    <button class="btn btn-outline-primary px-3 ms-1" (click)="openConversation()">Message</button>
-    }
-    @else
-    {
-    <button class="btn btn-primary px-3" (click)="follow()">Follow</button>
-    }
+      @else if (followStatus == eFollowStatus.Pending)
+      {
+      <button class="btn btn-primary" disabled>
+        <i class="fa-regular fa-clock me-2"></i>Pending request
+      </button>
+      }
+      @else if (followStatus == eFollowStatus.Active)
+      {
+      <button class="btn btn-outline-primary" (click)="unfollow()">
+        <i class="fa-solid fa-user-check me-2"></i>Following
+      </button>
+      <button class="btn btn-outline-primary" (click)="openConversation()">
+        <i class="fa-regular fa-message me-2"></i>Message
+      </button>
+      }
+      @else
+      {
+      <button class="btn btn-primary" (click)="follow()">
+        <i class="fa-solid fa-user-plus me-2"></i>Follow
+      </button>
+      }
+    </div>
   </div>
 
   @if (isCurrentUser ||
@@ -80,7 +103,9 @@
       !user?.isPrivate
   )
   {
-  <div class="fs-5 my-3">Posts</div>
+  <div class="profile-section-title">
+    <i class="fa-regular fa-images"></i> Posts
+  </div>
   <app-posts [userId]="userId" />
   }
 </div>

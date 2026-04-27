@@ -2,36 +2,39 @@
 {
 <app-navigation />
 
-<div class="main d-flex">
-
-  <div class="inbox col-12 col-lg-3 col-md-4 d-flex flex-column p-2 overflow-auto position-relative h-100">
+<div class="messaging-main d-flex">
+  <div class="inbox-pane col-12 col-lg-3 col-md-4 d-flex flex-column position-relative">
     <app-page-loader [containerLoader]="inboxLoading" />
 
-    <!-- Maybe display running conversation people online activity -->
-
-    <div class="d-flex align-items-center my-2">
-      <app-search (onSearch)="onSearch($event)" class="flex-grow-1" />
-      <i class="fa-regular fa-pen-to-square ms-2 text-black-50 pointer" style="font-size: 1.3rem;" [routerLink]="['/create-group']"></i>
+    <div class="inbox-header">
+      <h2>Messages</h2>
+      <button class="btn-icon-soft" [routerLink]="['/create-group']" title="New group">
+        <i class="fa-regular fa-pen-to-square"></i>
+      </button>
     </div>
 
-    <div class="col-12 flex-grow-1">
+    <div class="inbox-search">
+      <app-search (onSearch)="onSearch($event)" [placeholder]="'Search conversations'" />
+    </div>
+
+    <div class="inbox-list flex-grow-1 overflow-auto">
       @if (!searching)
       {
       @if (!!conversations && conversations.items!.length > 0)
       {
       @for (conversation of conversations.items; track $index)
       {
-      <div class="d-flex align-items-center pointer mb-2" (click)="gotoConversation(conversation.id)">
-        <div class="image" [class.is-online]="!conversation?.isGroup && presenceService.onlineUsersSignal().includes(conversation.user?.id!)">
+      <div class="convo-row anim-rise" [style.animation-delay]="($index * 25) + 'ms'" (click)="gotoConversation(conversation.id)">
+        <div class="image convo-avatar" [class.is-online]="!conversation?.isGroup && presenceService.onlineUsersSignal().includes(conversation.user?.id!)">
           <img [src]="sharedService.getImage(conversation?.isGroup ? conversation.groupImageUrl : conversation.user?.profileImage)" alt="Conversation image" />
         </div>
 
-        <div class="d-flex flex-column ms-2 flex-grow-1" style="width: calc(100% - 45px - 0.5rem)">
-          <div class="d-flex align-items-center justify-content-between">
-            <span>{{ conversation?.isGroup ? conversation.name : conversation.user?.username }}</span>
-            <span class="text-black-50 small">{{ conversation.lastMessageOn | timeAgo }}</span>
+        <div class="convo-body">
+          <div class="convo-title-row">
+            <span class="convo-title">{{ conversation?.isGroup ? conversation.name : conversation.user?.username }}</span>
+            <span class="convo-time">{{ conversation.lastMessageOn | timeAgo }}</span>
           </div>
-          <div class="text-black-50 small text-truncate">
+          <div class="convo-preview">
             {{ conversation.lastMessagePreview }}
           </div>
         </div>
@@ -40,8 +43,10 @@
       }
       @else if (!inboxLoading)
       {
-      <div class="text-center">
-        You don't have any active conversations.
+      <div class="inbox-empty">
+        <div class="empty-icon"><i class="fa-regular fa-comments"></i></div>
+        <div class="empty-title">No conversations yet</div>
+        <div class="empty-subtitle">Start a chat with someone you follow.</div>
       </div>
       }
       }
@@ -52,17 +57,16 @@
     </div>
   </div>
 
-  <div class="flex-grow-1">
+  <div class="conversation-pane flex-grow-1">
     <router-outlet />
   </div>
 </div>
 }
 @else
 {
-<div class="main d-flex">
-  <div class="flex-grow-1">
+<div class="messaging-main d-flex">
+  <div class="conversation-pane flex-grow-1">
     <router-outlet />
   </div>
 </div>
 }
-

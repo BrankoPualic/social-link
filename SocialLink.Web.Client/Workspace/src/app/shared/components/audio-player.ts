@@ -15,7 +15,7 @@ export class AudioPlayer implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes['audioSrc']?.currentValue && !changes['audioBlob']?.currentValue) return;
 
-    const primaryColor = this.isFromCurrentUser() ? '#fff' : '#ff677e';
+    const primaryColor = this.isFromCurrentUser() ? '#fff' : '#ec4366';
 
     const src = !!this.audioBlob() ? URL.createObjectURL(this.audioBlob()!) : this.audioSrc();
 
@@ -25,7 +25,7 @@ export class AudioPlayer implements OnChanges {
       wave-height="40"
       color="${primaryColor}"
       wave-progress-color="${primaryColor}"
-      wave-slider="${this.isFromCurrentUser() ? primaryColor : '#373233'}"
+      wave-slider="${this.isFromCurrentUser() ? primaryColor : '#1f2030'}"
       class="my-audio ${this.isFromCurrentUser() ? 'is-mine' : ''}"></wave-audio-path-player>`;
 
     this.container()!.nativeElement.innerHTML = template;

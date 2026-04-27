@@ -1,8 +1,10 @@
 <div class="auth-background">
   <form [formGroup]="form" class="login-form">
-    <div class="mb-4 text-center auth-logo">
+    <div class="mb-3 text-center auth-logo">
       <img src="../../../../../assets/images/logo-pink.svg" alt="Pink logo" />
     </div>
+    <div class="auth-title">Welcome back</div>
+    <div class="auth-subtitle">Log in to continue to your feed</div>
 
     <app-input-text [formControl]="$any(form.controls['email'])"
                     [label]="'Email'"
@@ -17,12 +19,12 @@
 
     <div appValidation="User"></div>
 
-    <div class="form-btn-group">
-      <button class="btn btn-sm align-self-center btn-primary col-3 py-2 mt-2" (click)="submit()">Log in</button>
+    <div class="form-btn-group mt-4">
+      <button class="btn btn-primary" (click)="submit()">Log in</button>
     </div>
 
-    <div class="col-12 mt-3 text-center">
-      Don't have an account? <a class="text-decoration-none" [routerLink]="['/auth/signup']">Sign up</a>
+    <div class="col-12 mt-4 text-center auth-switch">
+      Don't have an account? <a [routerLink]="['/auth/signup']">Sign up</a>
     </div>
   </form>
 </div>

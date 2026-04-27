@@ -9,6 +9,7 @@ import { Navigation } from "../../../../shared/components/navigation/navigation"
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.html',
+  styleUrl: './admin-dashboard.scss',
   imports: [Navigation, RouterLink]
 })
 export class AdminDashboard extends BaseComponent implements OnInit {

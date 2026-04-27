@@ -1,39 +1,164 @@
 @import '../../../../../assets/styles/variables.scss';
 
-.carousel {
-  background-color: rgba(0,0,0,0.9);
+.feed-container {
+  max-width: 720px;
+}
 
-  .carousel-inner {
-    .carousel-item {
-      text-align: center;
+.feed-card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  transition: box-shadow $dur $ease-out, transform $dur $ease-out, border-color $dur $ease-out;
 
-      img {
-        object-fit: contain;
-        width: 50%;
-        height: 100%
-      }
+  &:hover {
+    box-shadow: $shadow-md;
+    border-color: $border-strong;
+    transform: translateY(-2px);
+  }
+}
+
+.feed-carousel {
+  position: relative;
+  background: linear-gradient(180deg, #1f2030 0%, #0f1019 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  max-height: 720px;
+
+  .carousel-inner, .carousel-item {
+    width: 100%;
+  }
+
+  .carousel-item {
+    text-align: center;
+    transition: transform 500ms $ease-out, opacity 500ms $ease-out;
+
+    img {
+      display: block;
+      object-fit: cover;
+      width: 100%;
+      max-height: 720px;
     }
   }
 
   .media-counter {
     position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
-    background-color: $white;
-    color: $black;
-    border-radius: $border-radius;
-    padding: 0rem 0.3rem;
+    top: 0.85rem;
+    right: 0.85rem;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    color: $white;
+    border-radius: $radius-pill;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .media-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 0.75rem;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+
+    span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+      transition: width $dur $ease-spring, background-color $dur $ease-out;
+
+      &.active {
+        width: 18px;
+        border-radius: $radius-pill;
+        background: $white;
+      }
+    }
+  }
+}
+
+.feed-body {
+  padding: 1rem 1.25rem 1.1rem;
+}
+
+.feed-description {
+  color: $ink;
+  font-size: 0.96rem;
+  line-height: 1.55;
+  margin-bottom: 0.9rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.feed-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px solid $border;
+  padding-top: 0.75rem;
+
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: transparent;
+    border: none;
+    color: $muted;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: $radius-pill;
+    cursor: pointer;
+    transition: background-color $dur $ease-out, color $dur $ease-out, transform $dur $ease-spring;
+
+    i, app-heart-icon { font-size: 1.05rem; }
+
+    &:hover { background: $smoke-white; color: $ink; }
+
+    &.like-btn:hover { color: $primary-dark; background: $primary-soft; }
+
+    &.like-btn.is-liked {
+      color: $primary-dark;
+    }
+  }
+}
+
+.empty-feed {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: $muted;
+  animation: fade-in-up $dur-slow $ease-out both;
+
+  .empty-icon {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: $primary-soft;
+    color: $primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+  }
+
+  .empty-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $ink;
+    margin-bottom: 0.25rem;
+  }
+
+  .empty-subtitle {
+    font-size: 0.95rem;
   }
 }
 
 @media (max-width: 767px) {
-  .carousel {
-    .carousel-inner {
-      .carousel-item {
-        img {
-          width: 100%;
-        }
-      }
-    }
-  }
+  .feed-card { border-radius: $radius-md; }
 }

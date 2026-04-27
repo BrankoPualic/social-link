@@ -1,30 +1,113 @@
 @import '../../../../../assets/styles/variables.scss';
 
+.create-post-container {
+  max-width: 760px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  animation: fade-in-up $dur-slow $ease-out both;
+}
+
+.create-post-card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+}
+
+.create-post-header {
+  padding: 1.5rem 2rem 0.75rem;
+  background: $gradient-cool;
+
+  h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: $ink;
+  }
+  p {
+    margin: 0.25rem 0 1rem;
+    color: $muted;
+    font-size: 0.95rem;
+  }
+}
+
+.create-post-form {
+  padding: 1.5rem 2rem 2rem;
+}
+
 .preview-container {
   display: flex;
   flex-wrap: nowrap;
-  gap: 10px;
-  overflow: auto;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.75rem 0.25rem;
+
+  .preview-empty {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $muted-2;
+    background: $surface-2;
+    border: 1.5px dashed $border-strong;
+    border-radius: $radius-sm;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.9rem;
+    width: 100%;
+
+    i { font-size: 1.1rem; }
+  }
 
   .preview-item {
     position: relative;
+    flex-shrink: 0;
 
     img {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-      border-radius: $border-radius;
-      box-shadow: $box-shadow2;
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: $radius-sm;
+      box-shadow: $shadow-xs;
+      border: 1px solid $border;
+      transition: transform $dur $ease-spring;
     }
 
     .file-remove {
-      color: $primary;
-      font-size: 1.5rem;
       position: absolute;
-      top: 0rem;
-      right: 0.25rem;
-      line-height: 1.2rem;
+      top: 6px;
+      right: 6px;
+      z-index: 2;
+      width: 24px;
+      height: 24px;
+      background: rgba(31, 32, 48, 0.7);
+      backdrop-filter: blur(6px);
+      color: $white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      font-size: 0.72rem;
+      box-shadow: $shadow-sm;
+      transition: transform $dur $ease-spring, background-color $dur $ease-out;
+
+      &:hover {
+        background: $primary;
+        transform: scale(1.12);
+      }
     }
+
+    &:hover img { transform: translateY(-2px); }
   }
+}
+
+.create-post-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid $border;
+
+  .btn { padding: 0.55rem 1.4rem; }
 }

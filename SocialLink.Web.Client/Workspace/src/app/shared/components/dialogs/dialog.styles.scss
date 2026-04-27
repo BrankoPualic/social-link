@@ -3,62 +3,83 @@
 .dialog-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(31, 32, 48, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   z-index: 10000;
+  padding: 1rem;
+  animation: fade-in $dur $ease-out;
 
   .dialog {
-    background: $white;
-    border-radius: $border-radius;
-    margin-top: 0.5rem;
-    min-width: 300px;
-    overflow: auto;
-    box-shadow: $box-shadow;
-    animation: fadeIn 0.2s ease;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    min-width: 320px;
+    max-width: 480px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: $shadow-lg;
+    animation: dialog-pop $dur-slow $ease-spring;
 
-    &.dialog-delete {
-        .dialog-header {
-            background-color: $primary;
-            color: $white;
-        }
+    &.dialog-delete .dialog-header {
+      background: $gradient-primary;
+      color: $white;
+      border-bottom-color: transparent;
+
+      &::before {
+        content: '\f071';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        margin-right: 0.6rem;
+      }
     }
 
     .dialog-header {
-      padding: 0.75rem 1rem;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-      font-weight: 500;
-      box-shadow: $box-shadow2;
+      padding: 1rem 1.4rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: $ink;
+      border-bottom: 1px solid $border;
+      display: flex;
+      align-items: center;
     }
 
     .dialog-body {
-      padding: 0.5rem 1rem;
-      margin-bottom: 0.5rem;
+      padding: 1.1rem 1.4rem;
+      color: $ink-2;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
 
     .dialog-footer {
-      padding: 0.75rem 1rem;
+      padding: 0.85rem 1.4rem;
       display: flex;
       align-items: center;
-      box-shadow: $box-shadow2;
+      border-top: 1px solid $border;
+      background: $surface-2;
 
       .dialog-actions {
         margin: 0 0 0 auto;
+        display: flex;
+        gap: 0.5rem;
+
+        .btn { padding: 0.5rem 1.2rem; }
       }
     }
   }
 }
 
-@keyframes fadeIn {
+@keyframes dialog-pop {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.92) translateY(8px);
   }
-
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }

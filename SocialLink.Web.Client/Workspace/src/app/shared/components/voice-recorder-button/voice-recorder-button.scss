@@ -1,11 +1,30 @@
+@import '../../../../assets/styles/variables.scss';
+
+:host {
+  margin-left: 0.5rem;
+}
+
 .record-btn {
-  width: 38px;
-  height: 38px;
-  transition: transform 0.15s ease;
+  width: 42px;
+  height: 42px;
   position: relative;
+  border-radius: 50% !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform $dur $ease-spring, background-color $dur $ease-out, color $dur $ease-out, box-shadow $dur $ease-out;
+
+  i { font-size: 0.95rem; }
+
+  &:hover { transform: scale(1.06); }
 
   &.recording {
-    transform: scale(1.2);
+    transform: scale(1.15);
+    background: $primary;
+    color: $white;
+    border-color: $primary;
+    box-shadow: 0 0 0 6px $primary-soft, $shadow-primary;
+    animation: rec-pulse 1.4s $ease-out infinite;
   }
 }
 
@@ -19,17 +38,22 @@
 
   .progress-bg {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.15);
+    stroke: rgba(255, 255, 255, 0.18);
     stroke-width: 6;
   }
 
   .progress {
     fill: none;
-    stroke: #fff;
+    stroke: $white;
     stroke-width: 6;
     stroke-linecap: round;
-    stroke-dasharray: 282; // 2 * PI * 45
+    stroke-dasharray: 282;
     transform-origin: center;
     transition: stroke-dashoffset 0.1s linear;
   }
+}
+
+@keyframes rec-pulse {
+  0%, 100% { box-shadow: 0 0 0 6px rgba(236, 67, 102, 0.18), $shadow-primary; }
+  50% { box-shadow: 0 0 0 12px rgba(236, 67, 102, 0), $shadow-primary; }
 }

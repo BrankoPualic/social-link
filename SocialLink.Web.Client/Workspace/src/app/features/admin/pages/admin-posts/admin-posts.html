@@ -1,28 +1,35 @@
 <app-navigation />
 
-<div class="container-fluid p-4">
-  <h3 class="mx-2 text-center text-sm-start">Posts</h3>
+<div class="admin-page">
+  <div class="admin-page-header">
+    <h2><i class="fa-regular fa-images"></i> Posts</h2>
+    <p>Moderate content shared on the platform.</p>
+  </div>
 
-  <div class="m-2">
+  <div class="admin-grid-wrap">
     <app-grid [options]="gridOptions"></app-grid>
   </div>
 </div>
 
 <ng-template #postLinkCell let-row>
-  <a [routerLink]="['/post', row.id]">{{ row.id }}</a>
+  <a [routerLink]="['/post', row.id]" class="row-link">{{ row.id }}</a>
 </ng-template>
 <ng-template #userLinkCell let-row>
-  <a [routerLink]="['/profile', row.user.id]">{{ row.user.username }}</a>
+  <a [routerLink]="['/profile', row.user.id]" class="row-link">{{ row.user.username }}</a>
 </ng-template>
 <ng-template #descriptionCell let-row>
   @if (row.description)
   {
-  <button class="btn btn-sm btn-primary" type="button" (click)="previewDescription(row.description)"><i class="far fa-eye"></i></button>
+  <button class="btn btn-primary btn-icon" type="button" (click)="previewDescription(row.description)" title="Preview">
+    <i class="far fa-eye"></i>
+  </button>
   }
 </ng-template>
 <ng-template #createdOnCell let-row>
   <span>{{ row.createdOn | date: 'MMM d, y h:mm a' }}</span>
 </ng-template>
 <ng-template #deleteCell let-row>
-  <button class="btn btn-sm btn-primary me-1" type="button" (click)="changeActiveStatus(row)" [title]="getStatusTitle(row)"><i class="fa-solid" [class]="getStatusClass(row)"></i></button>
+  <button class="btn btn-primary btn-icon" type="button" (click)="changeActiveStatus(row)" [title]="getStatusTitle(row)">
+    <i class="fa-solid" [class]="getStatusClass(row)"></i>
+  </button>
 </ng-template>

@@ -1,19 +1,22 @@
 <app-navigation />
 
-<div class="container-fluid p-4">
-  <h3 class="mx-2 text-center text-sm-start">Users</h3>
-
-  <div class="col-12 col-sm-6 col-md-4">
-    <app-search (onSearch)="onSearch($event)" />
+<div class="admin-page">
+  <div class="admin-page-header">
+    <h2><i class="fa-solid fa-users"></i> Users</h2>
+    <p>Manage and review all platform users.</p>
   </div>
 
-  <div class="mb-2">
+  <div class="admin-toolbar">
+    <app-search (onSearch)="onSearch($event)" [placeholder]="'Search users'" />
+  </div>
+
+  <div class="admin-grid-wrap">
     <app-grid [options]="gridOptions"></app-grid>
   </div>
 </div>
 
 <ng-template #userLinkCell let-row>
-  <a [routerLink]="['/profile', row.id]">{{ row.id }}</a>
+  <a [routerLink]="['/profile', row.id]" class="row-link">{{ row.id }}</a>
 </ng-template>
 <ng-template #dobCell let-row>
   <span>{{ row.dateOfBirth | date: 'mediumDate' }}</span>
@@ -22,6 +25,10 @@
   <span>{{ row.createdOn | date: 'MMM d, y h:mm a' }}</span>
 </ng-template>
 <ng-template #deleteCell let-row>
-  <button class="btn btn-sm btn-primary me-1" type="button" (click)="changeActiveStatus(row)" [title]="getStatusTitle(row)"><i class="fa-solid" [class]="getStatusClass(row)"></i></button>
-  <button class="btn btn-sm btn-primary" type="button" (click)="changeLockStatus(row)" [title]="getLockTitle(row)"><i class="fa-solid" [class]="getLockClass(row)"></i></button>
+  <button class="btn btn-primary btn-icon me-1" type="button" (click)="changeActiveStatus(row)" [title]="getStatusTitle(row)">
+    <i class="fa-solid" [class]="getStatusClass(row)"></i>
+  </button>
+  <button class="btn btn-primary btn-icon" type="button" (click)="changeLockStatus(row)" [title]="getLockTitle(row)">
+    <i class="fa-solid" [class]="getLockClass(row)"></i>
+  </button>
 </ng-template>

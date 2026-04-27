@@ -6,23 +6,32 @@ import { FormatTextPipe } from "../../../core/pipes/format-text.pipe";
   selector: 'app-default-message-box',
   imports: [FormatTextPipe],
   template: `
-  <div class="message px-2 py-1"
+  <div class="message"
                [class.is-mine]="isFromCurrentUser(message()?.userId)"
                [class.is-others]="!isFromCurrentUser(message()?.userId)"
-               [class.rounded-3]="isMultiline(message()?.content)"
-               [class.rounded-4]="!isMultiline(message()?.content)"
                [innerHtml]="message()?.content | formatText"></div>
   `,
   styles: `
   @import '../../../../assets/styles/variables.scss';
   .message {
+        border-radius: 18px;
+        padding: 0.55rem 0.9rem;
+        line-height: 1.4;
+        font-size: 0.94rem;
+        word-wrap: break-word;
+
         &.is-mine {
-          background-color: $primary;
+          background: $gradient-primary;
           color: $white;
+          border-bottom-right-radius: 6px;
+          box-shadow: 0 4px 14px rgba(236, 67, 102, 0.22);
         }
 
         &.is-others {
           background-color: $smoke-white;
+          color: $ink;
+          border-bottom-left-radius: 6px;
+          box-shadow: 0 1px 2px rgba(31, 32, 48, 0.04);
         }
     }
   `

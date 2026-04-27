@@ -1,38 +1,35 @@
 <app-navigation />
 
-<form [formGroup]="form" class="container-fluid p-4">
-  <h5>My Notifications</h5>
+<div class="user-notif-container">
+  <div class="user-notif-card anim-rise">
+    <div class="user-notif-header">
+      <h2><i class="fa-regular fa-bell"></i> My notifications</h2>
+      <p>Choose which notifications you want to receive.</p>
+    </div>
 
-  @if (preferences)
-  {
-  <div formArrayName="preferences" class="mt-3">
-    <table class="table">
-      <thead>
-      <th style="font-weight: 600">Notification</th>
-      <th class="float-end" style="font-weight: 600">Is Muted</th>
-      </thead>
-
-      <tbody>
+    <form [formGroup]="form">
+      @if (preferences)
+      {
+      <div formArrayName="preferences" class="user-notif-list">
         @for (notification of preferences.controls; track $index)
         {
-        <tr [formGroupName]="$index">
-          <td class="px-0">{{ notification.value.name }}</td>
-          <td class="px-0">
-            <div class="form-check form-switch float-end">
-              <input class="form-check-input" type="checkbox" id="isMuted" formControlName="isMuted" style="cursor: pointer" />
+        <div [formGroupName]="$index" class="user-notif-row">
+          <div class="user-notif-name">{{ notification.value.name }}</div>
+          <div class="user-notif-toggle">
+            <span class="user-notif-toggle-label">{{ notification.value.isMuted ? 'Muted' : 'On' }}</span>
+            <div class="form-check form-switch m-0">
+              <input class="form-check-input" type="checkbox" formControlName="isMuted" style="cursor: pointer" />
             </div>
-
-          </td>
-        </tr>
+          </div>
+        </div>
         }
-      </tbody>
+      </div>
 
-    </table>
+      <div class="user-notif-actions">
+        <button class="btn btn-outline-primary" type="button" [routerLink]="['/profile', userId]">Cancel</button>
+        <button class="btn btn-primary" type="button" (click)="submit()">Save changes</button>
+      </div>
+      }
+    </form>
   </div>
-
-  <div>
-    <button class="btn btn-sm align-self-center btn-outline-primary py-2 px-4 ms-2 float-end" type="button" [routerLink]="['/profile', userId]">Cancel</button>
-    <button class="btn btn-sm align-self-center btn-primary py-2 px-4 float-end" type="button" (click)="submit()">Save</button>
-  </div>
-  }
-</form>
+</div>

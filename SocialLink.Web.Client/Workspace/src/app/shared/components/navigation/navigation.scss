@@ -1,22 +1,113 @@
 @import '../../../../assets/styles/variables.scss';
 
 .navigation {
-  box-shadow: $box-shadow2;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(18px) saturate(170%);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  border-bottom: 1px solid $border;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, $shadow-xs;
+  animation: slide-in-down $dur-slow $ease-out both;
+
+  .nav-inner {
+    height: 64px;
+  }
 
   .logo {
     cursor: pointer;
+    transition: transform $dur $ease-spring;
 
     img {
-      width: 12.5rem
+      width: 11rem;
+      filter: drop-shadow(0 2px 8px rgba(236, 67, 102, 0.18));
+      transition: filter $dur $ease-out;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+      img { filter: drop-shadow(0 6px 14px rgba(236, 67, 102, 0.3)); }
     }
   }
 
-  ul li {
-    cursor: pointer;
-    font-weight: 500;
+  .nav-links {
+    gap: 0.4rem;
 
-    &.active {
-      color: $primary;
+    li {
+      cursor: pointer;
+      font-weight: 600;
+      color: $muted;
+      padding: 0.55rem 0.95rem;
+      border-radius: $radius-pill;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      transition: color $dur $ease-out, background-color $dur $ease-out, transform $dur $ease-spring;
+
+      i {
+        font-size: 1.05rem;
+        transition: transform $dur $ease-spring;
+      }
+
+      &:hover {
+        color: $ink;
+        background: $smoke-white;
+
+        i { transform: translateY(-1px) scale(1.06); }
+      }
+
+      &.active {
+        color: $primary-dark;
+        background: $primary-soft;
+
+        i {
+          color: $primary;
+          transform: scale(1.08);
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          bottom: -2px;
+          width: 24px;
+          height: 3px;
+          border-radius: $radius-pill;
+          background: $gradient-primary;
+          transform: translateX(-50%);
+          animation: scale-in $dur $ease-spring;
+        }
+      }
+
+      &.logout {
+        color: $muted;
+        &:hover {
+          color: $error;
+          background: rgba(229, 72, 77, 0.08);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .navigation {
+    .nav-inner { height: 56px; }
+
+    .nav-links {
+      width: 100%;
+      gap: 0;
+
+      li {
+        padding: 0.55rem 0.75rem;
+        i { font-size: 1.2rem; }
+
+        &.active::after {
+          bottom: -8px;
+        }
+      }
     }
   }
 }

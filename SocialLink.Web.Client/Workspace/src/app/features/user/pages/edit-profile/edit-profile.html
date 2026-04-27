@@ -1,51 +1,58 @@
 <app-navigation />
 
-<form [formGroup]="form" class="container-fluid p-4">
-  <h5>Edit profile</h5>
-
-  <app-input-text [formControl]="$any(form.controls['firstName'])"
-                  [label]="'First Name'"
-                  [required]="true"
-                  [validation]="'FirstName'" />
-
-  <app-input-text [formControl]="$any(form.controls['lastName'])"
-                  [label]="'Last Name'"
-                  [required]="true"
-                  [validation]="'LastName'" />
-
-  <app-input-text [formControl]="$any(form.controls['username'])"
-                  [label]="'Username'"
-                  [required]="true"
-                  [validation]="'Username'" />
-
-  <app-dropdown [formControl]="$any(form.controls['genderId'])"
-                [label]="'Gender'"
-                [required]="true"
-                [validation]="'GenderId'"
-                [loadMethod]="lookupService.get('/UserMasterData/GetGenders')" />
-
-  <app-input-date [formControl]="$any(form.controls['dateOfBirth'])"
-                  [label]="'Date of Birth'" />
-
-  <app-text-area [formControl]="$any(form.controls['biography'])"
-                 [label]="'Biography'"
-                 [validation]="'Biography'"
-                 [maxLength]="150" />
-
-  <div class="mb-3 d-flex flex-column">
-    <div class="d-flex flex-row align-items-center">
-      <label class="col-11 col-md-3 pointer" for="privacy">
-        Profile is private
-      </label>
-
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="privacy" formControlName="isPrivate" style="cursor: pointer" />
-      </div>
+<div class="edit-profile-container">
+  <div class="edit-profile-card anim-rise">
+    <div class="edit-profile-header">
+      <h2><i class="fa-regular fa-pen-to-square"></i> Edit profile</h2>
+      <p>Update your details and preferences.</p>
     </div>
-  </div>
 
-  <div>
-    <button class="btn btn-sm align-self-center btn-outline-primary py-2 px-4 ms-2 float-end" type="button" [routerLink]="['/profile', userId]">Cancel</button>
-    <button class="btn btn-sm align-self-center btn-primary py-2 px-4 float-end" type="button" (click)="submit()">Save</button>
+    <form [formGroup]="form" class="edit-profile-form">
+      <app-input-text [formControl]="$any(form.controls['firstName'])"
+                      [label]="'First Name'"
+                      [required]="true"
+                      [validation]="'FirstName'" />
+
+      <app-input-text [formControl]="$any(form.controls['lastName'])"
+                      [label]="'Last Name'"
+                      [required]="true"
+                      [validation]="'LastName'" />
+
+      <app-input-text [formControl]="$any(form.controls['username'])"
+                      [label]="'Username'"
+                      [required]="true"
+                      [validation]="'Username'" />
+
+      <app-dropdown [formControl]="$any(form.controls['genderId'])"
+                    [label]="'Gender'"
+                    [required]="true"
+                    [validation]="'GenderId'"
+                    [loadMethod]="lookupService.get('/UserMasterData/GetGenders')" />
+
+      <app-input-date [formControl]="$any(form.controls['dateOfBirth'])"
+                      [label]="'Date of Birth'" />
+
+      <app-text-area [formControl]="$any(form.controls['biography'])"
+                     [label]="'Biography'"
+                     [validation]="'Biography'"
+                     [maxLength]="150" />
+
+      <div class="mb-3 d-flex flex-column">
+        <div class="d-flex flex-row align-items-center">
+          <label class="col-11 col-md-3 pointer" for="privacy">
+            Profile is private
+          </label>
+
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="privacy" formControlName="isPrivate" style="cursor: pointer" />
+          </div>
+        </div>
+      </div>
+
+      <div class="edit-profile-actions">
+        <button class="btn btn-outline-primary" type="button" [routerLink]="['/profile', userId]">Cancel</button>
+        <button class="btn btn-primary" type="button" (click)="submit()">Save changes</button>
+      </div>
+    </form>
   </div>
-</form>
+</div>

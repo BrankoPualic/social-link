@@ -1,52 +1,60 @@
-.data-table .odd-row {
-  background-color: #f4f4f4;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-  .data-table th,
-  .data-table td {
-    padding: 0.3rem;
-    text-align: left;
-  }
-
-  .data-table th {
-    font-weight: bold;
-    border-bottom: 2px solid var(--bs-border-color);
-  }
-
-  .data-table td {
-    font-size: 0.95rem;
-  }
-
-  .data-table .odd-row {
-    background-color: #f4f4f4;
-  }
-
+@import '../../../../assets/styles/variables.scss';
 
 .table-shell {
   width: 100%;
-  overflow: hidden; /* default */
-}
+  overflow: hidden;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-xs;
 
-  .table-shell.scroll {
-    overflow: auto; /* enables both x and y scrollbars when needed */
+  &.scroll {
+    overflow: auto;
   }
+}
 
 .data-table {
   border-collapse: collapse;
-  table-layout: fixed; /* IMPORTANT: respect your col widths */
-  min-width: max-content; /* IMPORTANT: allow horizontal overflow */
-  width: 100%; /* still fill container if smaller than columns */
-}
+  table-layout: fixed;
+  min-width: max-content;
+  width: 100%;
 
-  .data-table th,
-  .data-table td {
-    white-space: nowrap; /* optional: prevents wrapping so table stays wide */
+  th, td {
+    padding: 0.7rem 0.85rem;
+    text-align: left;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  thead th {
+    font-weight: 600;
+    color: $muted;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: $surface-2;
+    border-bottom: 1px solid $border;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  tbody {
+    tr {
+      transition: background-color $dur $ease-out;
+
+      &:hover { background: $primary-soft; }
+
+      td {
+        font-size: 0.92rem;
+        color: $ink-2;
+        border-bottom: 1px solid $border;
+      }
+
+      &:last-child td { border-bottom: none; }
+    }
+
+    .odd-row { background-color: $surface-2; }
+  }
+}

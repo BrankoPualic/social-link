@@ -1,29 +1,133 @@
 @import '../../../../../assets/styles/variables.scss';
 
-.main {
-    height: calc(100dvh - 56px);
+.post-main {
+  height: calc(100dvh - 64px);
+  background: $bg;
+  animation: fade-in $dur-slow $ease-out both;
+}
 
-    .carousel {
-        background-color: rgba(0,0,0,0.9);
+.post-carousel {
+  position: relative;
+  background: linear-gradient(180deg, #1f2030 0%, #0f1019 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
 
-        .carousel-inner {
-          .carousel-item {
-              img {
-                  object-fit: contain;
-                  width: 100%;
-                  height: 100%;
-              }
-          }
-        }
+  .carousel-inner, .carousel-item { height: 100%; }
 
-        .media-counter {
-            position: absolute;
-            bottom: 0.5rem;
-            right: 0.5rem;
-            background-color: $white;
-            color: $black;
-            border-radius: $border-radius;
-            padding: 0rem 0.3rem;
-        }
+  .carousel-item img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+
+  .media-counter {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    color: $white;
+    border-radius: $radius-pill;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .media-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+
+    span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+      transition: width $dur $ease-spring, background-color $dur $ease-out;
+
+      &.active {
+        width: 22px;
+        border-radius: $radius-pill;
+        background: $white;
+      }
     }
+  }
+}
+
+.post-side {
+  background: $surface;
+  border-left: 1px solid $border;
+  height: 100%;
+
+  .post-side-scroll {
+    padding: 1rem 1.25rem;
+  }
+}
+
+.post-description {
+  color: $ink;
+  font-size: 0.96rem;
+  line-height: 1.55;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid $border;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.post-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid $border;
+
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: transparent;
+    border: none;
+    color: $muted;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: $radius-pill;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color $dur $ease-out, color $dur $ease-out;
+
+    &:hover { background: $primary-soft; color: $primary-dark; }
+    &.is-liked { color: $primary-dark; }
+  }
+
+  .comment-count {
+    color: $muted;
+    font-size: 0.92rem;
+    padding: 0.2rem 0.6rem;
+  }
+}
+
+.post-comments {
+  padding-top: 0.85rem;
+}
+
+.post-input-wrap {
+  border-top: 1px solid $border;
+  padding: 0.75rem 1rem;
+  background: $surface-2;
+}
+
+@media (max-width: 767px) {
+  .post-main {
+    height: auto;
+    min-height: calc(100dvh - 56px);
+  }
+  .post-carousel { aspect-ratio: 1 / 1; height: auto; }
+  .post-side { border-left: none; border-top: 1px solid $border; }
 }

@@ -1,20 +1,29 @@
 <div class="position-relative h-100">
   <app-page-loader [containerLoader]="postsLoading" />
 
-  <div class="d-flex flex-wrap">
+  <div class="post-grid">
     @for (post of posts; track $index)
     {
-    <div class="post-preview col-6 col-sm-4 col-md-3 col-lg-2 p-1" [routerLink]="['/post', post.id]">
-      <img [src]="post.media?.[0]?.url" alt="Post media preview" />
-      <div class="post-info">
-        <span class="me-2 small"><app-heart-icon [status]="post?.isLiked" /> {{ post.likesCount }}</span>
-        <span class="small"><i class="fa-regular fa-comment"></i> {{ post.commentsCount }}</span>
+    <div class="post-tile anim-pop" [routerLink]="['/post', post.id]" [style.animation-delay]="($index * 30) + 'ms'">
+      <div class="post-tile-img">
+        <img [src]="post.media?.[0]?.url" alt="Post media preview" />
+        <div class="post-tile-overlay">
+          <span><app-heart-icon [status]="post?.isLiked" /> {{ post.likesCount }}</span>
+          <span><i class="fa-regular fa-comment"></i> {{ post.commentsCount }}</span>
+        </div>
+        @if (post.media && post.media.length > 1)
+        {
+        <div class="post-tile-stack"><i class="fa-solid fa-clone"></i></div>
+        }
       </div>
     </div>
     }
     @if (posts.length === 0 && !postsLoading)
     {
-    Nothing posted yet.
+    <div class="post-grid-empty">
+      <div class="empty-icon"><i class="fa-regular fa-image"></i></div>
+      <div>Nothing posted yet.</div>
+    </div>
     }
   </div>
 </div>

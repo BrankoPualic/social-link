@@ -2,12 +2,12 @@
 
 @if (posts?.items && posts?.items!.length! > 0)
 {
-<div class="container-fluid px-sm-3 px-md-5">
-  <div class="d-flex flex-column">
+<div class="container feed-container py-4">
+  <div class="d-flex flex-column gap-4">
     @for (post of posts?.items; track $index)
     {
-    <div class="border rounded my-2">
-      <div id="carouselContainer" class="carousel col-12 d-flex justify-content-center align-items-center border">
+    <article class="feed-card anim-rise">
+      <div id="carouselContainer" class="carousel feed-carousel">
         <div class="carousel-inner">
           @for (media of post?.media; track $index)
           {
@@ -34,37 +34,53 @@
         </button>
         }
 
-        <div class="media-counter small">
-          {{ post?.activeCarouselMedia! + 1 }}/{{ post?.media?.length! }}
+        <div class="media-counter">
+          {{ post?.activeCarouselMedia! + 1 }} / {{ post?.media?.length! }}
+        </div>
+
+        <div class="media-dots">
+          @for (m of post?.media; track $index)
+          {
+          <span [class.active]="post.activeCarouselMedia === $index"></span>
+          }
         </div>
         }
       </div>
 
-      <div class="col-12 p-2" [innerHtml]="post?.description | formatText"></div>
+      <div class="feed-body">
+        <div class="feed-description" [innerHtml]="post?.description | formatText"></div>
 
-      <div class="col-12 p-2 d-flex flex-column">
-        <span>
-          <app-heart-icon [status]="post?.isLiked" (click)="likePost(post)" />
-          @if (post?.isLiked && post?.likesCount === 2) { You and 1 other }
-          @else if (post?.isLiked && post?.likesCount! > 2) { You and {{ post?.likesCount! - 1 }} others}
-          @else if (post?.isLiked) { You }
-          @else if (post?.likesCount === 1) { 1 Person }
-          @else if (post?.likesCount! > 1) { {{ post?.likesCount }} People }
-          @else { {{ post?.likesCount || 0 }} }
-          liked this post
-        </span>
-        <span [routerLink]="['/post', post.id]" class="pointer">
-          <i class="fa-regular fa-comment"></i> {{ post?.commentsCount }} Comment@if (post?.commentsCount! > 1){s}
-        </span>
+        <div class="feed-actions">
+          <button class="action-btn like-btn" [class.is-liked]="post?.isLiked" (click)="likePost(post)">
+            <app-heart-icon [status]="post?.isLiked" />
+            <span>
+              @if (post?.isLiked && post?.likesCount === 2) { You and 1 other }
+              @else if (post?.isLiked && post?.likesCount! > 2) { You and {{ post?.likesCount! - 1 }} others }
+              @else if (post?.isLiked) { You }
+              @else if (post?.likesCount === 1) { 1 person }
+              @else if (post?.likesCount! > 1) { {{ post?.likesCount }} people }
+              @else { 0 likes }
+              @if (!post?.isLiked && post?.likesCount! > 0) { liked this }
+              @else if (post?.isLiked) { liked this }
+            </span>
+          </button>
+
+          <button class="action-btn comment-btn" [routerLink]="['/post', post.id]">
+            <i class="fa-regular fa-comment"></i>
+            <span>{{ post?.commentsCount }} Comment@if (post?.commentsCount! > 1){s}</span>
+          </button>
+        </div>
       </div>
-    </div>
+    </article>
     }
   </div>
 </div>
 }
 @else
 {
-<div class="text-center">
-  No new posts available.
+<div class="empty-feed">
+  <div class="empty-icon"><i class="fa-regular fa-newspaper"></i></div>
+  <div class="empty-title">No new posts yet</div>
+  <div class="empty-subtitle">Follow people and explore to fill your feed.</div>
 </div>
 }

@@ -1,26 +1,33 @@
 <div class="position-relative h-100">
   <app-page-loader [containerLoader]="usersLoading" />
 
-  <div class="d-flex flex-column">
+  <div class="user-list">
     @if (!!users && users.items!.length! > 0)
     {
     @for (user of users.items; track $index)
     {
-    <div class="d-flex align-items-center pointer mb-2" (click)="emitOnClick(user)">
-      <div class="image" [class.is-online]="showPresence() && presenceService.onlineUsersSignal().includes(user.id!)">
+    <div class="user-row anim-rise" [style.animation-delay]="($index * 30) + 'ms'" (click)="emitOnClick(user)">
+      <div class="image user-avatar" [class.is-online]="showPresence() && presenceService.onlineUsersSignal().includes(user.id!)">
         <img [src]="sharedService.getImage(user?.profileImage)" alt="User image" />
       </div>
 
-      <div class="ms-2">
-        {{ user?.username }}
+      <div class="user-meta">
+        <div class="user-username">{{ user?.username }}</div>
+        @if (user?.fullName)
+        {
+        <div class="user-fullname">{{ user?.fullName }}</div>
+        }
       </div>
+
+      <i class="fa-solid fa-chevron-right user-chevron"></i>
     </div>
     }
     }
     @else if (!usersLoading)
     {
-    <div class="text-center">
-      User not found.
+    <div class="user-list-empty">
+      <i class="fa-regular fa-user"></i>
+      <span>User not found.</span>
     </div>
     }
   </div>

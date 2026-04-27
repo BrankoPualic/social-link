@@ -1,7 +1,7 @@
 <app-navigation />
 
-<div class="main d-flex flex-column flex-md-row">
-  <div id="carouselContainer" class="carousel col-12 col-md-6 d-flex justify-content-center align-items-center border">
+<div class="post-main d-flex flex-column flex-md-row">
+  <div id="carouselContainer" class="post-carousel col-12 col-md-7">
     <div class="carousel-inner">
       @for (media of post?.media; track $index)
       {
@@ -28,39 +28,51 @@
     </button>
     }
 
-    <div class="media-counter small">
-      {{ activeCarouselMedia + 1 }}/{{ post?.media?.length! }}
+    <div class="media-counter">
+      {{ activeCarouselMedia + 1 }} / {{ post?.media?.length! }}
+    </div>
+
+    <div class="media-dots">
+      @for (m of post?.media; track $index)
+      {
+      <span [class.active]="activeCarouselMedia === $index"></span>
+      }
     </div>
     }
   </div>
 
-  <div class="col-12 col-md-6 d-flex flex-column p-2 h-100">
-    <div class="overflow-auto flex-grow-1">
-      <div [innerHtml]="post?.description | formatText" class="border-bottom pb-2"></div>
-      <div class="py-2 border-bottom d-flex flex-column">
-        <span>
-          <app-heart-icon [status]="post?.isLiked" (click)="likePost()" />
-          @if (post?.isLiked && post?.likesCount === 2) { You and 1 other }
-          @else if (post?.isLiked && post?.likesCount! > 2) { You and {{ post?.likesCount! - 1 }} others}
-          @else if (post?.isLiked) { You }
-          @else if (post?.likesCount === 1) { 1 Person }
-          @else if (post?.likesCount! > 1) { {{ post?.likesCount }} People }
-          @else { {{ post?.likesCount || 0 }} }
-          liked this post
-        </span>
-        <span>
+  <div class="post-side col-12 col-md-5 d-flex flex-column">
+    <div class="post-side-scroll flex-grow-1 overflow-auto">
+      <div class="post-description" [innerHtml]="post?.description | formatText"></div>
+
+      <div class="post-meta">
+        <button class="action-btn like-btn" [class.is-liked]="post?.isLiked" (click)="likePost()">
+          <app-heart-icon [status]="post?.isLiked" />
+          <span>
+            @if (post?.isLiked && post?.likesCount === 2) { You and 1 other }
+            @else if (post?.isLiked && post?.likesCount! > 2) { You and {{ post?.likesCount! - 1 }} others }
+            @else if (post?.isLiked) { You }
+            @else if (post?.likesCount === 1) { 1 person }
+            @else if (post?.likesCount! > 1) { {{ post?.likesCount }} people }
+            @else { 0 likes }
+            @if (post?.likesCount! > 0 || post?.isLiked) { liked this }
+          </span>
+        </button>
+        <span class="comment-count">
           <i class="fa-regular fa-comment"></i> {{ post?.commentsCount }} Comment@if (post?.commentsCount! > 1){s}
         </span>
       </div>
 
-      <div class="flex-grow-1 py-2" style="min-height: 50%;">
+      <div class="post-comments">
         <app-comments [postId]="postId"/>
       </div>
     </div>
 
     @if (post?.allowComments)
     {
-    <app-message-input (submit)="createComment($event)" [placeholder]="'Type a comment'"/>
+    <div class="post-input-wrap">
+      <app-message-input (submit)="createComment($event)" [placeholder]="'Type a comment'"/>
+    </div>
     }
   </div>
 </div>

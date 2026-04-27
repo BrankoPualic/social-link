@@ -1,0 +1,7 @@
+// Messaging shared styles (loaded globally)
+
+.recorded-audio-wrapper {
+  background: $surface-2;
+  border-top: 1px solid $border;
+  animation: fade-in-up $dur $ease-out both;
+}

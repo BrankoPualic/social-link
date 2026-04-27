@@ -1,0 +1,47 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.admin-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.admin-page-header {
+  margin-bottom: 1.25rem;
+  animation: fade-in-up $dur-slow $ease-out both;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $ink;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+
+    i { color: $primary; }
+  }
+  p {
+    margin: 0.25rem 0 0;
+    color: $muted;
+    font-size: 0.95rem;
+  }
+}
+
+.admin-toolbar {
+  max-width: 360px;
+  margin-bottom: 1rem;
+}
+
+.admin-grid-wrap {
+  animation: fade-in $dur-slow $ease-out both;
+}
+
+.row-link {
+  color: $primary;
+  font-weight: 500;
+  font-family: 'Inter', monospace;
+  font-size: 0.85rem;
+
+  &:hover { color: $primary-dark; text-decoration: underline; }
+}

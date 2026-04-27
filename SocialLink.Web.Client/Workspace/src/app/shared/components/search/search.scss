@@ -1,19 +1,48 @@
 @import '../../../../assets/styles/variables.scss';
 
+:host {
+  display: block;
+}
+
+.search-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: $muted-2;
+  font-size: 0.85rem;
+  pointer-events: none;
+  transition: color $dur $ease-out;
+}
+
 .search-input {
-  padding-left: calc(1.5 * 0.75rem + 14px);
+  padding-left: 2.5rem;
   background-color: $smoke-white;
-  border: none;
-  border-radius: 50px;
-  // box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+  border: 1px solid transparent;
+  border-radius: $radius-pill;
+  color: $ink;
+  height: 42px;
+  transition: background-color $dur $ease-out, border-color $dur $ease-out, box-shadow $dur $ease-out;
+
+  &::placeholder { color: $muted-2; }
+
+  &:hover { background-color: #e7e9f1; }
+
   &:focus {
-    box-shadow: none;
+    outline: none;
+    background-color: $white;
+    border-color: $primary;
+    box-shadow: 0 0 0 4px $primary-soft;
+
+    & + i, ~ .search-icon { color: $primary; }
   }
 }
 
-.position-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.search-wrap:focus-within .search-icon {
+  color: $primary;
 }

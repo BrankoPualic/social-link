@@ -16,19 +16,84 @@ import { Notification } from "./notification";
   template: `
         <app-navigation />
 
-        <div class="container-fluid p-4">
-          <div class="d-flex flex-column">
+        <div class="notif-page">
+          <div class="notif-page-header">
+            <h2><i class="fa-regular fa-bell"></i> Notifications</h2>
+            <p>Stay updated on what's happening around you.</p>
+          </div>
+
+          <div class="d-flex flex-column gap-2">
             @for (notification of notifications; track $index)
             {
               <app-notification [notification]="notification" (removed)="remove($event)"/>
             }
             @if (notifications.length == 0)
             {
-              <span class="text-center">There are no new notifications.</span>
+              <div class="notif-empty">
+                <div class="empty-icon"><i class="fa-regular fa-bell-slash"></i></div>
+                <div class="empty-title">You're all caught up</div>
+                <div class="empty-subtitle">There are no new notifications right now.</div>
+              </div>
             }
           </div>
         </div>
-    `
+    `,
+  styles: `
+    @import '../../../../assets/styles/variables.scss';
+
+    .notif-page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+    .notif-page-header {
+      margin-bottom: 1.25rem;
+      animation: fade-in-up $dur-slow $ease-out both;
+
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: $ink;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin: 0;
+
+        i { color: $primary; }
+      }
+      p {
+        margin: 0.25rem 0 0;
+        color: $muted;
+        font-size: 0.95rem;
+      }
+    }
+    .notif-empty {
+      text-align: center;
+      padding: 3.5rem 1rem;
+      color: $muted;
+
+      .empty-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 0.75rem;
+        border-radius: 50%;
+        background: $primary-soft;
+        color: $primary;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+      }
+      .empty-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: $ink;
+      }
+      .empty-subtitle {
+        font-size: 0.92rem;
+      }
+    }
+  `
 })
 export class NotificationList extends BaseComponent {
   searchOptions = new NotificationSearch();

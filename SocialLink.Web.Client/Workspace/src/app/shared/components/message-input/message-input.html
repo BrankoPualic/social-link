@@ -1,14 +1,11 @@
-<div class="d-flex position-relative">
+<div class="input-wrap">
   <textarea #textarea
-            class="form-control pe-5"
             [(ngModel)]="value"
             (input)="autoResize()"
             rows="1"
             [placeholder]="placeholder()">
-      </textarea>
-  <button class="btn btn-sm btn-primary rounded-circle position-absolute"
-          type="button"
-          (click)="send()">
+    </textarea>
+  <button class="send-btn" type="button" (click)="send()" aria-label="Send">
     <i class="fa-solid fa-arrow-right"></i>
   </button>
 </div>

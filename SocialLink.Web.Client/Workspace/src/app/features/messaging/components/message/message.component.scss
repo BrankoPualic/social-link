@@ -1,13 +1,19 @@
 @import '../../../../../assets/styles/variables.scss';
 
+:host {
+  display: block;
+}
+
 .image {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 1px solid $smoke-white;
+  border: 1px solid $border;
+  overflow: hidden;
+  flex-shrink: 0;
 
   img {
-    object-fit: contain;
+    object-fit: cover;
     height: 100%;
     width: 100%;
     border-radius: 50%;
@@ -20,26 +26,33 @@
 
 .message-box {
   max-width: 75%;
-}
+  animation: fade-in-up $dur $ease-out both;
 
-.typing-indicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  float: left;
-  //margin: 8px 0;
-  //font-family: Arial, sans-serif;
-  padding-left: 5px;
+  // Bubble received from default-message-box host element
+  ::ng-deep .message {
+    border-radius: 18px;
+    padding: 0.55rem 0.9rem;
+    line-height: 1.4;
+    font-size: 0.94rem;
+    word-wrap: break-word;
+    transition: transform $dur $ease-spring, box-shadow $dur $ease-out;
 
-  .typing-text {
-    opacity: 0.6;
-    animation: pulse-opacity 1.5s infinite;
-    font-size: 14px;
+    &.is-mine {
+      background: $gradient-primary;
+      color: $white;
+      border-bottom-right-radius: 6px;
+      box-shadow: 0 4px 14px rgba(236, 67, 102, 0.22);
+    }
+
+    &.is-others {
+      background: $smoke-white;
+      color: $ink;
+      border-bottom-left-radius: 6px;
+      box-shadow: $shadow-xs;
+    }
   }
 }
 
 @media (max-width: 768px) {
-  .message-box {
-    max-width: 100%;
-  }
+  .message-box { max-width: 85%; }
 }
